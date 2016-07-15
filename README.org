@@ -1,10 +1,14 @@
 The scripts in the package are used to add new machines to the Vector Space network and to install and maintain software across the network.
 
+These scripts have been tested on Mint and Manjaro.
+
 * Adding a new machine
 After installing the OS on the target machine, clone this repository to the target machine.
 
-This will install and enable ssh as well as the VS public key. It will also run an Ansible playbook to install NIS.
+Change the user name in the *.yml files
+
 $ add_client.sh
+This will install and enable ssh as well as the VS public key. It will also run an Ansible playbook to install NIS.
 
 $ sudo install_software.sh
 
