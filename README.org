@@ -20,3 +20,8 @@ Change the user name in the *.yml files to one available on the client with sudo
 From a host machine with Ansible installed,
 
 1. $ sudo host.sh
+
+* Additional notes
+** Add new user
+
+$ sudo useradd username -g foo -G lock,uucp,dialout
