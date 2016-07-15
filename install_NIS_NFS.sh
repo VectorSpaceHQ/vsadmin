@@ -1,4 +1,6 @@
 #!/bin/bash
+# This script makes the necessary modifications to mount the NFS share
+# and enable NIS
 
 if !(grep 'T5500b' /etc/hosts) then
    echo "# Mount common user file system from T5500b" >>/etc/fstab
