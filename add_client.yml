@@ -16,4 +16,4 @@
         - yp-tools
 
   - script: ./lightdm.sh
-  - script: ./Mint_Install_NIS_NFS.sh
+  - script: ./install_NIS_NFS.sh
