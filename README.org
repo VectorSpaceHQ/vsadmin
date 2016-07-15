@@ -3,15 +3,20 @@ The scripts in the package are used to add new machines to the Vector Space netw
 These scripts have been tested on Mint and Manjaro.
 
 * Adding a new machine
+** From Client Machine
 After installing the OS on the target machine, clone this repository to the target machine.
 
-Change the user name in the *.yml files
+Execute the client.sh script. This will ensure that the client is accessible from the host by installing and enabling ssh and the VS public key.
 
-$ add_client.sh
-This will install and enable ssh as well as the VS public key. It will also run an Ansible playbook to install NIS.
+1. $ sudo client.sh
 
-$ sudo install_software.sh
 
+** From Ansible Host Machine
+Change the user name in the *.yml files to one available on the client with sudo, but not root.
+
+2. $ sudo host.sh
 
 * Maintaining existing machines
-$ sudo install_software.sh
+From a host machine with Ansible installed,
+
+1. $ sudo host.sh
