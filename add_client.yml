@@ -17,3 +17,4 @@
 
   - script: ./lightdm.sh
   - script: ./install_NIS_NFS.sh
+  - script: ./timeout.sh
