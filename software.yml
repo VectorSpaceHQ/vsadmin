@@ -1,4 +1,4 @@
-- hosts: test
+- hosts: clients
   tasks:
   - name: Remove Debian packages
     when: ansible_os_family == "Linuxmint"
