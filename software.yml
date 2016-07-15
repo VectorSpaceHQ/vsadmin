@@ -1,0 +1,103 @@
+- hosts: test
+  tasks:
+  - name: Remove Debian packages
+    when: ansible_os_family == "Linuxmint"
+    apt: name=xscreensaver state=absent
+
+  - name: Install Debian packages
+    when: ansible_os_family == "Linuxmint"
+    apt: name={{item}} state=latest
+    with_items:
+         - python
+         - git
+         - arduino
+         - python-matplotlib
+         - python-numpy
+         - python-scipy
+         - python-pandas
+         - freecad
+         - blender
+         - emacs
+         - kdenlive
+         - libreoffice
+         - librecad
+         - gimp
+         - inkscape
+         - r-base
+         - gcc
+         - okular
+         - vlc
+         - xfburn
+         - openssh-server
+         - boinc
+         - tar
+         - gfortran
+         - g++
+         - ipython-notebook
+         - python-tables
+         - python-h5py
+         - octave
+         - fritzing
+         - texlive-full
+         - chromium-browser
+         - sublime-text
+         - ghc
+         - cups
+         - lightdm
+         - lightdm-gtk-greeter
+         - light-locker
+         - zsh
+         # - eagle
+         - libav-tools
+         - openscad
+         - cmake
+         - automake
+         - build-essential
+         - meshlab
+
+  - name: Install Arch packages
+    when: ansible_os_family == "Archlinux" or ansible_os_family == "Manjaro Linux"
+    pacman: name={{item}} state=present
+    with_items:
+        - python
+        - git
+        - arduino
+        - python-matplotlib
+        - python-numpy
+        - python-scipy
+        - python-pandas
+        - freecad
+        - blender
+        - emacs
+        - kdenlive
+        - libreoffice
+        - librecad
+        - gimp
+        - inkscape
+        - r
+        - gcc
+        - kdegraphics-okular
+        - vlc
+        - xfburn
+        - openssh
+        - boinc
+        - tar
+        - gcc-fortran
+        - jupyter-notebook
+        - python-pytables
+        - python-h5py
+        - octave
+        - texlive-core
+        - chromium
+        - sagemath
+        - ghc
+        - ffmpeg
+        - zsh
+        - lightdm
+        - lightdm-gtk-greeter
+        - light-locker
+        - vi
+        - openscad
+        - cmake
+        - ttf-dejavu
+        - ansible
