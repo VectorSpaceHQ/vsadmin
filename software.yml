@@ -1,4 +1,4 @@
-- hosts: clients
+- hosts: test
   tasks:
   - name: Remove Debian packages
     when: ansible_os_family == "Linuxmint"
@@ -54,6 +54,7 @@
          - automake
          - build-essential
          - meshlab
+         - filezilla
 
   - name: Install Arch packages
     when: ansible_os_family == "Archlinux" or ansible_os_family == "Manjaro Linux"
@@ -101,3 +102,11 @@
         - cmake
         - ttf-dejavu
         - ansible
+        - avahi
+        - ghostscript
+        - cups
+        - gsfonts
+        - kicad
+        - filezilla
+        - glibc
+        - gthumb
