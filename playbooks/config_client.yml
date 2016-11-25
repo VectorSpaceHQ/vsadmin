@@ -8,13 +8,13 @@
         - nis
         - nfs-common
 
-  - name: Install NIS
+  - name: Install NIS arch
     when: ansible_os_family == "Archlinux" or ansible_os_family == "Manjaro Linux"
     pacman: name={{item}} state=installed
     with_items:
         - ypbind-mt
         - yp-tools
 
-  - script: ./scripts/lightdm.sh
-  - script: ./scripts/install_NIS_NFS.sh
-  - script: ./scripts/idle.sh
+  - script: ../scripts/lightdm.sh
+  - script: ../scripts/install_NIS_NFS.sh
+  - script: ../scripts/idle.sh
