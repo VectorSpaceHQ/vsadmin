@@ -10,5 +10,6 @@ fi
 user=$1
 
 cp hosts /etc/ansible/
-ansible-playbook --become --ask-become-pass -u $user ./playbooks/config_client.yml -vvvv > config_client.log
-ansible-playbook --become --ask-become-pass -u $user ./playbooks/software.yml -vvvv > software.log
+
+ansible-playbook --become --ask-become-pass -u $user playbooks/config_client.yml -vvvv > config_client.log
+ansible-playbook --become --ask-become-pass -u $user playbooks/software.yml -vvvv > software.log

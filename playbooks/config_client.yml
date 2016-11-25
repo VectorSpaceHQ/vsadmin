@@ -1,4 +1,4 @@
-- hosts: clients
+- hosts: test
   tasks:
   - name: Install NIS
     when: ansible_os_family == "Linuxmint"
@@ -15,6 +15,6 @@
         - ypbind-mt
         - yp-tools
 
-  - script: ./lightdm.sh
-  - script: ./install_NIS_NFS.sh
-  - script: ./timeout.sh
+  - script: ./scripts/lightdm.sh
+  - script: ./scripts/install_NIS_NFS.sh
+  - script: ./scripts/idle.sh
