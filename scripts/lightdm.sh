@@ -10,7 +10,7 @@ chmod +x /usr/bin/gdmflexiserver
 # sed -i 's/.*greeter-hide-users\=.*/greeter-hide-users=true/g' /etc/lightdm/lightdm.conf
 # sed -i 's/.*allow-user-switching\=.*/allow-user-switching=true/g' /etc/lightdm/lightdm.conf
 
-cp lightdm.conf /etc/lightdm/
+cp ./scripts/lightdm.conf /etc/lightdm/
 
 # change default DM from mdm to lightdm
 sed -i 's/mdm/lightdm/g' /etc/X11/default-display-manager
@@ -19,6 +19,6 @@ sed -i 's/mdm/lightdm/g' /etc/X11/default-display-manager
 # xset dpms 600 1800 3600
 setterm -blank 5
 setterm -powerdown 60
-cp sleep_settings.sh /etc/profile.d/
+cp ./scripts/sleep_settings.sh /etc/profile.d/
 
 systemctl enable lightdm.service -f

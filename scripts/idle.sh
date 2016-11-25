@@ -6,7 +6,7 @@ idle=$(w | grep -G ' [1-9]days ' | awk '{print $1}')
 for user in $idle
 do
     echo $user
-    # pkill -u $user
+    pkill -u $user
 done
 
 # long names get truncated
