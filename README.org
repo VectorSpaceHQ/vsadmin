@@ -24,4 +24,6 @@ From a host machine with Ansible installed,
 * Additional notes
 ** Add new user
 
-$ sudo useradd username -g foo -G lock,uucp,dialout
+$ sudo useradd username -g member -G lock,uucp,dialout
+$ cd /var/yp
+$ sudo make

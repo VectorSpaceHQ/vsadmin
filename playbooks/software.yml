@@ -62,7 +62,6 @@
     with_items:
         - python
         - git
-        - arduino
         - python-matplotlib
         - python-numpy
         - python-scipy
@@ -109,3 +108,4 @@
         - kicad
         - filezilla
         - gthumb
+        # - arduino
