@@ -27,3 +27,5 @@ From a host machine with Ansible installed,
 $ sudo useradd username -g member -G lock,uucp,dialout
 $ cd /var/yp
 $ sudo make
+
+make a home directory for the new user
