@@ -9,6 +9,7 @@ fi
 
 user=$1
 
+cd ..
 cp hosts /etc/ansible/
 cp scripts/logout_users.sh /etc/cron.daily/logout_users
 

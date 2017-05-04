@@ -20,7 +20,7 @@ localhost
 [arch]
 10.0.0.13
 [new]
-10.0.0.80
+10.0.0.95
 [test]
 10.0.0.31
 [all:vars]

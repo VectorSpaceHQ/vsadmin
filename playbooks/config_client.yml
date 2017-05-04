@@ -1,4 +1,4 @@
-- hosts: test
+- hosts: new
   tasks:
   - name: Install NIS
     when: ansible_os_family == "Linuxmint"
