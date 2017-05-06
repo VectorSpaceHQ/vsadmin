@@ -1,3 +1,4 @@
 - hosts: clients
+  become: true
   tasks:
   - script: ./lightdm.sh

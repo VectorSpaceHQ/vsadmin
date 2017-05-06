@@ -1,0 +1,3 @@
+- include: software.yml
+- include: config_client.yml
+- include: adduser.yml

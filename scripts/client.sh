@@ -11,8 +11,8 @@ systemctl enable sshd.service
 systemctl activate sshd.service
 
 # copy public key
-cp ../id_rsa.pub ~/.ssh/
+mkdir -p ~/.ssh
+cat ../id_rsa.pub >>  ~/.ssh/authorized_keys"
 
 # Add group sudo to sudoers file
 sed -i 's/# %sudo/%sudo/g' /etc/sudoers
-

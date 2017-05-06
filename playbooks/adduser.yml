@@ -1,3 +1,8 @@
 - hosts: clients
+  become: true
   tasks:
-  - user: name=guest shell=/bin/bash groups=dialout,uucp,lock append=yes update_password=on_create
+    - user:
+        name: vectorspace
+        shell: /bin/bash
+        groups: dialout
+        append: yes
