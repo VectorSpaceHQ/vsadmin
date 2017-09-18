@@ -1,0 +1,8 @@
+[Unit]
+Description=Logs idle users out of X11
+
+[Service]
+ExecStart=/usr/bin/idlekiller.sh
+
+[Install]
+WantedBy=multi-user.target

@@ -1,5 +1,7 @@
 - hosts: new
-  become: true
+  # become: yes
+  # become_user: adam
+  sudo: yes
   tasks:
   - name: Install NIS
     when: ansible_os_family == "Linuxmint"
@@ -9,14 +11,45 @@
         - nis
         - nfs-common
 
-  - name: Install NIS arch
-    when: ansible_os_family == "Archlinux" or ansible_os_family == "Manjaro Linux"
-    pacman: name={{item}} state=installed
-    with_items:
-        - ypbind-mt
-        - yp-tools
+  - copy:
+      src: ../scripts/sleep_settings.sh
+      dest: /etc/profile.d
+      owner: adam
+      group: adam
+      mode: 0744
 
+  - copy:
+      src: ../scripts/lightdm.conf
+      dest: /etc/lightdm/lightdm.conf
+      owner: adam
+      group: adam
+      mode: 0644
+
+  - copy:
+      src: ../scripts/logout_users.sh
+      dest: /etc/cron.daily/logout_users.sh
+      owner: adam
+      group: adam
+      mode: 0744
+
+  # Logout idle users with idlekiller.sh
+  # Requires script, service, and enabling the service
+  - copy:
+      src: ../scripts/idlekiller.sh
+      dest: /usr/bin/idlekiller.sh
+      owner: root
+      group: root
+      mode: 755
+  - copy:
+      src: ../scripts/idlekiller.service
+      dest: /etc/systemd/system/idlekiller.service
+      owner: root
+      group: root
+      mode: 755
+  - name: enable idle killer
+    systemd:
+      name: idlekiller.service
+      enabled: True
 
   - script: ../scripts/install_NIS_NFS.sh
   - script: ../scripts/lightdm.sh
-  # - script: ../scripts/logout_users.sh

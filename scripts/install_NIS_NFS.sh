@@ -16,16 +16,18 @@ if !(grep 'T5500b' /etc/hosts) then
 
    # Arch
    sed -i 's/NISDOMAINNAME=".*/NISDOMAINNAME="vectorspace"/g' /etc/nisdomainname
-   echo "ypserver T5500b" >> /etc/yp.conf
+fi
+   echo "vectorspace" > /etc/defaultdomain
 
-   sed -i 's/passwd:.*files.*/passwd: files nis/g' /etc/nsswitch.conf
-   sed -i 's/group:.*files.*/group: files nis/g' /etc/nsswitch.conf
-   sed -i 's/shadow:.*files.*/shadow: files nis/g' /etc/nsswitch.conf
+   sed -i 's/passwd:.*\(files\|compat\).*/passwd: files nis/g' /etc/nsswitch.conf
+   sed -i 's/group:.*\(files\|compat\).*/group: files nis/g' /etc/nsswitch.conf
+   sed -i 's/shadow:.*\(files\|compat\).*/shadow: files nis/g' /etc/nsswitch.conf
 
-   systemctl enable rpcbind.service
-   systemctl enable ypbind.service
+   systemctl enable rpcbind
+   service rpcbind start
+   service nis restart
+   systemctl add-wants multi-user.target rpcbind.service
 
-   yptest
+   # yptest
    mount -v /vsfs01
    echo "All Done!!"
-fi

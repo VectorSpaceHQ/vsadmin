@@ -1,4 +1,4 @@
-- hosts: clients
+- hosts: new
   become: true
   tasks:
-  - script: ./lightdm.sh
+  - script: ../scripts/lightdm.sh

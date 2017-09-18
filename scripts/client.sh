@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # install ssh
-pacman -S sshd
 apt-get install openssh-server
 
 # enable ssh
@@ -12,7 +11,7 @@ systemctl activate sshd.service
 
 # copy public key
 mkdir -p ~/.ssh
-cat ../id_rsa.pub >>  ~/.ssh/authorized_keys"
+cat ../id_rsa.pub >>  ~/.ssh/authorized_keys
 
 # Add group sudo to sudoers file
-sed -i 's/# %sudo/%sudo/g' /etc/sudoers
+#sed -i 's/# %sudo/%sudo/g' /etc/sudoers

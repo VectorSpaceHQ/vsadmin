@@ -1,13 +1,15 @@
-- hosts: clients
+- hosts: new
   become: true
   tasks:
   - name: Remove Debian packages
     when: ansible_os_family == "Linuxmint"
     apt: name=xscreensaver state=absent
 
+  - script: ../scripts/install_cura.sh
+
   - name: Install Debian packages
     when: ansible_os_family == "Linuxmint"
-    apt: name={{item}} state=latest
+    apt: name={{item}} state=latest force=yes
     with_items:
          - python
          - git
@@ -30,7 +32,6 @@
          - vlc
          - xfburn
          - openssh-server
-         - boinc
          - tar
          - gfortran
          - g++
@@ -59,3 +60,9 @@
          - kicad
          - audacity
          - vim
+         - lua5.3
+         - cura
+         - gthumb
+         - screen
+         - llvm
+         - clang

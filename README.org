@@ -10,7 +10,6 @@ Execute the client.sh script. This will ensure that the client is accessible fro
 
 1. $ sudo client.sh
 
-
 ** From Ansible Host Machine
 Change the user name in the *.yml files to one available on the client with sudo, but not root.
 
