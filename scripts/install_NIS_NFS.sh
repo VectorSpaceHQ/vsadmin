@@ -10,9 +10,7 @@ if !(grep 'T5500b' /etc/hosts) then
    echo "+::::::::" >>/etc/shadow
    echo "ypserver 10.0.0.150" >>/etc/yp.conf
    echo "10.0.0.150	T5500b" >>/etc/hosts
-   mkdir /vsfs01
-   service nis restart
-   service ypbind restart
+   mkdir -p /vsfs01
 
    # Arch
    sed -i 's/NISDOMAINNAME=".*/NISDOMAINNAME="vectorspace"/g' /etc/nisdomainname
@@ -23,9 +21,9 @@ fi
    sed -i 's/group:.*\(files\|compat\).*/group: files nis/g' /etc/nsswitch.conf
    sed -i 's/shadow:.*\(files\|compat\).*/shadow: files nis/g' /etc/nsswitch.conf
 
-   systemctl enable rpcbind
-   service rpcbind start
-   service nis restart
+   systemctl enable --now rpcbind.service
+   systemctl enable --now ypbind.service
+   
    systemctl add-wants multi-user.target rpcbind.service
 
    # yptest

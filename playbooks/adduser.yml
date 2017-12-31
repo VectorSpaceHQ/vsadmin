@@ -5,5 +5,5 @@
         name: vectorspace
         password: $6$vWpDsmcPtXg5QeQE$gQe0ocyTDIukYJ8NBPil8nf.qNRa10W0LRw1w5n39TiJxAnV6jpjAk23SdX907HZBwLk2AvieMcyZOUiE9DpJ/
         shell: /bin/bash
-        groups: dialout
+        groups: uucp, lock
         append: yes

@@ -1,15 +1,15 @@
 - hosts: new
-  # become: yes
-  # become_user: adam
-  sudo: yes
+  become: true
   tasks:
   - name: Install NIS
-    when: ansible_os_family == "Linuxmint"
-    apt: name={{item}} state=installed
+    pacman: name={{item}} state=installed
     with_items:
         - rpcbind
-        - nis
-        - nfs-common
+        - nfs-utils
+
+# - name: AUR packages
+  - aur: name=yp-tools user=adam
+  - aur: name=ypbind-mt user=adam
 
   - copy:
       src: ../scripts/sleep_settings.sh
@@ -46,10 +46,11 @@
       owner: root
       group: root
       mode: 755
-  - name: enable idle killer
-    systemd:
-      name: idlekiller.service
-      enabled: True
+
+  # - name: enable idle killer
+  #   systemd:
+  #     name: idlekiller.service
+  #     enabled: True
 
   - script: ../scripts/install_NIS_NFS.sh
   - script: ../scripts/lightdm.sh

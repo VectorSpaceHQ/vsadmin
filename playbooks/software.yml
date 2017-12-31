@@ -1,15 +1,8 @@
 - hosts: new
   become: true
   tasks:
-  - name: Remove Debian packages
-    when: ansible_os_family == "Linuxmint"
-    apt: name=xscreensaver state=absent
-
-  - script: ../scripts/install_cura.sh
-
-  - name: Install Debian packages
-    when: ansible_os_family == "Linuxmint"
-    apt: name={{item}} state=latest force=yes
+  - name: Install Arch packages
+    pacman: name={{item}} state=latest force=yes
     with_items:
          - python
          - git
@@ -22,47 +15,42 @@
          - blender
          - emacs
          - kdenlive
-         - libreoffice
-         - librecad
-         - gimp
-         - inkscape
-         - r-base
-         - gcc
-         - okular
-         - vlc
-         - xfburn
-         - openssh-server
-         - tar
-         - gfortran
-         - g++
-         - ipython-notebook
-         - python-tables
-         - python-h5py
-         - octave
-         - fritzing
-         - texlive
-         - chromium-browser
-         - sublime-text
-         - ghc
-         - cups
-         - lightdm
-         - lightdm-gtk-greeter
-         - light-locker
-         - zsh
-         - libav-tools
-         - openscad
-         - cmake
-         - automake
-         - build-essential
-         - meshlab
-         - filezilla
-         - python-setuptools
-         - kicad
-         - audacity
-         - vim
-         - lua5.3
-         - cura
-         - gthumb
-         - screen
-         - llvm
-         - clang
+         # - libreoffice
+         # - librecad
+         # - gimp
+         # - inkscape
+         # - gcc
+         # - okular
+         # - vlc
+         # - xfburn
+         # - tar
+         # - jupyter
+         # - python-h5py
+         # - octave
+         # - chromium
+         # - ghc
+         # - cups
+         # - lightdm
+         # - lightdm-gtk-greeter
+         # - light-locker
+         # - zsh
+         # - ffmpeg
+         # - openscad
+         # - cmake
+         # - automake
+         # - base-devel
+         # - filezilla
+         # - python-setuptools
+         # - kicad
+         # - audacity
+         # - vim
+         # - lua
+         # - cura
+         # - gthumb
+         # - screen
+         # - llvm
+         # - clang
+         # - ansible
+         # - openssh
+
+  # - script: ../scripts/install_cura.sh

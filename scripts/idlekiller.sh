@@ -4,7 +4,9 @@
 export PROCPS_USERLEN=32
 
 IDLE=$((20*60))	# 20 min
-GRACE=10m			# 10 minutes
+SOFT_LIMIT=$((10*60)) # 10 min
+HARD_LIMIT=$((60*60))	# 60 min
+GRACE=1s			# 1 minutes
 TIMEOUT=5s
 
 IDLE_MESSAGE="You have been idle for more than $(($IDLE / 60)) minutes. \
@@ -22,6 +24,24 @@ log ()
 	logger -t "IDLEKILLER" -i -- "$@"
 }
 
+get_xidle ()
+{
+    local user=$1
+    local seat=$2
+
+    echo "xidle $user $seat" 
+    
+    # If xprintidle doesn't return number, they're not logged into X11
+    xidle=$(sudo -u $user DISPLAY=$seat xprintidle)
+    re='^[0-9]+$'
+    if [[ $xidle =~ $re ]] ; then
+        echo $(($xidle / 1000))
+    else
+        echo 0
+    fi
+}
+
+
 # For a console user, `w` prints IDLE time in as: 
 # "DDdays, HH:MMm, MM:SS or SS.CC if the times are 
 # greater than 2 days, 1hour, or 1 minute respectively."
@@ -31,32 +51,16 @@ log ()
 parse_idle ()
 {
 	local user=$1
-	local seat=$2
-	local idle=$3
+	local seat=$3
 
-	if [[ $seat =~ :[0-9]+ ]]
-	then
-		xidle=$(/usr/bin/sudo -u $user DISPLAY=$seat xprintidle)
-		echo $(($xidle / 1000))
-	else
-		case $idle in 
-			*s)
-				awk -F'.' '{print $1}' <<<${idle%s}
-				;;
-			*m)
-				awk -F':' '{print $1*60*60 + $2*60}' <<<${idle%m}
-				;;
-			*days)
-				awk '{print $1*86400}' <<< ${idle%days}
-				;;
-			*:*)
-				awk -F':' '{print $1*60 + $2}' <<<${idle}
-				;;
-			*)
-				echo $(($IDLE - 1))
-		esac
-	fi
-
+        # If xprintidle doesn't return number, they're not logged into X11
+	xidle=$(sudo -u $user DISPLAY=$seat xprintidle)
+        re='^[0-9]+$'
+        if [[ $xidle =~ $re ]] ; then
+            echo $(($xidle / 1000))
+        else
+            echo 0
+        fi
 }
 
 # Given an idle user and session, notify the user in *that session*
@@ -71,26 +75,32 @@ grace ()
 	notify_user $user $seat $idle
 	sleep $GRACE
 
-	# Get the new idle time for this session.
-	new_idle=$(parse_idle $(w -hs $user | awk '{if ($2 == "'$seat'"){print}}'))
-	echo $user is now idle for $new_idle seconds.
-	if [[ $new_idle -gt $IDLE ]]
-	then
-		# For root, special considerations. :)
-		if [[ $user == root ]]
-		then
-			if [[ $seat =~ :[0-9]+ ]]
-			then
-				DISPLAY=$seat gnome-session-quit --logout --no-prompt
-			else
-				pkill -u $user -t $seat
-			fi
-		else
-			# Everyone else can die.
-			pkill -KILL -u $user
-		fi
+        echo "GRACE"
 
-		log "Idle session of $user at $seat has been terminated."
+	# Get the new idle time for this session.
+	new_idle=$(parse_idle $(w -hs $user))
+	echo $user is now idle for $new_idle seconds.
+	if [[ $new_idle -gt $SOFT_LIMIT ]]
+	then
+            echo "$user exceeded SOFT LIMIT"
+            sudo -u $user DISPLAY=$seat gdmflexiserver&
+        elif [[ $new_idle -gt $HARD_LIMIT ]] # Logout user
+        then
+            echo "$user exceeded HARD LIMIT"
+	     # For root, special considerations. :)
+	     if [[ $user == root ]]
+	     then
+		 if [[ $seat =~ :[0-9]+ ]]
+		 then
+		     DISPLAY=$seat gnome-session-quit --logout --no-prompt
+		 else
+		     pkill -u $user -t $seat
+		 fi
+	     else
+		 # Everyone else can die.
+		 pkill -KILL -u $user
+	     fi
+	     log "Idle session of $user at $seat has been terminated."            
 	fi
 }
 
@@ -113,18 +123,19 @@ notify_user ()
 
 while sleep $TIMEOUT # Loop indefinitely.
 do
+
 	# If the terminal is a pts (pseudo-terminal), then the user is 
 	# actually logged in from either X, or from SSH. We will leave 
 	# SSH sessions alone (to be handled by SSHD configuration, and 
 	# only look at TTY sessions and X sessions.
 	
-	while read user seat w_idle what
+    	while read user w_idle seat what
 	do
 		# If the user has already been recorded as idle, continue. 
 		[[ -n ${watched_users["$user"]} ]] && continue
 
-		idle=$(parse_idle $user $seat $w_idle)
-                # echo $user $seat $w_idle $idle
+		idle=$(parse_idle $user $w_idle $seat)
+                echo $user $seat $w_idle $idle
 		[[ -z ${idle_time["$user"]} ]] && idle_time["$user"]=$idle
 
 		# Store the smallest idle time for each user.
@@ -147,7 +158,7 @@ do
 
 		# If the user has already been recorded as idle, continue. 
 		[[ -n ${watched_users["$user"]} ]] && continue
-		if [[ $idle -gt $IDLE ]]
+		if [[ $idle -gt $SOFT_LIMIT ]]
 		then
 			grace $user $seat $idle &
 			watched_users["$user"]=$!
