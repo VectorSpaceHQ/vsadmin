@@ -1,56 +1,61 @@
 - hosts: new
-  become: true
+  become: yes
   tasks:
-  - name: Install Arch packages
-    pacman: name={{item}} state=latest force=yes
-    with_items:
-         - python
-         - git
-         - arduino
-         - python-matplotlib
-         - python-numpy
-         - python-scipy
-         - python-pandas
-         - freecad
-         - blender
-         - emacs
-         - kdenlive
-         # - libreoffice
-         # - librecad
-         # - gimp
-         # - inkscape
-         # - gcc
-         # - okular
-         # - vlc
-         # - xfburn
-         # - tar
-         # - jupyter
-         # - python-h5py
-         # - octave
-         # - chromium
-         # - ghc
-         # - cups
-         # - lightdm
-         # - lightdm-gtk-greeter
-         # - light-locker
-         # - zsh
-         # - ffmpeg
-         # - openscad
-         # - cmake
-         # - automake
-         # - base-devel
-         # - filezilla
-         # - python-setuptools
-         # - kicad
-         # - audacity
-         # - vim
-         # - lua
-         # - cura
-         # - gthumb
-         # - screen
-         # - llvm
-         # - clang
-         # - ansible
-         # - openssh
+  # - script: ../scripts/refresh_package_keys.sh
+  - name: Upgrade Arch
+    pacman:
+      update_cache=yes
+      upgrade=yes
 
-  # - script: ../scripts/install_cura.sh
+  - name: Install Arch packages
+    pacman: name={{item}} state=latest force=yes update_cache=yes
+    with_items:
+       - python
+       - git
+       - arduino
+       - python-matplotlib
+       - python-numpy
+       - python-scipy
+       - python-pandas
+       - freecad
+       - blender
+       - emacs
+       - kdenlive
+       - nmap
+       - libreoffice-still
+       - librecad
+       - gimp
+       - inkscape
+       - xfburn
+       - tar
+       - jupyter
+       - python-h5py
+       - octave
+       - chromium
+       - ghc
+       - cups
+       - zsh
+       - ffmpeg
+       - openscad
+       - cmake
+       - automake
+       - filezilla
+       - python-setuptools
+       - kicad
+       - audacity
+       - vim
+       - lua
+       - gthumb
+       - screen
+       - llvm
+       - clang
+       - ansible
+       - evince
+       # # - lightdm
+       # # - lightdm-gtk-greeter
+       # # - light-locker
+
+
+  # - aur: name=sublime-text-dev user=adam
+  - aur: name=python2-power-git user=adam
+  - aur: name=cura-aleph-bin user=adam
