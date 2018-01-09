@@ -1,4 +1,4 @@
-- hosts: new
+- hosts: clients
   become: yes
   tasks:
   # - script: ../scripts/refresh_package_keys.sh
