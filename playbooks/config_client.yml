@@ -1,6 +1,11 @@
 - hosts: clients
   become: true
   tasks:
+  - name: Upgrade Arch
+    pacman:
+      update_cache=yes
+      upgrade=yes
+
   - name: Install NIS
     pacman: name={{item}} state=installed
     with_items:

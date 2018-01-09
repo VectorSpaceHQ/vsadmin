@@ -2,10 +2,7 @@
   become: yes
   tasks:
   # - script: ../scripts/refresh_package_keys.sh
-  - name: Upgrade Arch
-    pacman:
-      update_cache=yes
-      upgrade=yes
+
 
   - name: Install Arch packages
     pacman: name={{item}} state=latest force=yes update_cache=yes
@@ -51,6 +48,7 @@
        - clang
        - ansible
        - evince
+       - gphoto2
        # # - lightdm
        # # - lightdm-gtk-greeter
        # # - light-locker
