@@ -19,3 +19,6 @@ sed -i 's/mdm/lightdm/g' /etc/X11/default-display-manager
 # cp sleep_settings.sh /etc/profile.d/
 
 systemctl enable lightdm.service -f
+
+# prevent non root from shutting down
+sudo chmod o-x /sbin/shutdown
