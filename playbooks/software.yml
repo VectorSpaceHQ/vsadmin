@@ -14,6 +14,7 @@
        - python-numpy
        - python-scipy
        - python-pandas
+       - python2-lxml
        - freecad
        - blender
        - emacs
@@ -49,6 +50,7 @@
        - ansible
        - evince
        - gphoto2
+       - manjaro-printer
        # # - lightdm
        # # - lightdm-gtk-greeter
        # # - light-locker

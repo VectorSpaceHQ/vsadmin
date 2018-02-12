@@ -13,6 +13,7 @@
         - nfs-utils
 
 # - name: AUR packages
+  - aur: name=openslp user=adam
   - aur: name=yp-tools user=adam
   - aur: name=ypbind-mt user=adam
 
