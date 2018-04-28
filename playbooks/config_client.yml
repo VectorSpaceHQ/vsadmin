@@ -1,57 +1,69 @@
-- hosts: clients
+- hosts: new
   become: true
   tasks:
   - name: Upgrade Arch
+    when: ansible_os_family == "Archlinux"
     pacman:
       update_cache=yes
       upgrade=yes
 
   - name: Install NIS
+    when: ansible_os_family == "Archlinux"
     pacman: name={{item}} state=installed
     with_items:
         - rpcbind
         - nfs-utils
 
+  - name: Install NIS Debian
+    when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+    apt: name={{item}} state=installed
+    with_items:
+        - portmap
+        - nis
+
 # - name: AUR packages
   - aur: name=openslp user=adam
+    when: ansible_os_family == "Archlinux"
   - aur: name=yp-tools user=adam
+    when: ansible_os_family == "Archlinux"
   - aur: name=ypbind-mt user=adam
+    when: ansible_os_family == "Archlinux"
 
   - copy:
       src: ../scripts/sleep_settings.sh
       dest: /etc/profile.d
-      owner: adam
-      group: adam
+      owner: root
+      group: root
       mode: 0744
 
   - copy:
       src: ../scripts/lightdm.conf
       dest: /etc/lightdm/lightdm.conf
-      owner: adam
-      group: adam
+      owner: root
+      group: root
       mode: 0644
 
-  - copy:
-      src: ../scripts/logout_users.sh
-      dest: /etc/cron.daily/logout_users.sh
-      owner: adam
-      group: adam
-      mode: 0744
+  # - copy:
+  #     src: ../scripts/logout_users.sh
+  #     dest: /etc/cron.daily/logout_users.sh
+  #     owner: adam
+  #     group: adam
+  #     mode: 0744
 
   # Logout idle users with idlekiller.sh
   # Requires script, service, and enabling the service
-  - copy:
-      src: ../scripts/idlekiller.sh
-      dest: /usr/bin/idlekiller.sh
-      owner: root
-      group: root
-      mode: 755
-  - copy:
-      src: ../scripts/idlekiller.service
-      dest: /etc/systemd/system/idlekiller.service
-      owner: root
-      group: root
-      mode: 755
+  # - copy:
+  #     src: ../scripts/idlekiller.sh
+  #     dest: /usr/bin/idlekiller.sh
+  #     owner: root
+  #     group: root
+  #     mode: 755
+  # - copy:
+  #     src: ../scripts/idlekiller.service
+  #     dest: /etc/systemd/system/idlekiller.service
+  #     owner: root
+  #     group: root
+  #     mode: 755
 
   # - name: enable idle killer
   #   systemd:
@@ -59,4 +71,7 @@
   #     enabled: True
 
   - script: ../scripts/install_NIS_NFS.sh
+    when: ansible_os_family == "Archlinux"
+  - script: ../scripts/install_NIS_NFS-Debian.sh
+    when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
   - script: ../scripts/lightdm.sh

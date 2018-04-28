@@ -1,9 +1,20 @@
 - hosts: clients
   become: true
   tasks:
-    - user:
+    - name: "Creating vectorspace user on arch"
+      user:
         name: vectorspace
         password: $6$vWpDsmcPtXg5QeQE$gQe0ocyTDIukYJ8NBPil8nf.qNRa10W0LRw1w5n39TiJxAnV6jpjAk23SdX907HZBwLk2AvieMcyZOUiE9DpJ/
         shell: /bin/bash
         groups: uucp, lock
         append: yes
+      when: ansible_os_family == "Archlinux"
+
+    - name: "Creating vectorspace user on Debian"
+      user:
+        name: vectorspace
+        password: $6$vWpDsmcPtXg5QeQE$gQe0ocyTDIukYJ8NBPil8nf.qNRa10W0LRw1w5n39TiJxAnV6jpjAk23SdX907HZBwLk2AvieMcyZOUiE9DpJ/
+        shell: /bin/bash
+        groups: dialout
+        append: yes
+      when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'

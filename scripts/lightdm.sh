@@ -22,3 +22,6 @@ systemctl enable lightdm.service -f
 
 # prevent non root from shutting down
 sudo chmod o-x /sbin/shutdown
+
+# set xfce4 as default
+/usr/lib/lightdm/lightdm-set-defaults --session xfce4-session

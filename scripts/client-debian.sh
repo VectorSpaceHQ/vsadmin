@@ -4,10 +4,10 @@
 apt-get install openssh-server
 
 # enable ssh
-systemctl enable sshd.service
+systemctl enable ssh.service
 
 # activate ssh
-systemctl activate sshd.service
+systemctl activate ssh.service
 
 # copy public key
 mkdir -p ~/.ssh

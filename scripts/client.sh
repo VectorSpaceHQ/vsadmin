@@ -11,6 +11,7 @@ systemctl start sshd
 
 # copy public key
 mkdir -p ~/.ssh
+
 cat ../id_rsa.pub >>  ~/.ssh/authorized_keys
 
 # Add group sudo to sudoers file

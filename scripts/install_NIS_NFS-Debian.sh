@@ -21,15 +21,14 @@ fi
    sed -i 's/group:.*\(files\|compat\).*/group: files nis/g' /etc/nsswitch.conf
    sed -i 's/shadow:.*\(files\|compat\).*/shadow: files nis/g' /etc/nsswitch.conf
 
-   systemctl enable --now rpcbind.service
-   systemctl enable --now ypbind.service
 
    # Debian
-   # /etc/init.d/portmap restart
-   # /etc/init.d/nis restart
+   /etc/init.d/portmap restart
+   /etc/init.d/nis restart
    
    systemctl add-wants multi-user.target rpcbind.service
 
    # yptest
    mount -v /vsfs01
    echo "All Done!!"
+
