@@ -88,6 +88,8 @@
        - breeze-icon-theme
        - mlt
        - opencv
+       - frei0r-plugins
+       - breeze-icons
        # # - lightdm
        # # - lightdm-gtk-greeter
        # # - light-locker

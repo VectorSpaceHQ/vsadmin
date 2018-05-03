@@ -23,8 +23,8 @@ fi
 
 
    # Debian
-   /etc/init.d/portmap restart
-   /etc/init.d/nis restart
+   systemctl restart portmap
+   systemctl restart nis
    
    systemctl add-wants multi-user.target rpcbind.service
 

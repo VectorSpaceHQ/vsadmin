@@ -20,6 +20,7 @@
     with_items:
         - portmap
         - nis
+        - nfs-common
 
 # - name: AUR packages
   - aur: name=openslp user=adam
