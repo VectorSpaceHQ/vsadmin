@@ -39,6 +39,7 @@
        - python
        - git
        - arduino
+       - arduino-avr-core
        - python-matplotlib
        - python-numpy
        - python-scipy
@@ -90,6 +91,7 @@
        - opencv
        - frei0r-plugins
        - breeze-icons
+       - libnss_nis
        # # - lightdm
        # # - lightdm-gtk-greeter
        # # - light-locker

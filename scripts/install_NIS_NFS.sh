@@ -20,7 +20,8 @@ fi
    sed -i 's/passwd:.*\(files\|compat\).*/passwd: files nis/g' /etc/nsswitch.conf
    sed -i 's/group:.*\(files\|compat\).*/group: files nis/g' /etc/nsswitch.conf
    sed -i 's/shadow:.*\(files\|compat\).*/shadow: files nis/g' /etc/nsswitch.conf
-
+   sed -i 's/shadow nullok/shadow nis nullok/g' /etc/pam.d/passwd # allow a user on a client machine to change their password
+   
    systemctl enable --now rpcbind.service
    systemctl enable --now ypbind.service
 

@@ -18,3 +18,5 @@
         groups: dialout
         append: yes
       when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+
+    - file: dest=/home/vectorspace owner=vectorspace group=vectorspace mode=u=rwX,g=rX,o=rX recurse=yes
