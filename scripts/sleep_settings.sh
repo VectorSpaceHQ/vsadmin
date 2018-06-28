@@ -1,5 +1,5 @@
 #!/bin/bash
 
-setterm -blank 5
+setterm -blank 10
 setterm -powerdown 60
 

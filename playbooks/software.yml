@@ -1,4 +1,4 @@
-- hosts: clients
+- hosts: new
   become: yes
   tasks:
 
@@ -86,12 +86,15 @@
        - lib32-mpg123
        - kmag
        - frei0r-plugins
-       - breeze-icon-theme
+       - breeze-icons
        - mlt
        - opencv
-       - frei0r-plugins
-       - breeze-icons
        - libnss_nis
+       - ttf-croscore
+       - noto-fonts
+       - ttf-cheapskate
+       - pepper-flash
+       - gvfs
        # # - lightdm
        # # - lightdm-gtk-greeter
        # # - light-locker

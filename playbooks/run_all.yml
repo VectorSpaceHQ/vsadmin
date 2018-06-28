@@ -1,3 +1,5 @@
 - include: adduser.yml
 - include: config_client.yml
+- include: syu.yml
 - include: software.yml
+# - include: reboot.yml
