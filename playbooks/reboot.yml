@@ -1,5 +1,5 @@
 - hosts: all
   sudo: yes
   tasks:
-    - name: Reboot server
+    - name: Reboot computer
       command: /sbin/reboot
