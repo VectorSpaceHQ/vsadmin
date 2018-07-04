@@ -1,4 +1,4 @@
-- hosts: clients
+- hosts: new
   become: true
   tasks:
   - name: Upgrade Arch
@@ -22,27 +22,39 @@
         - nis
         - nfs-common
 
-# - name: AUR packages
-  - aur: name=openslp user=adam
-    when: ansible_os_family == "Archlinux"
-  - aur: name=yp-tools user=adam
-    when: ansible_os_family == "Archlinux"
-  - aur: name=ypbind-mt user=adam
-    when: ansible_os_family == "Archlinux"
+# AUR packages
+  - user:
+      name: aur_builder
+      group: wheel
+  - lineinfile:
+      path: /etc/sudoers.d/11-install-aur_builder
+      line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+      create: yes
+      validate: 'visudo -cf %s'
 
-  - copy:
-      src: ../scripts/sleep_settings.sh
-      dest: /etc/profile.d
-      owner: root
-      group: root
-      mode: 0744
+  - aur: name=openslp skip_installed=true
+    become: yes
+    become_user: aur_builder
+  - aur: name=yp-tools skip_installed=true
+    become: yes
+    become_user: aur_builder
+  - aur: name=ypbind-mt skip_installed=true
+    become: yes
+    become_user: aur_builder
 
-  - copy:
-      src: ../scripts/lightdm.conf
-      dest: /etc/lightdm/lightdm.conf
-      owner: root
-      group: root
-      mode: 0644
+  # - copy:
+  #     src: ../scripts/sleep_settings.sh
+  #     dest: /etc/profile.d
+  #     owner: root
+  #     group: root
+  #     mode: 0744
+
+  # - copy:
+  #     src: ../scripts/lightdm.conf
+  #     dest: /etc/lightdm/lightdm.conf
+  #     owner: root
+  #     group: root
+  #     mode: 0644
 
   # - copy:
   #     src: ../scripts/logout_users.sh

@@ -1,4 +1,4 @@
-- hosts: new
+- hosts: clients
   become: yes
   tasks:
 
@@ -99,11 +99,13 @@
        # # - lightdm-gtk-greeter
        # # - light-locker
 
-  - aur: name=sublime-text-dev user=adam
+  - aur: name=sublime-text-dev user=root
     when: ansible_os_family == "Archlinux"
-  - aur: name=python2-power-git user=adam
+  - aur: name=python2-power-git user=root
     when: ansible_os_family == "Archlinux"
-  - aur: name=cura-aleph-bin user=adam
+  - aur: name=cura-aleph-bin user=root
     when: ansible_os_family == "Archlinux"
-  - aur: name=rdworks-wine-bin user=adam
+  - aur: name=ansible-aur-git user=root
     when: ansible_os_family == "Archlinux"
+  # - aur: name=rdworks-wine-bin user=root
+  #   when: ansible_os_family == "Archlinux"
