@@ -45,7 +45,6 @@
        - python-scipy
        - python-pandas
        - python2-lxml
-       - freecad
        - blender
        - emacs
        - kdenlive
@@ -95,17 +94,28 @@
        - ttf-cheapskate
        - pepper-flash
        - gvfs
+       - krita
        # # - lightdm
        # # - lightdm-gtk-greeter
        # # - light-locker
 
-  - aur: name=sublime-text-dev user=root
+  - aur: name=sublime-text-dev skip_installed=true
+    become: yes
+    become_user: aur_builder
     when: ansible_os_family == "Archlinux"
-  - aur: name=python2-power-git user=root
+  - aur: name=python2-power-git skip_installed=true
+    become: yes
+    become_user: aur_builder
     when: ansible_os_family == "Archlinux"
-  - aur: name=cura-aleph-bin user=root
+  - aur: name=cura-aleph-bin skip_installed=true
+    become: yes
+    become_user: aur_builder
     when: ansible_os_family == "Archlinux"
-  - aur: name=ansible-aur-git user=root
+  - aur: name=ansible-aur-git skip_installed=true
+    become: yes
+    become_user: aur_builder
     when: ansible_os_family == "Archlinux"
-  # - aur: name=rdworks-wine-bin user=root
-  #   when: ansible_os_family == "Archlinux"
+  - aur: name=freecad skip_installed=true
+    become: yes
+    become_user: aur_builder
+    when: ansible_os_family == "Archlinux"

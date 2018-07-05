@@ -1,4 +1,4 @@
-- hosts: new
+- hosts: clients
   become: true
   tasks:
   - name: Upgrade Arch
@@ -87,4 +87,4 @@
     when: ansible_os_family == "Archlinux"
   - script: ../scripts/install_NIS_NFS-Debian.sh
     when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
-  - script: ../scripts/lightdm.sh
+  # - script: ../scripts/lightdm.sh
