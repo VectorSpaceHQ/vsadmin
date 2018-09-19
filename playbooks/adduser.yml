@@ -10,6 +10,13 @@
         append: yes
       when: ansible_os_family == "Archlinux"
 
+    - name: "Put users in sensible groups"
+      user:
+        name: all
+        groups: uucp, lock, optical, lp
+        append: yes
+      when: ansible_os_family == "Archlinux"
+
     - name: "Creating vectorspace user on Debian"
       user:
         name: vectorspace

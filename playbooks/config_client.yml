@@ -1,11 +1,11 @@
 - hosts: clients
   become: true
   tasks:
-  - name: Upgrade Arch
-    when: ansible_os_family == "Archlinux"
-    pacman:
-      update_cache=yes
-      upgrade=yes
+  # - name: Upgrade Arch
+  #   when: ansible_os_family == "Archlinux"
+  #   pacman:
+  #     update_cache=yes
+  #     upgrade=yes
 
   - name: Install NIS
     when: ansible_os_family == "Archlinux"
@@ -22,8 +22,17 @@
         - nis
         - nfs-common
 
+  - name: Creates directory for nis, see arch wiki
+    file: path=/etc/systemd/system/systemd-logind.service.d state=directory
+
+  - name: fix for systemd 239
+    copy:
+      src: /vsfs01/home/aspontarelli/ansible/scripts/open_network_interface.conf
+      dest: /etc/systemd/system/systemd-logind.service.d/open_network_interface.conf
+
 # AUR packages
-  - user:
+  - name: create aur_builder user
+    user:
       name: aur_builder
       group: wheel
   - lineinfile:
@@ -32,59 +41,48 @@
       create: yes
       validate: 'visudo -cf %s'
 
-  - aur: name=openslp skip_installed=true
-    become: yes
-    become_user: aur_builder
-  - aur: name=yp-tools skip_installed=true
-    become: yes
-    become_user: aur_builder
-  - aur: name=ypbind-mt skip_installed=true
+  - name: openslp
+    aur: name=openslp skip_installed=true
     become: yes
     become_user: aur_builder
 
-  # - copy:
-  #     src: ../scripts/sleep_settings.sh
-  #     dest: /etc/profile.d
-  #     owner: root
-  #     group: root
-  #     mode: 0744
+  - name: yp-tools
+    aur: name=yp-tools skip_installed=true
+    become: yes
+    become_user: aur_builder
 
-  # - copy:
-  #     src: ../scripts/lightdm.conf
-  #     dest: /etc/lightdm/lightdm.conf
-  #     owner: root
-  #     group: root
-  #     mode: 0644
+  - name: ypbind-mt
+    aur: name=ypbind-mt skip_installed=true
+    become: yes
+    become_user: aur_builder
 
-  # - copy:
-  #     src: ../scripts/logout_users.sh
-  #     dest: /etc/cron.daily/logout_users.sh
-  #     owner: adam
-  #     group: adam
-  #     mode: 0744
+#   # - copy:
+#   #     src: ../scripts/sleep_settings.sh
+#   #     dest: /etc/profile.d
+#   #     owner: root
+#   #     group: root
+#   #     mode: 0744
 
-  # Logout idle users with idlekiller.sh
-  # Requires script, service, and enabling the service
-  # - copy:
-  #     src: ../scripts/idlekiller.sh
-  #     dest: /usr/bin/idlekiller.sh
-  #     owner: root
-  #     group: root
-  #     mode: 755
-  # - copy:
-  #     src: ../scripts/idlekiller.service
-  #     dest: /etc/systemd/system/idlekiller.service
-  #     owner: root
-  #     group: root
-  #     mode: 755
+#   # - copy:
+#   #     src: ../scripts/lightdm.conf
+#   #     dest: /etc/lightdm/lightdm.conf
+#   #     owner: root
+#   #     group: root
+#   #     mode: 0644
 
-  # - name: enable idle killer
-  #   systemd:
-  #     name: idlekiller.service
-  #     enabled: True
+  - name: install user logout script
+    copy:
+      src: ../scripts/logout_users.sh
+      dest: /etc/cron.daily/logout_users
+      owner: root
+      group: root
+      mode: 0744
 
-  - script: ../scripts/install_NIS_NFS.sh
+  - name: install NFS on Arch
+    script: ../scripts/install_NIS_NFS.sh
     when: ansible_os_family == "Archlinux"
-  - script: ../scripts/install_NIS_NFS-Debian.sh
+
+  - name: install NFS on Debian
+    script: ../scripts/install_NIS_NFS-Debian.sh
     when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
   # - script: ../scripts/lightdm.sh

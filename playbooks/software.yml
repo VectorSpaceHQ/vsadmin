@@ -13,7 +13,6 @@
       - python-numpy
       - python-scipy
       - python-pandas
-      # - freecad
       - blender
       - emacs
       - kdenlive
@@ -69,6 +68,7 @@
        - filezilla
        - python-setuptools
        - kicad
+       - kicad-library
        - audacity
        - vim
        - lua
@@ -95,10 +95,12 @@
        - pepper-flash
        - gvfs
        - krita
+       - codeblocks
+       - yay
+       - mate
        # # - lightdm
        # # - lightdm-gtk-greeter
        # # - light-locker
-
   - aur: name=sublime-text-dev skip_installed=true
     become: yes
     become_user: aur_builder
@@ -115,7 +117,11 @@
     become: yes
     become_user: aur_builder
     when: ansible_os_family == "Archlinux"
-  - aur: name=freecad skip_installed=true
-    become: yes
-    become_user: aur_builder
-    when: ansible_os_family == "Archlinux"
+  # - pip:
+  #   become: yes
+  #   name: mu-editor
+  #   when: ansible_os_family == "Archlinux"
+  # - aur: name=freecad skip_installed=true
+  #   become: yes
+  #   become_user: aur_builder
+  #   when: ansible_os_family == "Archlinux"
