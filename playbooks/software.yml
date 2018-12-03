@@ -80,8 +80,6 @@
        - evince
        - gphoto2
        - manjaro-printer
-       - wine-mono
-       - wine_gecko
        - lib32-mpg123
        - kmag
        - frei0r-plugins
@@ -114,6 +112,10 @@
     become_user: aur_builder
     when: ansible_os_family == "Archlinux"
   - aur: name=ansible-aur-git skip_installed=true
+    become: yes
+    become_user: aur_builder
+    when: ansible_os_family == "Archlinux"
+  - aur: name=openrocket skip_installed=true
     become: yes
     become_user: aur_builder
     when: ansible_os_family == "Archlinux"

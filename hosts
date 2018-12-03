@@ -18,6 +18,6 @@
 [localhost]
 localhost
 [test]
-10.0.0.97
+10.0.0.144
 [all:vars]
 # ansible_python_interpreter=/usr/bin/python2

@@ -1,4 +1,4 @@
-- hosts: clients
+- hosts: test
   become: true
   tasks:
   # - name: Upgrade Arch
@@ -7,23 +7,23 @@
   #     update_cache=yes
   #     upgrade=yes
 
-  - name: Install NIS
-    when: ansible_os_family == "Archlinux"
-    pacman: name={{item}} state=installed
-    with_items:
-        - rpcbind
-        - nfs-utils
+  # - name: Install NIS
+  #   when: ansible_os_family == "Archlinux"
+  #   pacman: name={{item}} state=installed
+  #   with_items:
+  #       - rpcbind
+  #       - nfs-utils
 
-  - name: Install NIS Debian
-    when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
-    apt: name={{item}} state=installed
-    with_items:
-        - portmap
-        - nis
-        - nfs-common
+  # - name: Install NIS Debian
+  #   when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+  #   apt: name={{item}} state=installed
+  #   with_items:
+  #       - portmap
+  #       - nis
+  #       - nfs-common
 
-  - name: Creates directory for nis, see arch wiki
-    file: path=/etc/systemd/system/systemd-logind.service.d state=directory
+  # - name: Creates directory for nis, see arch wiki
+  #   file: path=/etc/systemd/system/systemd-logind.service.d state=directory
 
   - name: fix for systemd 239
     copy:
@@ -35,26 +35,31 @@
     user:
       name: aur_builder
       group: wheel
+      when: ansible_os_family == "Archlinux"
   - lineinfile:
       path: /etc/sudoers.d/11-install-aur_builder
       line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
       create: yes
       validate: 'visudo -cf %s'
+      when: ansible_os_family == "Archlinux"
 
   - name: openslp
     aur: name=openslp skip_installed=true
     become: yes
     become_user: aur_builder
+    when: ansible_os_family == "Archlinux"
 
   - name: yp-tools
     aur: name=yp-tools skip_installed=true
     become: yes
     become_user: aur_builder
+    when: ansible_os_family == "Archlinux"
 
   - name: ypbind-mt
     aur: name=ypbind-mt skip_installed=true
     become: yes
     become_user: aur_builder
+    when: ansible_os_family == "Archlinux"
 
 #   # - copy:
 #   #     src: ../scripts/sleep_settings.sh
