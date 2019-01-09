@@ -1,0 +1,19 @@
+# Configure all clients to use LDAP with sssd
+# install sssd
+# create /etc/sudoers.d/admins file
+
+- hosts: clients
+  become: true
+  tasks:
+  - name: Install SSSD
+    when: ansible_os_family == "Archlinux"
+    pacman: name={{item}} state=installed
+    with_items:
+	- sssd
+
+  - name: copy sssd.conf
+    copy:
+      src: /home/sysadmin/ansible/config_files/sssd.conf
+      dest: /etc/sssd/sssd.conf
+
+
