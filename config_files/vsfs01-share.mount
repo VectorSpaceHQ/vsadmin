@@ -6,7 +6,7 @@ After=network-online.target NetworkManager-wait-online.service vsfs01.mount
 [Mount]
 What=//files/sambashare
 Where=/vsfs01/share
-Options=username=samba,password=samba,iocharset=utf8,x-systemd.automount,file_mode=0777,dir_mode=0777
+Options=username=samba,password=samba,iocharset=utf8,x-systemd.automount,file_mode=0777,dir_mode=0777,nounix
 Type=cifs
 TimeoutSec=90
 

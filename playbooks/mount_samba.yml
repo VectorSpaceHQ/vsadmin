@@ -12,6 +12,11 @@
       when: ansible_os_family == "Archlinux"
       template: src=/vsfs01/home/aspontarelli/ansible/config_files/vsfs01-share.mount dest=/etc/systemd/system/vsfs01-share.mount
 
-    - name: start samba mount
+    - name: start and enable samba mount
       when: ansible_os_family == "Archlinux"
-      systemd: state=started name=vsfs01-share.mount daemon_reload=yes
+      systemd: state=started name=vsfs01-share.mount daemon_reload=yes enabled=yes
+    # - name: add the share as a bookmark
+    #   lineinfile:
+    #     path: /Users/mdtutorials2/Documents/Ansible/Input.txt
+    #     line: 'file:///vsfs01/share'
+    #     insertbefore: BOF
