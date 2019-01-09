@@ -1,0 +1,11 @@
+- hosts: test
+  become: true
+
+  tasks:
+    - name: install samba mount systemd unit file
+      when: ansible_os_family == "Archlinux"
+      template: src=/vsfs01/home/aspontarelli/ansible/config_files/vsfs01-share.mount dest=/etc/systemd/system/vsfs01-share.mount
+
+    - name: start samba mount
+      when: ansible_os_family == "Archlinux"
+      systemd: state=started name=vsfs01-share.mount daemon_reload=yes
