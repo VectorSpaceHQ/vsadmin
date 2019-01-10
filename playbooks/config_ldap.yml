@@ -13,42 +13,55 @@
 
   - name: Install LDAP client software, debian
     when: ansible_os_family == "Debian"
-    apt: name={{item}} state=installed
+    apt: name={{item}} state=present
     with_items:
-      - openldap
-      - openldap-clients
       - sssd
-      - sssd-client
+      - libpam-sss
+      - libnss-sss
 
   - name: Configure sssd.conf
     copy:
-      src: /home/sysadmin/ansible/config_files/sssd.conf
+      src: ~/ansible/config_files/sssd.conf
       dest: /etc/sssd/sssd.conf
+      owner: root
+      mode: 0600
 
   - name: Configure nscd.conf
     copy:
-      src: /home/sysadmin/ansible/config_files/nscd.conf
+      src: ~/ansible/config_files/nscd.conf
       dest: /etc/nscd.conf
 
   - name: Configure nsswitch.conf
     copy:
-      src: /home/sysadmin/ansible/config_files/nsswitch.conf
+      src: ~/ansible/config_files/nsswitch.conf
       dest: /etc/nsswitch.conf
 
   - name: Configure system-auth
     copy:
-      src: /home/sysadmin/ansible/config_files/system-auth
+      src: ~/ansible/config_files/system-auth
       dest: /etc/pam.d/system-auth
 
   - name: Configure Sudo
     copy:
-      src: /home/sysadmin/ansible/config_files/sudo
+      src: ~/ansible/config_files/sudo
       dest: /etc/pam.d/sudo
 
   - name: Configure passwd
     copy:
-      src: /home/sysadmin/ansible/config_files/passwd
+      src: ~/ansible/config_files/passwd
       dest: /etc/pam.d/passwd
+
+  - name: create directory for TLS cert on Debian
+    when: ansible_os_family == "Debian"
+    file:
+      path=/etc/openldap/certs
+      recurse=yes
+      state=directory
+
+  - name: setup TLS
+    copy:
+      src: ~/ansible/config_files/ca_server.pem
+      dest: /etc/openldap/certs
 
   - name: Enable SSSD
     systemd: state=started name=sssd.service daemon_reload=yes enabled=yes
