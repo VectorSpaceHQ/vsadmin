@@ -96,6 +96,7 @@
        - codeblocks
        - yay
        - mate
+       - llvm-libs
        # # - lightdm
        # # - lightdm-gtk-greeter
        # # - light-locker
