@@ -15,8 +15,3 @@
     - name: start and enable samba mount
       when: ansible_os_family == "Archlinux"
       systemd: state=started name=vsfs01-share.mount daemon_reload=yes enabled=yes
-    # - name: add the share as a bookmark
-    #   lineinfile:
-    #     path: /Users/mdtutorials2/Documents/Ansible/Input.txt
-    #     line: 'file:///vsfs01/share'
-    #     insertbefore: BOF

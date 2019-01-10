@@ -2,18 +2,53 @@
 # install sssd
 # create /etc/sudoers.d/admins file
 
-- hosts: clients
+- hosts: test
   become: true
   tasks:
   - name: Install SSSD
     when: ansible_os_family == "Archlinux"
     pacman: name={{item}} state=installed
     with_items:
-	- sssd
+      - sssd
 
-  - name: copy sssd.conf
+  - name: Install LDAP client software, debian
+    when: ansible_os_family == "Debian"
+    apt: name={{item}} state=installed
+    with_items:
+      - openldap
+      - openldap-clients
+      - sssd
+      - sssd-client
+
+  - name: Configure sssd.conf
     copy:
       src: /home/sysadmin/ansible/config_files/sssd.conf
       dest: /etc/sssd/sssd.conf
 
+  - name: Configure nscd.conf
+    copy:
+      src: /home/sysadmin/ansible/config_files/nscd.conf
+      dest: /etc/nscd.conf
 
+  - name: Configure nsswitch.conf
+    copy:
+      src: /home/sysadmin/ansible/config_files/nsswitch.conf
+      dest: /etc/nsswitch.conf
+
+  - name: Configure system-auth
+    copy:
+      src: /home/sysadmin/ansible/config_files/system-auth
+      dest: /etc/pam.d/system-auth
+
+  - name: Configure Sudo
+    copy:
+      src: /home/sysadmin/ansible/config_files/sudo
+      dest: /etc/pam.d/sudo
+
+  - name: Configure passwd
+    copy:
+      src: /home/sysadmin/ansible/config_files/passwd
+      dest: /etc/pam.d/passwd
+
+  - name: Enable SSSD
+    systemd: state=started name=sssd.service daemon_reload=yes enabled=yes
