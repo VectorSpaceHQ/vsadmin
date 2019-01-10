@@ -1,0 +1,14 @@
+- hosts: test
+  become: true
+  tasks:
+    - name: fstab modify Debian
+      when: ansible_os_family == "Debian"
+      lineinfile:
+        path: /etc/fstab
+        line: 'T5500b:/vsfs01				/vsfs01		nfs	rw,async,_netdev		0	0'
+
+    - name: fstab modify Arch
+      when: ansible_os_family == "Archlinux"
+      lineinfile:
+        path: /etc/fstab
+        line: 'T5500b:/vsfs01				/vsfs01		nfs	rw,async,_netdev,noauto,x-systemd.automount		0	0'
