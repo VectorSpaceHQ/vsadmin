@@ -2,10 +2,10 @@
   become: true
   tasks:
     - name: fstab modify Debian
-      when: ansible_os_family == "Debian"
+      when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
       lineinfile:
         path: /etc/fstab
-        line: 'T5500b:/vsfs01				/vsfs01		nfs	rw,async,_netdev		0	0'
+        line: 'T5500b:/vsfs01				/vsfs01		nfs	rw,async,_netdev,x-systemd.automount		0	0'
 
     - name: fstab modify Arch
       when: ansible_os_family == "Archlinux"

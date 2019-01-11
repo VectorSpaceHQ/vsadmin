@@ -12,8 +12,8 @@
       - sssd
 
   - name: Install LDAP client software, debian
-    when: ansible_os_family == "Debian"
-    apt: name={{item}} state=present
+    when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+    apt: name={{item}} state=latest update_cache=yes
     with_items:
       - sssd
       - libpam-sss
@@ -52,7 +52,7 @@
       dest: /etc/pam.d/passwd
 
   - name: create directory for TLS cert on Debian
-    when: ansible_os_family == "Debian"
+    when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
     file:
       path=/etc/openldap/certs
       recurse=yes
