@@ -4,6 +4,7 @@
 
 - hosts: test
   become: true
+  become_method: su
   tasks:
   - name: Install SSSD
     when: ansible_os_family == "Archlinux"

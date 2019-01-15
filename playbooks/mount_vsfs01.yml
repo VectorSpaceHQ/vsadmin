@@ -1,14 +1,26 @@
 - hosts: test
   become: true
+  become_method: su
   tasks:
-    - name: fstab modify Debian
+    - name: Mount VSFS01 on Debian
       when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
-      lineinfile:
-        path: /etc/fstab
-        line: 'T5500b:/vsfs01				/vsfs01		nfs	rw,async,_netdev,x-systemd.automount		0	0'
+      mount:
+        path: T5500b:/vsfs01
+        src: /vsfs01
+        fstype: nfs
+        opts: rw,async,_netdev,x-systemd.automount
+        state: present
 
-    - name: fstab modify Arch
+    - name: Mount VSFS01 on Arch
       when: ansible_os_family == "Archlinux"
-      lineinfile:
-        path: /etc/fstab
-        line: 'T5500b:/vsfs01				/vsfs01		nfs	rw,async,_netdev,noauto,x-systemd.automount		0	0'
+      mount:
+        path: T5500b:/vsfs01
+        src: /vsfs01
+        fstype: nfs
+        opts: rw,async,_netdev,noauto,x-systemd.automount
+        state: present
+
+    - name: mount all
+      command: mount -a
+      args:
+        warn: no

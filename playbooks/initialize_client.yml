@@ -10,3 +10,9 @@
       user: adam # remote user
       state: present
       key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+  - name: Set authorized key for root
+    authorized_key:
+      user: root # remote user
+      state: present
+      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
