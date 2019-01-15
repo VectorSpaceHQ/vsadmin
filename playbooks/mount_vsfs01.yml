@@ -20,6 +20,7 @@
         opts: rw,async,_netdev,noauto,x-systemd.automount
         state: present
 
+    # mount -a won't work with noauto
     - name: mount all
       command: mount -a
       args:
