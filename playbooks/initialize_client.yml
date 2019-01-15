@@ -1,0 +1,12 @@
+- hosts: test
+  # become: true
+  tasks:
+
+  - name: Enable openssh
+    systemd: state=started name=sshd.service enabled=yes
+
+  - name: Set authorized key
+    authorized_key:
+      user: adam # remote user
+      state: present
+      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"

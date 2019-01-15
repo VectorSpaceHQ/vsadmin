@@ -1,3 +1,6 @@
+- include: initialize_client.yml
+- include: config_ldap.yml
+- include: mount_vsfs01.yml
 - include: adduser.yml
 - include: config_client.yml
 # # - include: syu.yml
