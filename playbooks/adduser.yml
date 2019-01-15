@@ -18,12 +18,12 @@
       when: ansible_os_family == "Archlinux"
 
     - name: "Creating vectorspace user on Debian"
+      when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
       user:
         name: vectorspace
         password: $6$vWpDsmcPtXg5QeQE$gQe0ocyTDIukYJ8NBPil8nf.qNRa10W0LRw1w5n39TiJxAnV6jpjAk23SdX907HZBwLk2AvieMcyZOUiE9DpJ/
         shell: /bin/bash
         groups: dialout
         append: yes
-      when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
 
     - file: dest=/home/vectorspace owner=vectorspace group=vectorspace mode=u=rwX,g=rX,o=rX recurse=yes

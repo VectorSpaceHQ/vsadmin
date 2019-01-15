@@ -5,8 +5,8 @@
     - name: Mount VSFS01 on Debian
       when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
       mount:
-        path: T5500b:/vsfs01
-        src: /vsfs01
+        path: /vsfs01
+        src: T5500b:/vsfs01
         fstype: nfs
         opts: rw,async,_netdev,x-systemd.automount
         state: present
@@ -14,14 +14,13 @@
     - name: Mount VSFS01 on Arch
       when: ansible_os_family == "Archlinux"
       mount:
-        path: T5500b:/vsfs01
-        src: /vsfs01
+        path: /vsfs01
+        src: T5500b:/vsfs01
         fstype: nfs
         opts: rw,async,_netdev,noauto,x-systemd.automount
         state: present
 
-    # mount -a won't work with noauto
     - name: mount all
-      command: mount -a
+      command: mount /vsfs01
       args:
         warn: no

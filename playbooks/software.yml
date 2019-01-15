@@ -1,5 +1,6 @@
-- hosts: clients
+- hosts: test
   become: yes
+  become_method: su
   tasks:
 
   - name: "Install Debian packages"
@@ -31,75 +32,21 @@
       - xfce4
       - gthumb
 
+    # needed to resolve most software conflicts
+  - name: full system upgrade
+    when: ansible_os_family == "Archlinux"
+    pacman:
+      update_cache: yes
+      upgrade: yes
+
   - name: Install Arch packages
     when: ansible_os_family == "Archlinux"
-    pacman: name={{item}} state=latest force=yes update_cache=yes
-    with_items:
-       - python
-       - git
-       - arduino
-       - arduino-avr-core
-       - python-matplotlib
-       - python-numpy
-       - python-scipy
-       - python-pandas
-       - python2-lxml
-       - blender
-       - emacs
-       - kdenlive
-       - nmap
-       - libreoffice-still
-       - librecad
-       - gimp
-       - inkscape
-       - xfburn
-       - tar
-       - jupyter
-       - python-h5py
-       - octave
-       - chromium
-       - ghc
-       - cups
-       - zsh
-       - ffmpeg
-       - openscad
-       - cmake
-       - automake
-       - filezilla
-       - python-setuptools
-       - kicad
-       - kicad-library
-       - audacity
-       - vim
-       - lua
-       - gthumb
-       - screen
-       - llvm
-       - clang
-       - ansible
-       - evince
-       - gphoto2
-       - manjaro-printer
-       - lib32-mpg123
-       - kmag
-       - frei0r-plugins
-       - breeze-icons
-       - mlt
-       - opencv
-       - libnss_nis
-       - ttf-croscore
-       - noto-fonts
-       - ttf-cheapskate
-       - pepper-flash
-       - gvfs
-       - krita
-       - codeblocks
-       - yay
-       - mate
-       - llvm-libs
-       # # - lightdm
-       # # - lightdm-gtk-greeter
-       # # - light-locker
+    pacman:
+      name: ['python', 'git', 'arduino', 'arduino-avr-core', 'python-matplotlib', 'python-numpy', 'python-scipy', 'python-pandas', 'python2-lxml', 'blender', 'emacs', 'kdenlive', 'nmap', 'libreoffice-fresh', 'librecad', 'gimp', 'inkscape', 'xfburn', 'tar', 'jupyter', 'python-h5py', 'octave', 'chromium', 'ghc', 'cups', 'zsh', 'ffmpeg', 'openscad', 'cmake', 'automake', 'filezilla', 'python-setuptools', 'kicad','kicad-library', 'audacity', 'vim', 'lua', 'gthumb', 'screen', 'llvm', 'clang', 'ansible', 'evince', 'gphoto2', 'manjaro-printer', 'lib32-mpg123', 'kmag','frei0r-plugins', 'breeze-icons', 'mlt', 'opencv', 'ttf-croscore', 'noto-fonts', 'ttf-cheapskate', 'pepper-flash', 'gvfs', 'krita', 'codeblocks', 'yay', 'mate', 'llvm-libs', 'shotcut']
+      state: latest
+      force: yes
+      update_cache: yes
+
   - aur: name=sublime-text-dev skip_installed=true
     become: yes
     become_user: aur_builder

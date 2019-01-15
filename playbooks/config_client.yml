@@ -7,6 +7,9 @@
       src: /vsfs01/home/aspontarelli/ansible/scripts/open_network_interface.conf
       dest: /etc/systemd/system/systemd-logind.service.d/open_network_interface.conf
 
+  - name: enable NTP
+    command: timedatectl set-ntp true
+
 # AUR packages
   - name: create aur_builder user
     user:
