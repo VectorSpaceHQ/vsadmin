@@ -7,7 +7,7 @@
   tasks:
   - name: Install SSSD
     when: ansible_os_family == "Archlinux"
-    pacman: name={{item}} state=installed
+    pacman: name={{item}} state=installed update_cache=yes
     with_items:
       - sssd
 
@@ -52,7 +52,6 @@
       dest: /etc/pam.d/passwd
 
   - name: create directory for TLS cert on Debian
-    when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
     file:
       path=/etc/openldap/certs
       recurse=yes
@@ -61,7 +60,7 @@
   - name: setup TLS
     copy:
       src: ~/ansible/config_files/ca_server.pem
-      dest: /etc/openldap/certs
+      dest: /etc/openldap/certs/ca_server.pem
 
   - name: Enable SSSD
     systemd: state=started name=sssd.service daemon_reload=yes enabled=yes
