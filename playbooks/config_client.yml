@@ -54,6 +54,15 @@
       group: root
       mode: 0744
 
+  - name: install group modification script
+    copy:
+      src: ../scripts/groups.sh
+      dest: /etc/cron.hourly/groups
+      owner: root
+      group: root
+      mode: 0744
+
+
   # - name: install NFS on Arch
   #   script: ../scripts/install_NIS_NFS.sh
   #   when: ansible_os_family == "Archlinux"
