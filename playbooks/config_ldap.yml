@@ -2,7 +2,7 @@
 # install sssd
 # create /etc/sudoers.d/admins file
 
-- hosts: test
+- hosts: clients
   become: true
   become_method: su
   tasks:

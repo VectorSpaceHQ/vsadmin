@@ -1,4 +1,4 @@
-- hosts: test
+- hosts: clients
   become: true
   tasks:
 
@@ -10,19 +10,6 @@
   - name: enable NTP
     command: timedatectl set-ntp true
 
-# AUR packages
-  - name: create aur_builder user
-    user:
-      name: aur_builder
-      group: wheel
-      when: ansible_os_family == "Archlinux"
-
-  - lineinfile:
-      path: /etc/sudoers.d/11-install-aur_builder
-      line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
-      create: yes
-      validate: 'visudo -cf %s'
-      when: ansible_os_family == "Archlinux"
 
   # - name: openslp
   #   aur: name=openslp skip_installed=true
@@ -61,13 +48,3 @@
       owner: root
       group: root
       mode: 0744
-
-
-  # - name: install NFS on Arch
-  #   script: ../scripts/install_NIS_NFS.sh
-  #   when: ansible_os_family == "Archlinux"
-
-  # - name: install NFS on Debian
-  #   script: ../scripts/install_NIS_NFS-Debian.sh
-  #   when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
-  # - script: ../scripts/lightdm.sh

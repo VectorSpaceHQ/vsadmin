@@ -4,6 +4,14 @@
 
   tasks:
     - name: full system upgrade
+      when: ansible_os_family == "Archlinux"
       pacman:
         update_cache: yes
         upgrade: yes
+
+    - name: Debian package upgrade
+      when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+      apt:
+        update_cache: yes
+        name: "*"
+        state: latest
