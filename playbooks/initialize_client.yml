@@ -1,18 +1,20 @@
-- hosts: clients
+- name: Initialize Client machines
+  hosts: clients
   become: true
+  become_method: su
   tasks:
 
   - name: Enable openssh
     systemd: state=started name=sshd.service enabled=yes
 
-  - name: Set authorized key
-    authorized_key:
-      user: adam # remote user
-      state: present
-      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-
   - name: Set authorized key for root
     authorized_key:
       user: root # remote user
+      state: present
+      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+  - name: Set authorized key
+    authorized_key:
+      user: adam # remote user
       state: present
       key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"

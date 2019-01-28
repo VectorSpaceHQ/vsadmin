@@ -1,5 +1,7 @@
-- hosts: clients
+- name: user_management
+  hosts: clients
   become: true
+  become_method: su
   tasks:
     - name: "Creating vectorspace user on arch"
       user:
@@ -29,14 +31,39 @@
     - file: dest=/home/vectorspace owner=vectorspace group=vectorspace mode=u=rwX,g=rX,o=rX recurse=yes
 
     - name: create aur_builder user
+      when: ansible_os_family == "Archlinux"
       user:
         name: aur_builder
         group: wheel
-        when: ansible_os_family == "Archlinux"
 
-    - lineinfile:
+    - name: give aur_builder permissions
+      when: ansible_os_family == "Archlinux"
+      lineinfile:
         path: /etc/sudoers.d/11-install-aur_builder
         line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
         create: yes
         validate: 'visudo -cf %s'
-        when: ansible_os_family == "Archlinux"
+
+    - name: hide system user aur_builder
+      when: ansible_os_family == "Archlinux"
+      copy:
+        dest: "/var/lib/AccountsService/users/aur_builder"
+        content: |
+          [User]
+          SystemAccount=true
+
+    - name: hide system user all
+      when: ansible_os_family == "Archlinux"
+      copy:
+        dest: "/var/lib/AccountsService/users/all"
+        content: |
+          [User]
+          SystemAccount=true
+
+    - name: hide system user adam
+      when: ansible_os_family == "Archlinux"
+      copy:
+        dest: "/var/lib/AccountsService/users/adam"
+        content: |
+          [User]
+          SystemAccount=true

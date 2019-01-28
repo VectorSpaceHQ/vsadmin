@@ -1,23 +1,22 @@
-- hosts: clients
+- name: system_administration
+  hosts: clients
   become: true
+  become_method: su
   tasks:
 
-  - name: fix for systemd 239
-    copy:
-      src: /vsfs01/home/aspontarelli/ansible/scripts/open_network_interface.conf
-      dest: /etc/systemd/system/systemd-logind.service.d/open_network_interface.conf
+  # - name: fix for systemd 239
+  #   copy:
+  #     src: ../config_files/open_network_interface.conf
+  #     dest: /etc/systemd/system/systemd-logind.service.d/open_network_interface.conf
 
   - name: enable NTP
     command: timedatectl set-ntp true
-
 
   # - name: openslp
   #   aur: name=openslp skip_installed=true
   #   become: yes
   #   become_user: aur_builder
   #   when: ansible_os_family == "Archlinux"
-
-
 
 #   # - copy:
 #   #     src: ../scripts/sleep_settings.sh

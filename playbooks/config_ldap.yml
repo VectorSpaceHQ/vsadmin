@@ -2,7 +2,8 @@
 # install sssd
 # create /etc/sudoers.d/admins file
 
-- hosts: clients
+- name: config_ldap
+  hosts: clients
   become: true
   become_method: su
   tasks:

@@ -34,21 +34,22 @@
       - python-pip
 
     # needed to resolve most software conflicts
-  - name: full system upgrade
-    when: ansible_os_family == "Archlinux"
-    pacman:
-      update_cache: yes
-      upgrade: yes
+  # - name: full system upgrade
+  #   when: ansible_os_family == "Archlinux"
+  #   pacman:
+  #     update_cache: yes
+  #     upgrade: yes
 
   - name: Install Arch packages
     when: ansible_os_family == "Archlinux"
     pacman:
-      name: ['python', 'git', 'arduino', 'arduino-avr-core', 'python-matplotlib', 'python-numpy', 'python-scipy', 'python-pandas', 'python2-lxml', 'blender', 'emacs', 'kdenlive', 'nmap', 'libreoffice-fresh', 'librecad', 'gimp', 'inkscape', 'xfburn', 'tar', 'jupyter', 'python-h5py', 'octave', 'chromium', 'ghc', 'cups', 'zsh', 'ffmpeg', 'openscad', 'cmake', 'automake', 'filezilla', 'python-setuptools', 'kicad','kicad-library', 'audacity', 'vim', 'lua', 'gthumb', 'screen', 'llvm', 'clang', 'ansible', 'evince', 'gphoto2', 'manjaro-printer', 'lib32-mpg123', 'kmag','frei0r-plugins', 'breeze-icons', 'mlt', 'opencv', 'ttf-croscore', 'noto-fonts', 'ttf-cheapskate', 'pepper-flash', 'gvfs', 'krita', 'codeblocks', 'yay', 'mate', 'llvm-libs', 'shotcut', 'python-pip', 'sshpass']
+      name: ['python', 'git', 'arduino', 'arduino-avr-core', 'python-matplotlib', 'python-numpy', 'python-scipy', 'python-pandas', 'python2-lxml', 'blender', 'emacs', 'kdenlive', 'nmap', 'libreoffice-fresh', 'librecad', 'gimp', 'inkscape', 'xfburn', 'tar', 'jupyter', 'python-h5py', 'octave', 'chromium', 'ghc', 'cups', 'zsh', 'ffmpeg', 'openscad', 'cmake', 'automake', 'filezilla', 'python-setuptools', 'kicad','kicad-library', 'audacity', 'vim', 'lua', 'gthumb', 'screen', 'llvm', 'clang', 'ansible', 'evince', 'gphoto2', 'manjaro-printer', 'lib32-mpg123', 'kmag', 'frei0r-plugins', 'breeze-icons', 'mlt', 'opencv', 'ttf-croscore', 'noto-fonts', 'ttf-cheapskate', 'pepper-flash', 'gvfs', 'krita', 'codeblocks', 'yay', 'mate', 'llvm-libs', 'shotcut', 'python-pip', 'sshpass']
       state: latest
       force: yes
       update_cache: yes
 
-  - aur: name=sublime-text-dev skip_installed=true
+  - name: Install Sublime-text
+    aur: name=sublime-text-dev skip_installed=true
     become: yes
     become_user: aur_builder
     when: ansible_os_family == "Archlinux"

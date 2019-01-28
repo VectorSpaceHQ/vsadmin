@@ -1,5 +1,7 @@
-- hosts: all
-  sudo: yes
+- hosts: clients
+  become: yes
+  become_method: su
   tasks:
     - name: Reboot computer
+      when: ansible_os_family == "Archlinux"
       command: /sbin/reboot

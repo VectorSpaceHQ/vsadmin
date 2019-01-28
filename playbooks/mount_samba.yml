@@ -1,6 +1,7 @@
-- hosts: clients
+- name: mount_samba
+  hosts: clients
   become: true
-
+  become_method: su
   tasks:
     - name: install CIFS
       when: ansible_os_family == "Archlinux"

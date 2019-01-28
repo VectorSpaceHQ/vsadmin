@@ -1,7 +1,7 @@
-- name: All hosts up-to-date
+- name: syu
   hosts: clients
   become: yes
-
+  become_method: su
   tasks:
     - name: full system upgrade
       when: ansible_os_family == "Archlinux"
