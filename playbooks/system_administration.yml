@@ -47,3 +47,11 @@
       owner: root
       group: root
       mode: 0744
+
+  - name: auto restart share mount
+    copy:
+      src: ../scripts/restart_vsfs01-share_mount.sh
+      dest: /etc/cron.hourly/restart_vsfs01-share_mount
+      owner: root
+      group: root
+      mode: 0744
