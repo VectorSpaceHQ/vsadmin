@@ -55,3 +55,9 @@
       owner: root
       group: root
       mode: 0744
+
+  - name: run udiskie at vectorspace login
+    lineinfile:
+      path: /home/vectorspace/.profile
+      line: 'udiskie &'
+      create: yes

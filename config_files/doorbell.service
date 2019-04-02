@@ -1,0 +1,12 @@
+[Unit]
+Description=plays sound when doorbell is pressed
+Requires=network-online.target
+After=network-online.target
+Environment=DISPLAY=:0
+
+[Service]
+ExecStart=/usr/bin/doorbell_subscribe.py
+Restart=always
+
+[Install]
+WantedBy=default.target 

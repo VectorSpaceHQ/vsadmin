@@ -43,7 +43,7 @@
   - name: Install Arch packages
     when: ansible_os_family == "Archlinux"
     pacman:
-      name: ['python', 'git', 'arduino', 'arduino-avr-core', 'python-matplotlib', 'python-numpy', 'python-scipy', 'python-pandas', 'python2-lxml', 'blender', 'emacs', 'kdenlive', 'nmap', 'librecad', 'gimp', 'inkscape', 'xfburn', 'tar', 'jupyter', 'python-h5py', 'octave', 'chromium', 'ghc', 'cups', 'cups-pdf', 'zsh', 'ffmpeg', 'openscad', 'cmake', 'automake', 'filezilla', 'python-setuptools', 'kicad','kicad-library', 'audacity', 'vim', 'lua', 'gthumb', 'screen', 'llvm', 'clang', 'ansible', 'evince', 'gphoto2', 'manjaro-printer', 'lib32-mpg123', 'kmag', 'frei0r-plugins', 'breeze-icons', 'mlt', 'opencv', 'ttf-croscore', 'noto-fonts', 'ttf-cheapskate', 'pepper-flash', 'gvfs', 'krita', 'codeblocks', 'yay', 'mate', 'llvm-libs', 'shotcut', 'python-pip', 'sshpass']
+      name: ['python', 'git', 'arduino', 'arduino-avr-core', 'python-matplotlib', 'python-numpy', 'python-scipy', 'python-pandas', 'python2-lxml', 'blender', 'emacs', 'kdenlive', 'nmap', 'librecad', 'gimp', 'inkscape', 'xfburn', 'tar', 'jupyter', 'python-h5py', 'octave', 'chromium', 'ghc', 'cups', 'cups-pdf', 'zsh', 'ffmpeg', 'openscad', 'cmake', 'automake', 'filezilla', 'python-setuptools', 'kicad','kicad-library', 'audacity', 'vim', 'lua', 'gthumb', 'screen', 'llvm', 'clang', 'ansible', 'evince', 'gphoto2', 'manjaro-printer', 'lib32-mpg123', 'kmag', 'frei0r-plugins', 'breeze-icons', 'mlt', 'opencv', 'ttf-croscore', 'noto-fonts', 'ttf-cheapskate', 'pepper-flash', 'gvfs', 'krita', 'codeblocks', 'yay', 'mate', 'llvm-libs', 'shotcut', 'python-pip', 'sshpass', 'udiskie']
       state: latest
       force: yes
       update_cache: yes
