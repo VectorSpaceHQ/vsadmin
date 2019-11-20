@@ -1,0 +1,7 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Terminal=false
+Exec=/opt/lightburn
+Name=LightBurn
+Icon=/usr/share/lightburn-square_720x.png?v=1519966515

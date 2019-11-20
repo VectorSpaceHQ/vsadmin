@@ -15,7 +15,7 @@
 
 [clients]
 # 10.0.0.[2:100]
-10.0.0.37
+10.0.0.26
 
 [localhost]
 localhost
