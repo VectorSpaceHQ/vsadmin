@@ -6,6 +6,8 @@ for LDAP_USER in $(ls /vsfs01/home)
 do
     if [ -n "`getent passwd $LDAP_USER`" ]; then
         echo $LDAP_USER
+        LDAP_UID=`id -u $LDAP_USER`
+        
 
         mkdir -p /vsfs01/home/$LDAP_USER/Desktop
         chown $LDAP_USER:members /vsfs01/home/$LDAP_USER/Desktop
@@ -27,8 +29,9 @@ do
         cp /vsfs01/home/aspontarelli/ansible/config_files/LuBan.desktop /vsfs01/home/$LDAP_USER/Desktop
         cp /vsfs01/home/aspontarelli/ansible/config_files/LightBurn.desktop /vsfs01/home/$LDAP_USER/Desktop
 
-        echo "locking desktop"
+        echo "locking desktop of $LDAP_USER"
         chmod 555 /vsfs01/home/$LDAP_USER/Desktop/
+        chown $LDAP_USER:members /vsfs01/home/$LDAP_USER/Desktop/*.desktop
         echo "DONE"
     fi
 
