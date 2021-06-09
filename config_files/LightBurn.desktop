@@ -2,6 +2,7 @@
 [Desktop Entry]
 Type=Application
 Terminal=false
-Exec=/opt/lightburn
+Exec=/usr/share/LightBurn/LightBurn
 Name=LightBurn
 Icon=/usr/share/lightburn-square_720x.png?v=1519966515
+Categories=Graphics

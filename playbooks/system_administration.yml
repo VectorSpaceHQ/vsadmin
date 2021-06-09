@@ -25,17 +25,23 @@
 #   #     group: root
 #   #     mode: 0744
 
-#   # - copy:
-#   #     src: ../scripts/lightdm.conf
-#   #     dest: /etc/lightdm/lightdm.conf
-#   #     owner: root
-#   #     group: root
-#   #     mode: 0644
+  - name: add freenas to hosts
+    lineinfile:
+      path: /etc/hosts
+      line: "10.0.0.250      freenas"
+      create: yes
+
+  - copy:
+      src: ../config_files/lightdm.conf
+      dest: /etc/lightdm/lightdm.conf
+      owner: root
+      group: root
+      mode: 0644
 
   - name: install user logout script
     copy:
       src: ../scripts/logout_users.sh
-      dest: /etc/cron.daily/logout_users
+      dest: /etc/cron.hourly/logout_users
       owner: root
       group: root
       mode: 0744
@@ -48,16 +54,14 @@
       group: root
       mode: 0744
 
-  - name: auto restart share mount
-    copy:
-      src: ../scripts/restart_vsfs01-share_mount.sh
-      dest: /etc/cron.hourly/restart_vsfs01-share_mount
-      owner: root
-      group: root
-      mode: 0744
-
-  - name: run udiskie at vectorspace login
+  # - name: run udiskie at vectorspace login
+  #   lineinfile:
+  #     path: /home/vectorspace/.profile
+  #     line: 'udiskie &'
+  #     create: yes
+  - name: Add admins to sudoers
+    when: ansible_os_family == "Debian"
     lineinfile:
-      path: /home/vectorspace/.profile
-      line: 'udiskie &'
+      path: /etc/sudoers
+      line: '%admins ALL=(ALL:ALL) ALL'
       create: yes

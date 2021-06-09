@@ -13,6 +13,7 @@
     with_items:
       - sssd
 
+# https://wiki.debian.org/LDAP/
   - name: Install LDAP client software, debian
     when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
     apt: name={{item}} state=latest update_cache=yes
@@ -20,6 +21,11 @@
       - sssd
       - libpam-sss
       - libnss-sss
+      - ldap-utils
+      - libnss-ldap
+      - libsss-sudo
+      - libpam-ldap
+      - accountsservice
 
   - name: Configure sssd.conf
     copy:

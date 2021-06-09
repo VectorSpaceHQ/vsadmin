@@ -1,13 +1,45 @@
-- name: syu
+- name: Update package repositories
   hosts: clients
   become: yes
   become_method: su
   tasks:
-    - name: full system upgrade
+
+    - name: pacman upgrade
       when: ansible_os_family == "Archlinux"
       pacman:
         update_cache: yes
         upgrade: yes
+
+    - name: Remove DVD repos from sources (Debian)
+      when: ansible_os_family == "Debian"
+      replace:
+        path: /etc/apt/sources.list
+        regexp: '^deb cdrom'
+        replace: '# deb cdrom'
+
+    - name: add non-free sources (Debian)
+      when: ansible_os_family == "Debian"
+      replace:
+        path: /etc/apt/sources.list
+        regexp: 'main$'
+        replace: 'main contrib non-free'
+
+    - name: add non-free sources (Debian)
+      when: ansible_os_family == "Debian"
+      replace:
+        path: /etc/apt/sources.list
+        regexp: 'main non-free$'
+        replace: 'main contrib non-free'
+
+    - name: add non-free sources (Debian)
+      when: ansible_os_family == "Debian"
+      replace:
+        path: /etc/apt/sources.list
+        regexp: 'contrib$'
+        replace: 'contrib non-free'
+
+    - name: "FIX: Ubuntu 16.04 LTS doesn't come certain with modules, required by ansible"
+      raw: apt-get install python-minimal aptitude -y
 
     - name: Debian package upgrade
       when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'

@@ -1,1 +1,0 @@
-ACTION=="add", SUBSYSTEM=="usb", ENV{ID_VENDOR_ID}=="04a9", ENV{ID_MODEL_ID}=="31ea", RUN+="/usr/bin/t2i.sh"

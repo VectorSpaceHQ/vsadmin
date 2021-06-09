@@ -4,31 +4,28 @@
   become_method: su
   tasks:
     - name: "Creating vectorspace user on arch"
+      when: ansible_os_family == "Archlinux"
       user:
         name: vectorspace
         password: $6$vWpDsmcPtXg5QeQE$gQe0ocyTDIukYJ8NBPil8nf.qNRa10W0LRw1w5n39TiJxAnV6jpjAk23SdX907HZBwLk2AvieMcyZOUiE9DpJ/
         shell: /bin/bash
         groups: uucp, lock
         append: yes
-      when: ansible_os_family == "Archlinux"
 
-    - name: "Put users in sensible groups"
+
+    - name: "Put users in sensible Arch groups"
+      when: ansible_os_family == "Archlinux"
       user:
         name: all
         groups: uucp, lock, optical, lp
         append: yes
-      when: ansible_os_family == "Archlinux"
 
-    - name: "Creating vectorspace user on Debian"
-      when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+    - name: "Put users in sensible Debian groups"
+      when: ansible_os_family == "Debian"
       user:
-        name: vectorspace
-        password: $6$vWpDsmcPtXg5QeQE$gQe0ocyTDIukYJ8NBPil8nf.qNRa10W0LRw1w5n39TiJxAnV6jpjAk23SdX907HZBwLk2AvieMcyZOUiE9DpJ/
-        shell: /bin/bash
+        name: all
         groups: dialout
         append: yes
-
-    - file: dest=/home/vectorspace owner=vectorspace group=vectorspace mode=u=rwX,g=rX,o=rX recurse=yes
 
     - name: create aur_builder user
       when: ansible_os_family == "Archlinux"
@@ -67,3 +64,10 @@
         content: |
           [User]
           SystemAccount=true
+
+    # - name: Remove vectorspace from sudo group
+    #   when: ansible_os_family == "Debian"
+    #   user:
+    #     name: vectorspace
+    #     groups: uucp, lock
+    #     append: yes

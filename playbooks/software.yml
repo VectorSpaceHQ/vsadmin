@@ -5,70 +5,61 @@
 
   - name: "Install Debian packages"
     when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
-    apt: name={{item}} state=latest update_cache=yes
-    with_items:
-      - python
-      - git
-      - arduino
-      - python-matplotlib
-      - python-numpy
-      - python-scipy
-      - python-pandas
-      - blender
-      - emacs
-      - kdenlive
-      - nmap
-      - libreoffice always a conflict
-      - librecad
-      - gimp
-      - inkscape
-      - xfburn
-      - python-h5py
-      - octave
-      - ghc
-      - cups
-      - zsh
-      - ffmpeg
-      - xfce4
-      - gthumb
-      - python-pip
+    apt:
+      name: ['python', 'git', 'python3-matplotlib', 'python3-numpy', 'python3-scipy', 'python3-pandas', 'blender', 'emacs', 'kdenlive', 'nmap', 'libreoffice', 'librecad', 'gimp', 'inkscape', 'xfburn', 'python3-h5py', 'octave', 'ghc','cups', 'zsh', 'ffmpeg', 'xfce4', 'gthumb', 'python3-pip', 'vim', 'r-base', 'gcc', 'okular', 'vlc', 'openssh-server', 'lightdm', 'lightdm-gtk-greeter', 'light-locker', 'cmake', 'automake', 'build-essential', 'meshlab', 'filezilla', 'python3-setuptools', 'kicad', 'audacity', 'ansible', 'thunderbird', 'kicad-libraries', 'kicad-footprints', 'kicad-packages3d', 'kicad-symbols', 'krita', 'openscad', 'simplescreenrecorder', 'openrocket', 'gnome-calculator', 'inkscape-tutorials', 'font-manager', 'scribus', 'pdfshuffler', 'rsync', 'darktable']
+      state: latest
+      force: yes
 
-    # needed to resolve most software conflicts
-  # - name: full system upgrade
-  #   when: ansible_os_family == "Archlinux"
-  #   pacman:
-  #     update_cache: yes
-  #     upgrade: yes
+  - name: "Install Debian libraries for Inkscape copy/paste bug"
+    when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+    apt:
+      name: ['liblcms2-dev', 'libmagickwand-dev', 'libpango1.0-dev', 'libcairo2-dev', 'python-cairo-dev', 'python-dev', 'pstoedit', 'ruby', 'dia', 'libsvg-perl', 'libxml-xql-perl']
+      state: latest
+      force: yes
+
+  - name: "Ubuntu only packages"
+    when: ansible_distribution == "Ubuntu" # find using, ansible -i "joshua," all -m setup
+    apt:
+      name: ['chromium-browser']
+      state: latest
+      force: yes
+
+  - name: "Debian only packages"
+    when: ansible_os_family == "Debian" and ansible_distribution != 'Ubuntu'
+    apt:
+      name: ['chromium', 'firmware-amd-graphics', 'firmware-realtek', 'htop', 'gphoto2', 'gphotofs', 'gtkam', 'arduino-core', 'gvfs', 'gvfs-fuse', 'gvfs-backends']
+      state: latest
+      force: yes
 
   - name: Install Arch packages
     when: ansible_os_family == "Archlinux"
     pacman:
-      name: ['base-devel', 'python', 'git', 'arduino', 'arduino-avr-core', 'python-matplotlib', 'python-numpy', 'python2-numpy', 'python-scipy', 'python-pandas', 'python2-lxml', 'blender', 'emacs', 'kdenlive', 'nmap', 'librecad', 'gimp', 'inkscape', 'xfburn', 'tar', 'jupyter', 'python-h5py', 'octave', 'chromium', 'ghc', 'cups', 'cups-pdf', 'zsh', 'ffmpeg', 'openscad', 'cmake', 'automake', 'filezilla', 'python-setuptools', 'kicad','kicad-library', 'audacity', 'vim', 'lua', 'gthumb', 'screen', 'llvm', 'clang', 'ansible', 'evince', 'gphoto2', 'manjaro-printer', 'lib32-mpg123', 'kmag', 'frei0r-plugins', 'breeze-icons', 'mlt', 'opencv', 'ttf-croscore', 'noto-fonts', 'pepper-flash', 'gvfs', 'krita', 'codeblocks', 'yay', 'mate', 'llvm-libs', 'shotcut', 'python-pip', 'sshpass', 'udiskie']
+      name: ['base-devel', 'python', 'git', 'arduino', 'arduino-avr-core', 'python-matplotlib', 'python-numpy', 'python2-numpy', 'python-scipy', 'python-pandas', 'python2-lxml', 'blender', 'emacs', 'kdenlive', 'nmap', 'librecad', 'gimp', 'inkscape', 'xfburn', 'tar', 'jupyter', 'python-h5py', 'octave', 'chromium', 'ghc', 'cups', 'cups-pdf', 'zsh', 'ffmpeg', 'openscad', 'cmake', 'automake', 'filezilla', 'python-setuptools', 'kicad','kicad-library', 'audacity', 'vim', 'lua', 'gthumb', 'screen', 'llvm', 'clang', 'ansible', 'evince', 'gphoto2', 'manjaro-printer', 'lib32-mpg123', 'kmag', 'frei0r-plugins', 'breeze-icons', 'mlt', 'opencv', 'ttf-croscore', 'noto-fonts', 'pepper-flash', 'gvfs', 'krita', 'codeblocks', 'yay', 'mate', 'llvm-libs', 'shotcut', 'python-pip', 'sshpass']
       state: latest
       force: yes
       update_cache: yes
 
-  - aur: name=openrocket skip_installed=true
-    become: yes
-    become_user: aur_builder
-    when: ansible_os_family == "Archlinux"
-  - name: Install Sublime-text
-    aur: name=sublime-text-dev skip_installed=true
-    become: yes
-    become_user: aur_builder
-    when: ansible_os_family == "Archlinux"
-  - aur: name=python2-power-git skip_installed=true
-    become: yes
-    become_user: aur_builder
-    when: ansible_os_family == "Archlinux"
-  - aur: name=cura-aleph-bin skip_installed=true
-    become: yes
-    become_user: aur_builder
-    when: ansible_os_family == "Archlinux"
-  - aur: name=ansible-aur-git skip_installed=true
-    become: yes
-    become_user: aur_builder
-    when: ansible_os_family == "Archlinux"
+  # - aur: name=openrocket skip_installed=true
+  #   become: yes
+  #   become_user: aur_builder
+  #   when: ansible_os_family == "Archlinux"
+  # - name: Install Sublime-text
+  #   aur: name=sublime-text-dev skip_installed=true
+  #   become: yes
+  #   become_user: aur_builder
+  #   when: ansible_os_family == "Archlinux"
+  # - aur: name=python2-power-git skip_installed=true
+  #   become: yes
+  #   become_user: aur_builder
+  #   when: ansible_os_family == "Archlinux"
+  # - aur: name=cura-aleph-bin skip_installed=true
+  #   become: yes
+  #   become_user: aur_builder
+  #   when: ansible_os_family == "Archlinux"
+  # - aur: name=ansible-aur-git skip_installed=true
+  #   become: yes
+  #   become_user: aur_builder
+  #   when: ansible_os_family == "Archlinux"
 
   # - pip:
   #   become: yes
@@ -78,3 +69,34 @@
   #   become: yes
   #   become_user: aur_builder
   #   when: ansible_os_family == "Archlinux"
+
+  - command: ls /usr/local/bin/arduino
+    register: result
+    ignore_errors: True
+  - name: Install Arduino
+    when: result is failed
+    shell: /vsfs01/opt/arduino-1.8.13/install.sh
+
+
+    # Install freecad if not present
+  - command: ls /opt/freecad
+    register: freecad_present
+    ignore_errors: True
+  - name: Install FreeCAD
+    when: freecad_present is failed
+    get_url: url=https://github.com/FreeCAD/FreeCAD/releases/download/0.19_pre/FreeCAD_0.19-23756-Linux-Conda_glibc2.12-x86_64.AppImage dest=/opt/freecad
+  - name: set freecad executable
+    file:
+      path: /opt/freecad
+      owner: root
+      mode: '0755'
+  - name: freecad desktop application file
+    copy:
+      src: ../config_files/freecad.desktop
+      dest: /usr/share/applications
+      owner: root
+  - name: freecad icon install
+    copy:
+      src: ../config_files/appimagekit-freecad.png
+      dest: /tmp
+  - command: xdg-icon-resource install --size 64 /tmp/appimagekit-freecad.png

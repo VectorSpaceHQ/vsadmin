@@ -1,8 +1,10 @@
+- include: initialize_client.yml
 - include: syu.yml
 - include: config_ldap.yml
 - include: mount_vsfs01.yml
-- include: mount_samba.yml
+# - include: mount_samba.yml
 - include: user_management.yml
 - include: system_administration.yml
 - include: software.yml
+- include: sheetcam_install.yml
 # - include: reboot.yml
