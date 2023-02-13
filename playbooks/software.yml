@@ -3,19 +3,36 @@
   become_method: su
   tasks:
 
-  - name: "Install Debian packages"
+  - name: "Install Debian 11 packages"
     when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
     apt:
-      name: ['python', 'git', 'python3-matplotlib', 'python3-numpy', 'python3-scipy', 'python3-pandas', 'blender', 'emacs', 'kdenlive', 'nmap', 'libreoffice', 'librecad', 'gimp', 'inkscape', 'xfburn', 'python3-h5py', 'octave', 'ghc','cups', 'zsh', 'ffmpeg', 'xfce4', 'gthumb', 'python3-pip', 'vim', 'r-base', 'gcc', 'okular', 'vlc', 'openssh-server', 'lightdm', 'lightdm-gtk-greeter', 'light-locker', 'cmake', 'automake', 'build-essential', 'meshlab', 'filezilla', 'python3-setuptools', 'kicad', 'audacity', 'ansible', 'thunderbird', 'kicad-libraries', 'kicad-footprints', 'kicad-packages3d', 'kicad-symbols', 'krita', 'openscad', 'simplescreenrecorder', 'openrocket', 'gnome-calculator', 'inkscape-tutorials', 'font-manager', 'scribus', 'pdfshuffler', 'rsync', 'darktable']
+      name: ['git', 'blender', 'emacs', 'kdenlive', 'nmap', 'libreoffice', 'librecad', 'gimp', 'inkscape', 'xfburn',  'octave', 'ghc','cups', 'zsh', 'ffmpeg', 'xfce4', 'gthumb', 'python3-pip', 'vim', 'r-base', 'gcc', 'okular', 'vlc', 'openssh-server', 'lightdm', 'lightdm-gtk-greeter', 'light-locker', 'cmake', 'automake', 'build-essential', 'meshlab', 'filezilla', 'python3-setuptools', 'kicad', 'audacity', 'ansible', 'thunderbird', 'kicad-libraries', 'kicad-footprints', 'kicad-packages3d', 'kicad-symbols', 'krita', 'openscad', 'simplescreenrecorder', 'gnome-calculator', 'inkscape-tutorials', 'font-manager', 'scribus', 'pdfshuffler', 'rsync', 'darktable', 'xfce4-screenshooter', 'octave', 'racket', 'mit-scheme', 'mit-scheme-dbg', 'python3-pyclipper', 'potrace', 'dnsutils', 'slic3r', 'libwx-perl', 'libwx-glcanvas-perl', 'python3-pandas', 'python3-matplotlib', 'freecad', 'inkscape', 'libncurses5', 'arduino', 'spyder', 'idle3', 'qelectrotech', 'qelectrotech-data']
       state: latest
       force: yes
 
-  - name: "Install Debian libraries for Inkscape copy/paste bug"
-    when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
-    apt:
-      name: ['liblcms2-dev', 'libmagickwand-dev', 'libpango1.0-dev', 'libcairo2-dev', 'python-cairo-dev', 'python-dev', 'pstoedit', 'ruby', 'dia', 'libsvg-perl', 'libxml-xql-perl']
-      state: latest
-      force: yes
+  # - name: Install packages from buster-backports
+  #   when: ansible_os_family == "Debian"
+  #   apt:
+  #     name: ['freecad', 'inkscape']
+  #     default_release: buster-backports
+  #     update_cache: yes
+  #     cache_valid_time: 3600
+
+  # - name: "Install Debian 11 packages"
+  #   when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+  #   apt:
+  #     name: ['python-is-python3', 'git', 'blender', 'emacs', 'kdenlive', 'nmap', 'libreoffice', 'librecad', 'gimp', 'inkscape', 'xfburn',  'octave', 'ghc','cups', 'zsh', 'ffmpeg', 'xfce4', 'gthumb', 'python3-pip', 'vim', 'r-base', 'gcc', 'okular', 'vlc', 'openssh-server', 'lightdm', 'lightdm-gtk-greeter', 'light-locker', 'cmake', 'automake', 'build-essential', 'meshlab', 'filezilla', 'python3-setuptools', 'kicad', 'audacity', 'ansible', 'thunderbird', 'kicad-libraries', 'kicad-footprints', 'kicad-packages3d', 'kicad-symbols', 'krita', 'openscad', 'simplescreenrecorder', 'gnome-calculator', 'inkscape-tutorials', 'font-manager', 'scribus', 'pdfshuffler', 'rsync', 'darktable', 'xfce4-screenshooter', 'octave', 'racket', 'mit-scheme', 'mit-scheme-dbg', 'python3-pyclipper', 'potrace']
+
+      # state: latest
+      # force: yes
+
+  # - name: "Install Debian libraries for Inkscape copy/paste bug"
+  #   when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+  #   apt:
+  #     name: ['liblcms2-dev', 'libmagickwand-dev', 'libpango1.0-dev', 'libcairo2-dev',  'python-dev', 'pstoedit', 'ruby', 'dia', 'libsvg-perl', 'libxml-xql-perl']
+  #     # 'python-cairo-dev',
+  #     state: latest
+  #     force: yes
 
   - name: "Ubuntu only packages"
     when: ansible_distribution == "Ubuntu" # find using, ansible -i "joshua," all -m setup
@@ -31,72 +48,87 @@
       state: latest
       force: yes
 
-  - name: Install Arch packages
-    when: ansible_os_family == "Archlinux"
-    pacman:
-      name: ['base-devel', 'python', 'git', 'arduino', 'arduino-avr-core', 'python-matplotlib', 'python-numpy', 'python2-numpy', 'python-scipy', 'python-pandas', 'python2-lxml', 'blender', 'emacs', 'kdenlive', 'nmap', 'librecad', 'gimp', 'inkscape', 'xfburn', 'tar', 'jupyter', 'python-h5py', 'octave', 'chromium', 'ghc', 'cups', 'cups-pdf', 'zsh', 'ffmpeg', 'openscad', 'cmake', 'automake', 'filezilla', 'python-setuptools', 'kicad','kicad-library', 'audacity', 'vim', 'lua', 'gthumb', 'screen', 'llvm', 'clang', 'ansible', 'evince', 'gphoto2', 'manjaro-printer', 'lib32-mpg123', 'kmag', 'frei0r-plugins', 'breeze-icons', 'mlt', 'opencv', 'ttf-croscore', 'noto-fonts', 'pepper-flash', 'gvfs', 'krita', 'codeblocks', 'yay', 'mate', 'llvm-libs', 'shotcut', 'python-pip', 'sshpass']
-      state: latest
-      force: yes
-      update_cache: yes
-
-  # - aur: name=openrocket skip_installed=true
-  #   become: yes
-  #   become_user: aur_builder
-  #   when: ansible_os_family == "Archlinux"
-  # - name: Install Sublime-text
-  #   aur: name=sublime-text-dev skip_installed=true
-  #   become: yes
-  #   become_user: aur_builder
-  #   when: ansible_os_family == "Archlinux"
-  # - aur: name=python2-power-git skip_installed=true
-  #   become: yes
-  #   become_user: aur_builder
-  #   when: ansible_os_family == "Archlinux"
-  # - aur: name=cura-aleph-bin skip_installed=true
-  #   become: yes
-  #   become_user: aur_builder
-  #   when: ansible_os_family == "Archlinux"
-  # - aur: name=ansible-aur-git skip_installed=true
-  #   become: yes
-  #   become_user: aur_builder
-  #   when: ansible_os_family == "Archlinux"
-
-  # - pip:
-  #   become: yes
-  #   name: mu-editor
-  #   when: ansible_os_family == "Archlinux"
-  # - aur: name=freecad skip_installed=true
-  #   become: yes
-  #   become_user: aur_builder
-  #   when: ansible_os_family == "Archlinux"
-
-  - command: ls /usr/local/bin/arduino
+  - command: ls /usr/bin/arduino
     register: result
     ignore_errors: True
-  - name: Install Arduino
+  - name: Local Arduino not found, install from network
     when: result is failed
     shell: /vsfs01/opt/arduino-1.8.13/install.sh
 
 
-    # Install freecad if not present
-  - command: ls /opt/freecad
-    register: freecad_present
-    ignore_errors: True
-  - name: Install FreeCAD
-    when: freecad_present is failed
-    get_url: url=https://github.com/FreeCAD/FreeCAD/releases/download/0.19_pre/FreeCAD_0.19-23756-Linux-Conda_glibc2.12-x86_64.AppImage dest=/opt/freecad
-  - name: set freecad executable
-    file:
-      path: /opt/freecad
-      owner: root
-      mode: '0755'
-  - name: freecad desktop application file
+    # # Install freecad if not present
+  # - command: ls /opt/freecad
+  #   register: freecad_present
+  #   ignore_errors: True
+
+  # - name: Install FreeCAD
+  #   when: freecad_present is failed
+  #   get_url: url=https://github.com/FreeCAD/FreeCAD/releases/download/0.19_pre/FreeCAD_0.19-23756-Linux-Conda_glibc2.12-x86_64.AppImage dest=/opt/freecad
+
+  # - name: set freecad executable
+  #   file:
+  #     path: /opt/freecad
+  #     owner: root
+  #     mode: '0755'
+
+  # - name: freecad desktop application file
+  #   copy:
+  #     src: ../config_files/freecad.desktop
+  #     dest: /usr/share/applications
+  #     owner: root
+
+  # - name: freecad icon install
+  #   copy:
+  #     src: ../config_files/appimagekit-freecad.png
+  #     dest: /tmp
+  # - command: xdg-icon-resource install --size 64 /tmp/appimagekit-freecad.png
+
+  - name: f-engrave desktop application file
     copy:
-      src: ../config_files/freecad.desktop
+      src: ../config_files/f-engrave.desktop
       dest: /usr/share/applications
       owner: root
-  - name: freecad icon install
+
+  - name: f-engrave icon install
     copy:
-      src: ../config_files/appimagekit-freecad.png
+      src: ../config_files/scorch_logo.png
       dest: /tmp
-  - command: xdg-icon-resource install --size 64 /tmp/appimagekit-freecad.png
+  - command: xdg-icon-resource install --size 64 --novendor /tmp/scorch_logo.png
+
+
+  - name: OpenRocket desktop file
+    when: ansible_os_family == "Debian"
+    copy:
+      src: ../config_files/openrocket.desktop
+      dest: /usr/share/applications
+      owner: root
+
+  # - name: Inkstitch plugin
+  #   when: ansible_os_family == "Debian"
+  #   copy:
+  #     src: ../config_files/inkstitch-v2.0.0
+  #     dest: /usr/share/inkscape/extensions/
+  #     owner: root
+
+  - name: Slic3r profiles
+    when: ansible_os_family == "Debian"
+    copy:
+      src: /vsfs01/home/aspontarelli/.Slic3r/
+      dest: /home/vectorspace/.Slic3r/
+      owner: vectorspace
+
+  - name: LightBurn Desktop file
+    when: ansible_os_family == "Debian"
+    copy:
+      src: /vsfs01/home/aspontarelli/ansible/config_files/LightBurn.desktop
+      dest: /usr/share/applications/
+      owner: root
+
+  # - name: Freecad point to /vsfs01/opt version 0.19
+  #   replace:
+  #     path: /usr/share/applications/freecad.desktop
+  #     regexp: '\/usr\/bin\/freecad'
+  #     replace: '\/vsfs01\/opt\/freecad'
+
+  # - name: Slack
+  #   https://www.how2shout.com/linux/how-to-install-slack-on-debian-11-bullseye-linux/

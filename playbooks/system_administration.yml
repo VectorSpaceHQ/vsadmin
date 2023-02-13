@@ -2,6 +2,7 @@
   hosts: clients
   become: true
   become_method: su
+  ignore_errors: yes
   tasks:
 
   # - name: fix for systemd 239
@@ -38,13 +39,13 @@
       group: root
       mode: 0644
 
-  - name: install user logout script
-    copy:
-      src: ../scripts/logout_users.sh
-      dest: /etc/cron.hourly/logout_users
-      owner: root
-      group: root
-      mode: 0744
+  # - name: install user logout script
+  #   copy:
+  #     src: ../scripts/logout_users.sh
+  #     dest: /etc/cron.hourly/logout_users
+  #     owner: root
+  #     group: root
+  #     mode: 0744
 
   - name: install group modification script
     copy:
@@ -60,8 +61,51 @@
   #     line: 'udiskie &'
   #     create: yes
   - name: Add admins to sudoers
+    # when: ansible_distribution_major_version == 10
     when: ansible_os_family == "Debian"
     lineinfile:
       path: /etc/sudoers
       line: '%admins ALL=(ALL:ALL) ALL'
       create: yes
+
+    # sometimes missing on new debian installs. Needed by a few programs
+  - name: Create Debian-exim group
+    when: ansible_os_family == "Debian"
+    group:
+      name: Debian-exim
+      state: present
+  - name: Create colord group
+    when: ansible_os_family == "Debian"
+    group:
+      name: colord
+      state: present
+
+  - name: Remove Chromium keyring
+    replace:
+      path: /usr/share/applications/chromium.desktop
+      regexp: '^Exec=/usr/bin/chromium %U'
+      replace: 'Exec=/usr/bin/chromium %U --password-store=basic'
+
+  - name: Clear XFCE cache
+    file:
+      path: /home/vectorspace/.cache/sessions/
+      state: absent
+
+  - name: Setup XFCE4 taskbar
+    copy:
+      src: /vsfs01/home/aspontarelli/.config/xfce4/
+      dest: /home/vectorspace/.config/xfce4/
+      owner: vectorspace
+      group: vectorspace
+      mode: 0744
+
+  # - name: Modify lightdm to load trim spaces library
+  #   when: ansible_os_family == "Debian"
+  #   lineinfile:
+  #     path: /etc/pam.d/lightdm
+  #     line: 'auth      requisite pam_trimspaces.so'
+  #     create: yes
+
+  # - name: install trim_spaces.so shared library
+  #   when: ansible_os_family == "Debian"
+  #   shell: "dpkg -i ../config/files/libpam-trimspaces_1.0.1ocf1_amd64.deb || true && apt-get -f install -y"

@@ -40,3 +40,9 @@
         create: yes
         validate: 'visudo -cf %s'
         when: ansible_os_family == "Archlinux"
+
+    - name: Create Debian-exim group
+      when: ansible_os_family == "Debian"
+      group:
+        name: Debian-exim
+        state: present

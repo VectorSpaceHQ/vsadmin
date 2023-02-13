@@ -36,7 +36,7 @@
         path: /vsfs01/camera
         state: directory
         owner: root
-        group: root
+        group: members
         mode: 0755
 
     - name: Create vsfs01 opt directory
@@ -44,16 +44,24 @@
         path: /vsfs01/opt
         state: directory
         owner: root
-        group: root
+        group: members
         mode: 0755
+
+    - name: Create vsfs01 share directory
+      file:
+        path: /vsfs01/share
+        state: directory
+        owner: root
+        group: members
+        mode: 0777
 
     - name: Create vsfs01 tv_slideshow directory
       file:
         path: /vsfs01/tv_slideshow
         state: directory
         owner: root
-        group: root
-        mode: 0755
+        group: members
+        mode: 0775
 
     - name: Mount member home space on Debian
       when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'

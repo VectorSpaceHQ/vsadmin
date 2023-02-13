@@ -14,13 +14,14 @@ do
             usermod -a -G dialout $LDAP_USER
             usermod -a -G plugdev $LDAP_USER
             usermod -a -G cdrom $LDAP_USER
+            usermod -a -G lp $LDAP_USER
         fi
 
         if [[ $USER_GROUPS = *"admins"* ]]; then
             echo "Adding $LDAP_USER to admin groups"
-            usermod -a -G wheel $LDAP_USER
             usermod -a -G sys $LDAP_USER
             usermod -a -G sudo $LDAP_USER
+            usermod -a -G lp $LDAP_USER
         fi
     fi
 done

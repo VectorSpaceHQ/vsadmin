@@ -20,10 +20,8 @@
     with_items:
       - sssd
       - libpam-sss
-      - libnss-sss
-      - ldap-utils
-      - libnss-ldap
       - libsss-sudo
+      - libnss-ldapd
       - libpam-ldap
       - accountsservice
 

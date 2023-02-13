@@ -13,14 +13,12 @@
 
 
 [clients]
-#10.0.0.67
-10.0.0.[3:99]
-
+10.0.0.116
+#10.0.0.[3:100]
 
 [test]
 10.0.0.35
 [all:vars]
-# ansible_python_interpreter=/usr/bin/python2
 
 [lan]
 localhost ansible_connection=local ansible_become_pass='{{ su_password_localhost }}'

@@ -3,67 +3,14 @@
   become: true
   become_method: su
   tasks:
-    - name: "Creating vectorspace user on arch"
-      when: ansible_os_family == "Archlinux"
-      user:
-        name: vectorspace
-        password: $6$vWpDsmcPtXg5QeQE$gQe0ocyTDIukYJ8NBPil8nf.qNRa10W0LRw1w5n39TiJxAnV6jpjAk23SdX907HZBwLk2AvieMcyZOUiE9DpJ/
-        shell: /bin/bash
-        groups: uucp, lock
-        append: yes
-
-
-    - name: "Put users in sensible Arch groups"
-      when: ansible_os_family == "Archlinux"
-      user:
-        name: all
-        groups: uucp, lock, optical, lp
-        append: yes
 
     - name: "Put users in sensible Debian groups"
       when: ansible_os_family == "Debian"
       user:
         name: all
-        groups: dialout
+        groups: dialout, lp
         append: yes
 
-    - name: create aur_builder user
-      when: ansible_os_family == "Archlinux"
-      user:
-        name: aur_builder
-        group: wheel
-
-    - name: give aur_builder permissions
-      when: ansible_os_family == "Archlinux"
-      lineinfile:
-        path: /etc/sudoers.d/11-install-aur_builder
-        line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
-        create: yes
-        validate: 'visudo -cf %s'
-
-    - name: hide system user aur_builder
-      when: ansible_os_family == "Archlinux"
-      copy:
-        dest: "/var/lib/AccountsService/users/aur_builder"
-        content: |
-          [User]
-          SystemAccount=true
-
-    - name: hide system user all
-      when: ansible_os_family == "Archlinux"
-      copy:
-        dest: "/var/lib/AccountsService/users/all"
-        content: |
-          [User]
-          SystemAccount=true
-
-    - name: hide system user adam
-      when: ansible_os_family == "Archlinux"
-      copy:
-        dest: "/var/lib/AccountsService/users/adam"
-        content: |
-          [User]
-          SystemAccount=true
 
     # - name: Remove vectorspace from sudo group
     #   when: ansible_os_family == "Debian"

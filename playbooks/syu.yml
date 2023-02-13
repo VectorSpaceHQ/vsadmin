@@ -38,12 +38,21 @@
         regexp: 'contrib$'
         replace: 'contrib non-free'
 
-    - name: "FIX: Ubuntu 16.04 LTS doesn't come certain with modules, required by ansible"
-      raw: apt-get install python-minimal aptitude -y
+    # - name: Add backports to Debian 10
+    #   when: ansible_os_family == "Debian"
+    #   lineinfile:
+    #     path: /etc/apt/sources.list
+    #     line: 'deb http://deb.debian.org/debian buster-backports main contrib non-free'
+    #     create: yes
 
-    - name: Debian package upgrade
-      when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
-      apt:
-        update_cache: yes
-        name: "*"
-        state: latest
+        # Debian 11 fixes this
+    # - name: "FIX: Ubuntu 16.04 LTS doesn't come certain with modules, required by ansible"
+    #   raw: apt-get install python-minimal aptitude -y
+
+    # - name: Debian package upgrade
+    #   when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+    #   apt:
+    #     update_cache: yes
+    #     name: "*"
+    #     state: latest
+    #     default_release: buster-backports

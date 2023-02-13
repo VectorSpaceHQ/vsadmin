@@ -2,7 +2,8 @@
 [Desktop Entry]
 Type=Application
 Terminal=false
-Exec=/usr/share/LightBurn/LightBurn
+Exec=/vsfs01/opt/LightBurn/LightBurn
 Name=LightBurn
-Icon=/usr/share/lightburn-square_720x.png?v=1519966515
+Comment=Better Software For Laser Cutters
+Icon=/vsfs01/opt/LightBurn//LightBurn.png
 Categories=Graphics
