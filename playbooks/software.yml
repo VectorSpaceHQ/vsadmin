@@ -1,22 +1,17 @@
 - hosts: clients
   become: yes
   become_method: su
+  ignore_errors: true
   tasks:
 
-  - name: "Install Debian 11 packages"
+  - name: "Install Debian 12 packages"
     when: ansible_os_family == "Debian"
     apt:
-      name: ['git', 'blender', 'emacs', 'kdenlive', 'nmap', 'libreoffice', 'librecad', 'gimp', 'inkscape', 'xfburn',  'octave', 'ghc','cups', 'zsh', 'ffmpeg', 'xfce4', 'gthumb', 'python3-pip', 'vim', 'r-base', 'gcc', 'okular', 'vlc', 'openssh-server', 'lightdm', 'lightdm-gtk-greeter', 'light-locker', 'cmake', 'automake', 'build-essential', 'meshlab', 'filezilla', 'python3-setuptools', 'kicad', 'audacity', 'ansible', 'thunderbird', 'kicad-libraries', 'kicad-footprints', 'kicad-packages3d', 'kicad-symbols', 'krita', 'openscad', 'simplescreenrecorder', 'gnome-calculator', 'inkscape-tutorials', 'font-manager', 'scribus', 'rsync', 'darktable', 'xfce4-screenshooter', 'octave', 'racket', 'mit-scheme', 'mit-scheme-dbg', 'python3-pyclipper', 'potrace', 'dnsutils', 'slic3r', 'libwx-perl', 'libwx-glcanvas-perl', 'python3-pandas', 'python3-matplotlib', 'freecad', 'inkscape', 'libncurses5', 'arduino', 'spyder', 'idle3', 'qelectrotech', 'qelectrotech-data', 'prusa-slicer', 'python3-serial']
+      name: ['git', 'emacs', 'kdenlive', 'nmap', 'libreoffice', 'librecad', 'gimp', 'inkscape', 'xfburn',  'octave', 'ghc','cups', 'zsh', 'ffmpeg', 'xfce4', 'gthumb', 'python3-pip', 'vim', 'r-base', 'gcc', 'okular', 'vlc', 'openssh-server', 'lightdm', 'lightdm-gtk-greeter', 'light-locker', 'cmake', 'automake', 'build-essential', 'meshlab', 'filezilla', 'python3-setuptools', 'kicad', 'audacity', 'ansible', 'thunderbird', 'kicad-libraries', 'kicad-footprints', 'kicad-packages3d', 'kicad-symbols', 'krita', 'openscad', 'gnome-calculator', 'inkscape-tutorials', 'font-manager', 'scribus', 'rsync', 'darktable', 'xfce4-screenshooter', 'racket', 'mit-scheme', 'mit-scheme-dbg', 'python3-pyclipper', 'potrace', 'dnsutils', 'libwx-perl', 'libwx-glcanvas-perl', 'python3-pandas', 'python3-matplotlib', 'freecad', 'inkscape', 'arduino', 'spyder', 'idle3', 'qelectrotech', 'qelectrotech-data', 'prusa-slicer', 'python3-serial', 'pdfarranger', 'g++', 'libfreetype-dev', 'curl', 'wget', 'gpg']
       state: latest
       force: yes
 
-  # - name: Install packages from buster-backports
-  #   when: ansible_os_family == "Debian"
-  #   apt:
-  #     name: ['freecad', 'inkscape']
-  #     default_release: buster-backports
-  #     update_cache: yes
-  #     cache_valid_time: 3600
+
 
   # - name: "Install Debian 11 packages"
   #   when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
@@ -48,12 +43,14 @@
       state: latest
       force: yes
 
-  - command: ls /usr/bin/arduino
-    register: result
-    ignore_errors: True
-  - name: Local Arduino not found, install from network
-    when: result is failed
-    shell: /vsfs01/opt/arduino-1.8.13/install.sh
+
+      # Debian 11 arduino solution
+  # - command: ls /usr/bin/arduino
+  #   register: result
+  #   ignore_errors: True
+  # - name: Local Arduino not found, install from network
+  #   when: result is failed
+  #   shell: /vsfs01/opt/arduino-1.8.13/install.sh
 
 
     # # Install freecad if not present
@@ -83,24 +80,30 @@
   #     dest: /tmp
   # - command: xdg-icon-resource install --size 64 /tmp/appimagekit-freecad.png
 
-  - name: Lightburn license install
+  # blender broke in Debian Testing
+  - name: blender desktop application file
     copy:
-      src: ../config_files/lightburn.ldata
-      dest: /etc
+      src: ../config_files/blender.desktop
+      dest: /usr/share/applications
       owner: root
 
-  - name: f-engrave desktop application file
+  - name: blender icon install
+    copy:
+      src: ../config_files/blender-3d-icon-9.png
+      dest: /tmp
+  - command: xdg-icon-resource install --size 64 /tmp/blender-3d-icon-9.png
+
+  - name: fengrave desktop application file
     copy:
       src: ../config_files/f-engrave.desktop
       dest: /usr/share/applications
       owner: root
 
-  - name: f-engrave icon install
+  - name: fengrave icon install
     copy:
       src: ../config_files/scorch_logo.png
       dest: /tmp
   - command: xdg-icon-resource install --size 64 --novendor /tmp/scorch_logo.png
-
 
   - name: OpenRocket desktop file
     when: ansible_os_family == "Debian"
@@ -116,18 +119,32 @@
   #     dest: /usr/share/inkscape/extensions/
   #     owner: root
 
-  - name: Slic3r profiles
+
+  - name: Prusa-slicer profiles for vectorspace user
     when: ansible_os_family == "Debian"
-    copy:
-      src: /vsfs01/home/aspontarelli/.Slic3r/
-      dest: /home/vectorspace/.Slic3r/
-      owner: vectorspace
+    ansible.posix.synchronize:
+      src: /vsfs01/home/aspontarelli/.config/PrusaSlicer
+      dest: /home/vectorspace/.config/PrusaSlicer
+      #owner: vectorspace
+
+  - name: LightBurn Application
+    when: ansible_os_family == "Debian"
+    ansible.posix.synchronize:
+      src: /vsfs01/home/aspontarelli/ansible/config_files/LightBurn
+      dest: /opt/
+      #owner: root
 
   - name: LightBurn Desktop file
     when: ansible_os_family == "Debian"
     copy:
       src: /vsfs01/home/aspontarelli/ansible/config_files/LightBurn.desktop
       dest: /usr/share/applications/
+      owner: root
+
+  - name: Lightburn license install
+    copy:
+      src: ../config_files/lightburn.ldata
+      dest: /etc
       owner: root
 
   # - name: Freecad point to /vsfs01/opt version 0.19
@@ -138,3 +155,10 @@
 
   # - name: Slack
   #   https://www.how2shout.com/linux/how-to-install-slack-on-debian-11-bullseye-linux/
+
+  - name: VSCode
+    apt:
+      deb: '/vsfs01/home/aspontarelli/ansible/config_files/code_1.93.1-1726079302_amd64.deb'
+      dpkg_options: '-y' # answer yes to prompt
+  - name: VSCode2
+    command: apt install /vsfs01/home/aspontarelli/ansible/config_files/code_1.93.1-1726079302_amd64.deb -y

@@ -47,6 +47,15 @@
   #     group: root
   #     mode: 0744
 
+  - name: Reboot every Sunday
+    copy:
+      src: ../scripts/reboot.sh
+      dest: /etc/cron.weekly/reboot
+      owner: root
+      group: root
+      mode: 0744
+
+
   - name: install group modification script
     copy:
       src: ../scripts/groups.sh
@@ -54,6 +63,14 @@
       owner: root
       group: root
       mode: 0744
+
+  - name: install password change desktop script
+    copy:
+      src: ../config_files/passwd.desktop
+      dest: /usr/share/passwd.desktop
+      owner: root
+      group: root
+      mode: 0755
 
   # - name: run udiskie at vectorspace login
   #   lineinfile:
