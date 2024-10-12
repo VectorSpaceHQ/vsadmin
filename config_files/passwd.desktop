@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Change Password
+Exec=passwd
+Terminal=true
+Type=Application
