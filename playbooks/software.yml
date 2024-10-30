@@ -7,14 +7,17 @@
   - name: "Install Debian 12 packages"
     when: ansible_os_family == "Debian"
     apt:
-      name: ['git', 'emacs', 'kdenlive', 'nmap', 'libreoffice', 'librecad', 'gimp', 'inkscape', 'xfburn',  'octave', 'ghc','cups', 'zsh', 'ffmpeg', 'xfce4', 'gthumb', 'python3-pip', 'vim', 'r-base', 'gcc', 'okular', 'vlc', 'openssh-server', 'lightdm', 'lightdm-gtk-greeter', 'light-locker', 'cmake', 'automake', 'build-essential', 'meshlab', 'filezilla', 'python3-setuptools', 'kicad', 'audacity', 'ansible', 'thunderbird', 'kicad-libraries', 'kicad-footprints', 'kicad-packages3d', 'kicad-symbols', 'krita', 'openscad', 'gnome-calculator', 'inkscape-tutorials', 'font-manager', 'scribus', 'rsync', 'darktable', 'xfce4-screenshooter', 'racket', 'mit-scheme', 'mit-scheme-dbg', 'python3-pyclipper', 'potrace', 'dnsutils', 'libwx-perl', 'libwx-glcanvas-perl', 'python3-pandas', 'python3-matplotlib', 'freecad', 'inkscape', 'arduino', 'spyder', 'idle3', 'qelectrotech', 'qelectrotech-data', 'prusa-slicer', 'python3-serial', 'pdfarranger', 'g++', 'libfreetype-dev', 'curl', 'wget', 'gpg']
+      name:
+      - 'git'
+      - 'emacs'
+      - 'kdenlive', 'nmap', 'libreoffice', 'librecad', 'gimp', 'inkscape', 'xfburn',  'octave', 'ghc','cups', 'zsh', 'ffmpeg', 'xfce4', 'gthumb', 'python3-pip', 'vim', 'r-base', 'gcc', 'okular', 'vlc', 'openssh-server', 'lightdm', 'lightdm-gtk-greeter', 'light-locker', 'cmake', 'automake', 'build-essential', 'meshlab', 'filezilla', 'python3-setuptools', 'kicad', 'audacity', 'ansible', 'thunderbird', 'kicad-libraries', 'kicad-footprints', 'kicad-packages3d', 'kicad-symbols', 'krita', 'openscad', 'gnome-calculator', 'inkscape-tutorials', 'font-manager', 'scribus', 'rsync', 'darktable', 'xfce4-screenshooter', 'racket', 'mit-scheme', 'mit-scheme-dbg', 'python3-pyclipper', 'potrace', 'dnsutils', 'libwx-perl', 'libwx-glcanvas-perl', 'python3-pandas', 'python3-matplotlib', 'freecad', 'inkscape', 'arduino', 'spyder', 'idle3', 'qelectrotech', 'qelectrotech-data', 'prusa-slicer', 'python3-serial', 'pdfarranger', 'g++', 'libfreetype-dev', 'curl', 'wget', 'gpg']
       state: latest
       force: yes
 
 
 
   # - name: "Install Debian 11 packages"
-  #   when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+  #   when: ansible_os_family == "Debian"
   #   apt:
   #     name: ['python-is-python3', 'git', 'blender', 'emacs', 'kdenlive', 'nmap', 'libreoffice', 'librecad', 'gimp', 'inkscape', 'xfburn',  'octave', 'ghc','cups', 'zsh', 'ffmpeg', 'xfce4', 'gthumb', 'python3-pip', 'vim', 'r-base', 'gcc', 'okular', 'vlc', 'openssh-server', 'lightdm', 'lightdm-gtk-greeter', 'light-locker', 'cmake', 'automake', 'build-essential', 'meshlab', 'filezilla', 'python3-setuptools', 'kicad', 'audacity', 'ansible', 'thunderbird', 'kicad-libraries', 'kicad-footprints', 'kicad-packages3d', 'kicad-symbols', 'krita', 'openscad', 'simplescreenrecorder', 'gnome-calculator', 'inkscape-tutorials', 'font-manager', 'scribus', 'pdfshuffler', 'rsync', 'darktable', 'xfce4-screenshooter', 'octave', 'racket', 'mit-scheme', 'mit-scheme-dbg', 'python3-pyclipper', 'potrace']
 
@@ -22,7 +25,7 @@
       # force: yes
 
   # - name: "Install Debian libraries for Inkscape copy/paste bug"
-  #   when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+  #   when: ansible_os_family == "Debian"
   #   apt:
   #     name: ['liblcms2-dev', 'libmagickwand-dev', 'libpango1.0-dev', 'libcairo2-dev',  'python-dev', 'pstoedit', 'ruby', 'dia', 'libsvg-perl', 'libxml-xql-perl']
   #     # 'python-cairo-dev',

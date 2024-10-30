@@ -2,20 +2,10 @@
 # install sssd
 # create /etc/sudoers.d/admins file
 
-- name: config_ldap
-  hosts: clients
-  become: true
-  become_method: su
-  tasks:
-  - name: Install SSSD
-    when: ansible_os_family == "Archlinux"
-    pacman: name={{item}} state=installed update_cache=yes
-    with_items:
-      - sssd
 
 # https://wiki.debian.org/LDAP/
   - name: Install LDAP client software, debian
-    when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+    when: ansible_os_family == "Debian"
     apt: name={{item}} state=latest update_cache=yes
     with_items:
       - sssd
