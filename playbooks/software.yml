@@ -7,10 +7,7 @@
   - name: "Install Debian 12 packages"
     when: ansible_os_family == "Debian"
     apt:
-      name:
-      - 'git'
-      - 'emacs'
-      - 'kdenlive', 'nmap', 'libreoffice', 'librecad', 'gimp', 'inkscape', 'xfburn',  'octave', 'ghc','cups', 'zsh', 'ffmpeg', 'xfce4', 'gthumb', 'python3-pip', 'vim', 'r-base', 'gcc', 'okular', 'vlc', 'openssh-server', 'lightdm', 'lightdm-gtk-greeter', 'light-locker', 'cmake', 'automake', 'build-essential', 'meshlab', 'filezilla', 'python3-setuptools', 'kicad', 'audacity', 'ansible', 'thunderbird', 'kicad-libraries', 'kicad-footprints', 'kicad-packages3d', 'kicad-symbols', 'krita', 'openscad', 'gnome-calculator', 'inkscape-tutorials', 'font-manager', 'scribus', 'rsync', 'darktable', 'xfce4-screenshooter', 'racket', 'mit-scheme', 'mit-scheme-dbg', 'python3-pyclipper', 'potrace', 'dnsutils', 'libwx-perl', 'libwx-glcanvas-perl', 'python3-pandas', 'python3-matplotlib', 'freecad', 'inkscape', 'arduino', 'spyder', 'idle3', 'qelectrotech', 'qelectrotech-data', 'prusa-slicer', 'python3-serial', 'pdfarranger', 'g++', 'libfreetype-dev', 'curl', 'wget', 'gpg']
+      name: ['git', 'emacs', 'kdenlive', 'nmap', 'libreoffice', 'librecad', 'gimp', 'inkscape', 'xfburn',  'octave', 'ghc','cups', 'zsh', 'ffmpeg', 'xfce4', 'gthumb', 'python3-pip', 'vim', 'r-base', 'gcc', 'okular', 'vlc', 'openssh-server', 'lightdm', 'lightdm-gtk-greeter', 'light-locker', 'cmake', 'automake', 'build-essential', 'meshlab', 'filezilla', 'python3-setuptools', 'kicad', 'audacity', 'ansible', 'thunderbird', 'kicad-libraries', 'kicad-footprints', 'kicad-packages3d', 'kicad-symbols', 'krita', 'openscad', 'gnome-calculator', 'inkscape-tutorials', 'font-manager', 'scribus', 'rsync', 'darktable', 'xfce4-screenshooter', 'racket', 'mit-scheme', 'mit-scheme-dbg', 'python3-pyclipper', 'potrace', 'dnsutils', 'libwx-perl', 'libwx-glcanvas-perl', 'python3-pandas', 'python3-matplotlib', 'freecad', 'inkscape', 'arduino', 'spyder', 'idle3', 'qelectrotech', 'qelectrotech-data', 'prusa-slicer', 'python3-serial', 'pdfarranger', 'g++', 'libfreetype-dev', 'curl', 'wget', 'gpg']
       state: latest
       force: yes
 
