@@ -3,14 +3,8 @@
   become: true
   become_method: su
   tasks:
-    - name: Install NFS utils Arch
-      when: ansible_os_family == "Archlinux"
-      pacman:
-        name: nfs-utils
-        state: present
-
     - name: Install NFS utils Debian
-      when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+      when: ansible_os_family == "Debian"
       apt: name={{item}} state=latest update_cache=yes
       with_items:
         - nfs-kernel-server
@@ -64,7 +58,7 @@
         mode: 0775
 
     - name: Mount member home space on Debian
-      when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+      when: ansible_os_family == "Debian"
       mount:
         path: /vsfs01/home
         src: freenas:/mnt/home/members
@@ -73,7 +67,7 @@
         state: present
 
     - name: Mount shared opt
-      when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+      when: ansible_os_family == "Debian"
       mount:
         path: /vsfs01/opt
         src: freenas:/mnt/home/opt
@@ -82,7 +76,7 @@
         state: present
 
     - name: Mount shared camera space
-      when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+      when: ansible_os_family == "Debian"
       mount:
         path: /vsfs01/camera
         src: freenas:/mnt/home/camera
@@ -91,7 +85,7 @@
         state: present
 
     - name: Mount share space
-      when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+      when: ansible_os_family == "Debian"
       mount:
         path: /vsfs01/share
         src: freenas:/mnt/home/share
@@ -100,24 +94,10 @@
         state: present
 
     - name: Mount tv_slideshow space
-      when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+      when: ansible_os_family == "Debian"
       mount:
         path: /vsfs01/tv_slideshow
         src: freenas:/mnt/home/tv_slideshow
         fstype: nfs
         opts: rw,async,_netdev,x-systemd.automount
         state: present
-
-    - name: Mount VSFS01 on Arch
-      when: ansible_os_family == "Archlinux"
-      mount:
-        path: /vsfs01/home
-        src: freenas:/mnt/home/members
-        fstype: nfs
-        opts: rw,async,_netdev,noauto,x-systemd.automount
-        state: present
-
-    # - name: manually mount vsfs01
-    #   command: mount /vsfs01
-    #   args:
-    #     warn: no

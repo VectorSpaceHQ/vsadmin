@@ -4,12 +4,6 @@
   become_method: su
   tasks:
 
-    - name: pacman upgrade
-      when: ansible_os_family == "Archlinux"
-      pacman:
-        update_cache: yes
-        upgrade: yes
-
     - name: Remove DVD repos from sources (Debian)
       when: ansible_os_family == "Debian"
       replace:
@@ -50,7 +44,7 @@
     #   raw: apt-get install python-minimal aptitude -y
 
     # - name: Debian package upgrade
-    #   when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+    #   when: ansible_os_family == "Debian"
     #   apt:
     #     update_cache: yes
     #     name: "*"

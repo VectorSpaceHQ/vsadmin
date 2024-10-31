@@ -3,10 +3,6 @@
   become: true
   become_method: su
   tasks:
-    - name: install CIFS Arch
-      when: ansible_os_family == "Archlinux"
-      pacman: name=['cifs-utils'] state=latest force=yes
-
     - name: install CIFS Debian
       when: ansible_os_family == "Debian"
       apt:
