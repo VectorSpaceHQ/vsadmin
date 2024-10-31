@@ -1,24 +1,8 @@
 - hosts: clients
   become: true
   tasks:
-    - name: "Creating vectorspace user on arch"
-      user:
-        name: vectorspace
-        password: $6$vWpDsmcPtXg5QeQE$gQe0ocyTDIukYJ8NBPil8nf.qNRa10W0LRw1w5n39TiJxAnV6jpjAk23SdX907HZBwLk2AvieMcyZOUiE9DpJ/
-        shell: /bin/bash
-        groups: uucp, lock
-        append: yes
-      when: ansible_os_family == "Archlinux"
-
-    - name: "Put users in sensible groups"
-      user:
-        name: all
-        groups: uucp, lock, optical, lp
-        append: yes
-      when: ansible_os_family == "Archlinux"
-
-    - name: "Creating vectorspace user on Debian"
-      when: ansible_os_family == "Debian" or ansible_os_family == 'Kali GNU/Linux'
+    - name: "Creating vectorspace user"
+      when: ansible_os_family == "Debian"
       user:
         name: vectorspace
         password: $6$vWpDsmcPtXg5QeQE$gQe0ocyTDIukYJ8NBPil8nf.qNRa10W0LRw1w5n39TiJxAnV6jpjAk23SdX907HZBwLk2AvieMcyZOUiE9DpJ/
@@ -27,19 +11,6 @@
         append: yes
 
     - file: dest=/home/vectorspace owner=vectorspace group=vectorspace mode=u=rwX,g=rX,o=rX recurse=yes
-
-    - name: create aur_builder user
-      user:
-        name: aur_builder
-        group: wheel
-        when: ansible_os_family == "Archlinux"
-
-    - lineinfile:
-        path: /etc/sudoers.d/11-install-aur_builder
-        line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
-        create: yes
-        validate: 'visudo -cf %s'
-        when: ansible_os_family == "Archlinux"
 
     - name: Create Debian-exim group
       when: ansible_os_family == "Debian"
