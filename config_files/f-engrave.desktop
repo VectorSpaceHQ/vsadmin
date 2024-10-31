@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=F-Engrave
+GenericName=fengrave
+Comment=CAM for V carving
+Exec=python3 /vsfs01/opt/f-engrave.py
+Icon=scorch_logo
+Terminal=false
+Categories=Graphics
+MimeType=text/x-arduino;
+Keywords=CAM
+StartupWMClass=processing-app-Base
+Path=
+StartupNotify=false

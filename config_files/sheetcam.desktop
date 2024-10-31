@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=SheetCAM
+GenericName=SheetCAM
+Comment=2D CAM
+Exec=/vsfs01/opt/sheetcam
+Icon=/vsfs01/share/sheetcam.gif
+Terminal=false
+Categories=Graphics
+MimeType=text/x-arduino;
+Keywords=CAM
+StartupWMClass=processing-app-Base
+Path=
+StartupNotify=false

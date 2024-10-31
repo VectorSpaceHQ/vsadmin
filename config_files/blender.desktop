@@ -1,0 +1,16 @@
+# install to /usr/share/applications
+[Desktop Entry]
+Type=Application
+Name=Blender
+Comment=3D Modeling
+Path=/vsfs01/opt/
+Exec=/vsfs01/opt/blender
+
+# The name of the icon that will be used to display this entry
+Icon=blender-3d-icon-9.png
+
+# Describes whether this application needs to be run in a terminal or not
+Terminal=false
+
+# Describes the categories in which this entry should be shown
+Categories=Graphics

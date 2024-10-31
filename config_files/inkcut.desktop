@@ -1,0 +1,8 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Terminal=false
+Exec=/usr/local/bin/inkcut
+Name=InkCut
+Icon=/usr/share/inkcut-thumb.png
+Categories=Graphics

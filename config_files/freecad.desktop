@@ -1,0 +1,16 @@
+# install to /usr/share/applications
+[Desktop Entry]
+Type=Application
+Name=FreeCAD
+Comment=2D and 3D CAD and CAM
+Path=/vsfs01/opt/
+Exec=/vsfss01/opt/freecad
+
+# The name of the icon that will be used to display this entry
+Icon=appimagekit-freecad
+
+# Describes whether this application needs to be run in a terminal or not
+Terminal=false
+
+# Describes the categories in which this entry should be shown
+Categories=Graphics
