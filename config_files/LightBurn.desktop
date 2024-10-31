@@ -2,8 +2,8 @@
 [Desktop Entry]
 Type=Application
 Terminal=false
-Exec=/vsfs01/opt/LightBurn/LightBurn
+Exec=/opt/LightBurn/LightBurn
 Name=LightBurn
 Comment=Better Software For Laser Cutters
-Icon=/vsfs01/opt/LightBurn//LightBurn.png
+Icon=/opt/LightBurn//LightBurn.png
 Categories=Graphics

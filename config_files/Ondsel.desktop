@@ -1,0 +1,9 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Terminal=false
+Exec=/vsfs01/opt/ondsel
+Name=Ondsel
+Comment=Open Source CAD (FreeCAD fork)
+Icon=/vsfs01/opt/Ondsel-logo.png
+Categories=Graphics

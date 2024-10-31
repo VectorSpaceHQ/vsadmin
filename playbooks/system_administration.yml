@@ -5,26 +5,20 @@
   ignore_errors: yes
   tasks:
 
-  # - name: fix for systemd 239
-  #   copy:
-  #     src: ../config_files/open_network_interface.conf
-  #     dest: /etc/systemd/system/systemd-logind.service.d/open_network_interface.conf
+# - name: fix for systemd 239
+#   copy:
+#     src: ../config_files/open_network_interface.conf
+#     dest: /etc/systemd/system/systemd-logind.service.d/open_network_interface.conf
 
   - name: enable NTP
     command: timedatectl set-ntp true
 
-  # - name: openslp
-  #   aur: name=openslp skip_installed=true
-  #   become: yes
-  #   become_user: aur_builder
-  #   when: ansible_os_family == "Archlinux"
-
-#   # - copy:
-#   #     src: ../scripts/sleep_settings.sh
-#   #     dest: /etc/profile.d
-#   #     owner: root
-#   #     group: root
-#   #     mode: 0744
+# - copy:
+#     src: ../scripts/sleep_settings.sh
+#     dest: /etc/profile.d
+#     owner: root
+#     group: root
+#     mode: 0744
 
   - name: add freenas to hosts
     lineinfile:
@@ -39,13 +33,22 @@
       group: root
       mode: 0644
 
-  # - name: install user logout script
-  #   copy:
-  #     src: ../scripts/logout_users.sh
-  #     dest: /etc/cron.hourly/logout_users
-  #     owner: root
-  #     group: root
-  #     mode: 0744
+# - name: install user logout script
+#   copy:
+#     src: ../scripts/logout_users.sh
+#     dest: /etc/cron.hourly/logout_users
+#     owner: root
+#     group: root
+#     mode: 0744
+
+  - name: Reboot every Sunday
+    copy:
+      src: ../scripts/reboot.sh
+      dest: /etc/cron.weekly/reboot
+      owner: root
+      group: root
+      mode: 0744
+
 
   - name: install group modification script
     copy:
@@ -55,11 +58,20 @@
       group: root
       mode: 0744
 
-  # - name: run udiskie at vectorspace login
-  #   lineinfile:
-  #     path: /home/vectorspace/.profile
-  #     line: 'udiskie &'
-  #     create: yes
+  - name: install password change desktop script
+    copy:
+      src: ../config_files/passwd.desktop
+      dest: /usr/share/passwd.desktop
+      owner: root
+      group: root
+      mode: 0755
+
+# - name: run udiskie at vectorspace login
+#   lineinfile:
+#     path: /home/vectorspace/.profile
+#     line: 'udiskie &'
+#     create: yes
+
   - name: Add admins to sudoers
     # when: ansible_distribution_major_version == 10
     when: ansible_os_family == "Debian"
@@ -99,13 +111,13 @@
       group: vectorspace
       mode: 0744
 
-  # - name: Modify lightdm to load trim spaces library
-  #   when: ansible_os_family == "Debian"
-  #   lineinfile:
-  #     path: /etc/pam.d/lightdm
-  #     line: 'auth      requisite pam_trimspaces.so'
-  #     create: yes
+# - name: Modify lightdm to load trim spaces library
+#   when: ansible_os_family == "Debian"
+#   lineinfile:
+#     path: /etc/pam.d/lightdm
+#     line: 'auth      requisite pam_trimspaces.so'
+#     create: yes
 
-  # - name: install trim_spaces.so shared library
-  #   when: ansible_os_family == "Debian"
-  #   shell: "dpkg -i ../config/files/libpam-trimspaces_1.0.1ocf1_amd64.deb || true && apt-get -f install -y"
+# - name: install trim_spaces.so shared library
+#   when: ansible_os_family == "Debian"
+#   shell: "dpkg -i ../config/files/libpam-trimspaces_1.0.1ocf1_amd64.deb || true && apt-get -f install -y"
