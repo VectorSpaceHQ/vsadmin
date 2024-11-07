@@ -2,18 +2,24 @@
 # install sssd
 # create /etc/sudoers.d/admins file
 
+- name: config_ldap
+  hosts: clients
+  become: true
+  become_method: su
+  tasks:
 
 # https://wiki.debian.org/LDAP/
   - name: Install LDAP client software, debian
-    when: ansible_os_family == "Debian"
-    apt: name={{item}} state=latest update_cache=yes
-    with_items:
+    apt:
+      name:
       - sssd
       - libpam-sss
       - libsss-sudo
       - libnss-ldapd
       - libpam-ldap
       - accountsservice
+      state: latest
+
 
   - name: Configure sssd.conf
     copy:
