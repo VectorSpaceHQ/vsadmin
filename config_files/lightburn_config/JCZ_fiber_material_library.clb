@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightBurnLibrary DisplayName="JCZ_fiber_material_library">
+    <Material name="stainless steel">
+        <Entry Thickness="0.5080" Desc="stainless steel business cards">
+            <CutSetting type="Scan">
+                <index Value="0"/>
+                <name Value=""/>
+                <LinkPath Value="stainless steel/0.5080/stainless steel business cards"/>
+                <minPower Value="10"/>
+                <maxPower Value="50"/>
+                <maxPower2 Value="20"/>
+                <speed Value="2000"/>
+                <frequency Value="300000"/>
+                <PPI Value="0"/>
+                <QPulseWidth Value="40"/>
+                <dotTime Value="1"/>
+                <overscan Value="0"/>
+                <interval Value="0.006"/>
+                <priority Value="0"/>
+                <tabCount Value="1"/>
+                <tabCountMax Value="1"/>
+                <tabSpacing Value="50.04"/>
+            </CutSetting>
+        </Entry>
+    </Material>
+</LightBurnLibrary>
