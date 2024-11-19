@@ -66,6 +66,7 @@
       'python3-setuptools',
       'qelectrotech-data',
       'qelectrotech',
+      'qgis',
       'r-base',
       'racket',
       'rsync',
