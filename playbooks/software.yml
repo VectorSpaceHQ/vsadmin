@@ -147,7 +147,7 @@
   - name: Prusa-slicer profiles for vectorspace user
     when: ansible_os_family == "Debian"
     ansible.posix.synchronize:
-      src: /vsfs01/home/aspontarelli/.config/PrusaSlicer
+      src: /vsfs01/home/aspontarelli/.config/PrusaSlicer/
       dest: /home/vectorspace/.config/PrusaSlicer
       #owner: vectorspace
 
