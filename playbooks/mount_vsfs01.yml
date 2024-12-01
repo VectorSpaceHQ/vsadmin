@@ -38,8 +38,8 @@
         path: /vsfs01/opt
         state: directory
         owner: root
-        group: root
-        mode: 0755
+        group: members
+        #mode: 0755
 
     - name: Create vsfs01 share directory
       file:
