@@ -58,6 +58,7 @@
       'openssh-server',
       'potrace',
       'prusa-slicer',
+      'python-is-python3',
       'python3-matplotlib',
       'python3-pandas',
       'python3-pip',
@@ -151,6 +152,13 @@
       src: /vsfs01/home/aspontarelli/.config/PrusaSlicer/
       dest: /home/vectorspace/.config/PrusaSlicer
       #owner: vectorspace
+
+  - name: Prusa-slicer /vsfs01/opt Desktop file
+    when: ansible_os_family == "Debian"
+    copy:
+      src: ../config_files/PrusaSlicer.desktop
+      dest: /usr/share/applications/
+      owner: root
 
   - name: LightBurn Application
     when: ansible_os_family == "Debian"
