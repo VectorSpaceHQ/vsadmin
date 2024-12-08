@@ -1,0 +1,42 @@
+- hosts: clients
+  become: yes
+  become_method: su
+  tasks:
+
+    #######################################################################
+    # For RoboRIO comms
+    # https://www.chiefdelphi.com/t/roborio-usb-on-linux/396977
+    #
+  - name: "Install DHCP Server"
+    when: ansible_os_family == "Debian"
+    apt:
+      name: ['isc-dhcp-server']
+
+  - name: "configure /etc/dhcpcd.conf"
+    when: ansible_os_family == "Debian"
+    copy:
+      src: ../config_files/dhcpcd.conf
+      dest: /etc/
+      owner: root
+
+  - name: "configure /etc/default/isc-dhcp-server"
+    when: ansible_os_family == "Debian"
+    copy:
+      src: ../config_files/isc-dhcp-server
+      dest: /etc/default/
+      owner: root
+
+  - name: "configure /etc/dhcp/dhcpcd.conf"
+    when: ansible_os_family == "Debian"
+    copy:
+      src: ../config_files/dhcp-dhcpcd.conf
+      dest: /etc/dhcp/dhcpcd.conf
+      owner: root
+
+  - name: "configure udev rules"
+    when: ansible_os_family == "Debian"
+    copy:
+      src: ../config_files/98-rio.rules
+      dest: /etc/udev/rules.d/
+      owner: root
+    #######################################################################
