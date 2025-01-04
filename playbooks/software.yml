@@ -78,6 +78,8 @@
       'thunderbird',
       'vim',
       'vlc',
+      'webext-ublock-origin-firefox',
+      'webext-ublock-origin-chromium',
       'xfburn',
       'xfce4-screenshooter',
       'xfce4',

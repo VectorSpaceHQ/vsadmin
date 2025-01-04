@@ -22,8 +22,8 @@
 - name: install sheetcam
   ansible.builtin.import_playbook: sheetcam_install.yml
 
-# - name: FRC configurations
-#   ansible.builtin.import_playbook: frc.yml
+- name: FRC configurations
+  ansible.builtin.import_playbook: frc.yml
 
 # - name: Reboot
 #   ansible.builtin.import_playbook: reboot.yml
