@@ -7,17 +7,24 @@
     # For RoboRIO comms
     # https://www.chiefdelphi.com/t/roborio-usb-on-linux/396977
     #
+    # Debian Networking Notes: https://www.debian.org/doc/manuals/debian-reference/ch05.en.html#_the_network_interface_name
+    # https://askubuntu.com/questions/1391256/systemd-networking-basics-cannot-switch-from-dhcp-to-static-ip-address
+    #
   - name: "Install DHCP Server"
     when: ansible_os_family == "Debian"
     apt:
       name: ['isc-dhcp-server']
 
-  - name: "configure /etc/dhcpcd.conf"
+  - name: "create static ip for usb0. NetworkManager method"
     when: ansible_os_family == "Debian"
     copy:
-      src: ../config_files/dhcpcd.conf
-      dest: /etc/
+      src: ../config_files/roborio.nmconnection
+      dest: /etc/NetworkManager/system-connections/
       owner: root
+
+  - name: "Reload NM connection files"
+    when: ansible_os_family == "Debian"
+    ansible.builtin.command: nmcli connection reload
 
   - name: "configure /etc/default/isc-dhcp-server"
     when: ansible_os_family == "Debian"
@@ -26,11 +33,11 @@
       dest: /etc/default/
       owner: root
 
-  - name: "configure /etc/dhcp/dhcpcd.conf"
+  - name: "configure /etc/dhcp/dhcpd.conf"
     when: ansible_os_family == "Debian"
     copy:
-      src: ../config_files/dhcp-dhcpcd.conf
-      dest: /etc/dhcp/dhcpcd.conf
+      src: ../config_files/dhcp-dhcpd.conf
+      dest: /etc/dhcp/dhcpd.conf
       owner: root
 
   - name: "configure udev rules"
@@ -38,5 +45,12 @@
     copy:
       src: ../config_files/98-rio.rules
       dest: /etc/udev/rules.d/
+      owner: root
+
+  - name: "Create PathPlanner Shortcut"
+    when: ansible_os_family == "Debian"
+    copy:
+      src: ../config_files/pathplanner.desktop
+      dest: /usr/share/applications/
       owner: root
     #######################################################################
