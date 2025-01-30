@@ -3,11 +3,12 @@
   become: true
   become_method: su
   tasks:
+    # Needed to mount nfs volumes
     - name: Install NFS utils Debian
       when: ansible_os_family == "Debian"
       apt: name={{item}} state=latest update_cache=yes
       with_items:
-        - nfs-kernel-server
+        - nfs-common
 
     - name: Create vsfs01 directory
       file:
@@ -61,7 +62,7 @@
       when: ansible_os_family == "Debian"
       mount:
         path: /vsfs01/home
-        src: freenas:/mnt/home/members
+        src: truenas:/mnt/vsfs01/home
         fstype: nfs
         opts: rw,async,_netdev,x-systemd.automount
         state: present
@@ -70,7 +71,7 @@
       when: ansible_os_family == "Debian"
       mount:
         path: /vsfs01/opt
-        src: freenas:/mnt/home/opt
+        src: truenas:/mnt/vsfs01/opt
         fstype: nfs
         opts: rw,async,_netdev,x-systemd.automount
         state: present
@@ -79,7 +80,7 @@
       when: ansible_os_family == "Debian"
       mount:
         path: /vsfs01/camera
-        src: freenas:/mnt/home/camera
+        src: truenas:/mnt/vsfs01/camera
         fstype: nfs
         opts: rw,async,_netdev,x-systemd.automount
         state: present
@@ -88,7 +89,7 @@
       when: ansible_os_family == "Debian"
       mount:
         path: /vsfs01/share
-        src: freenas:/mnt/home/share
+        src: truenas:/mnt/vsfs01/share
         fstype: nfs
         opts: rw,async,_netdev,x-systemd.automount
         state: present
@@ -97,7 +98,7 @@
       when: ansible_os_family == "Debian"
       mount:
         path: /vsfs01/tv_slideshow
-        src: freenas:/mnt/home/tv_slideshow
+        src: truenas:/mnt/vsfs01/tv_slideshow
         fstype: nfs
         opts: rw,async,_netdev,x-systemd.automount
         state: present

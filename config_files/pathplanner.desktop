@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=PathPlanner
+GenericName=FRC Path Planning
+Icon=/opt/PathPlanner/data/flutter_assets/images/icon.png
+Exec=/opt/pathplanner
+Terminal=false
+Type=Application
+Categories=Engineering;
+

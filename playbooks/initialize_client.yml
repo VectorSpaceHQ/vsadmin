@@ -24,12 +24,6 @@
       state: present
       key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
-  - name: add freenas to hosts
-    lineinfile:
-      path: /etc/hosts
-      line: "10.0.0.250      freenas"
-      create: yes
-
   - name: setup locale in /etc/environment. fixes scp tab complete bug
     when: ansible_os_family == "Debian" and ansible_distribution != 'Ubuntu'
     copy:

@@ -20,10 +20,10 @@
 #     group: root
 #     mode: 0744
 
-  - name: add freenas to hosts
+  - name: add truenas to hosts
     lineinfile:
       path: /etc/hosts
-      line: "10.0.0.250      freenas"
+      line: "10.0.0.252      truenas"
       create: yes
 
   - copy:

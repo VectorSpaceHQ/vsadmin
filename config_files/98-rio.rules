@@ -1,3 +1,2 @@
-SUBSYSTEM=="net", ACTION=="add", ENV{ID_BUS}=="usb", ENV{ID_VENDOR_ID}=="3923", RUN="/sbin/ip addr add 172.22.11.1 dev %k", ENV{SYSTEMD_WANTS}="isc-dhcp-server.service"
-
+SUBSYSTEM=="net", ACTION=="add", ENV{ID_BUS}=="usb", ENV{ID_VENDOR_ID}=="3923", RUN="ip a", ENV{SYSTEMD_WANTS}="isc-dhcp-server.service"
 ACTION=="remove", ENV{ID_BUS}=="usb", ENV{ID_MODEL}=="NI_roboRIO*", RUN="/usr/bin/systemctl stop isc-dhcp-server.service"
