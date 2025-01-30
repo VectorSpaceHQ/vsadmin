@@ -1,4 +1,4 @@
-- hosts: clients
+- hosts: 10.0.0.[80:90]
   become: yes
   become_method: su
   tasks:
