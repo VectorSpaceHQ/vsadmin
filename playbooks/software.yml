@@ -188,6 +188,13 @@
       dest: /home/vectorspace/.config/LightBurn/
       owner: vectorspace
 
+  - name: Unlock Chromium desktop shortcut file
+    when: ansible_os_family == "Debian"
+    copy:
+      src: /vsfs01/home/aspontarelli/ansible/config_files/unlock-chromium.desktop
+      dest: /usr/share/applications/
+      owner: root
+
   # - name: Freecad point to /vsfs01/opt version 0.19
   #   replace:
   #     path: /usr/share/applications/freecad.desktop
