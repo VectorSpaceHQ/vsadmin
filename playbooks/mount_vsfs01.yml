@@ -58,6 +58,14 @@
         group: members
         mode: 0775
 
+    - name: Create vsfs01 packages directory
+      file:
+        path: /vsfs01/packages
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
     - name: Mount member home space on Debian
       when: ansible_os_family == "Debian"
       mount:
@@ -99,6 +107,15 @@
       mount:
         path: /vsfs01/tv_slideshow
         src: truenas:/mnt/vsfs01/tv_slideshow
+        fstype: nfs
+        opts: rw,async,_netdev,x-systemd.automount
+        state: present
+
+    - name: Mount vsfs01 packages
+      when: ansible_os_family == "Debian"
+      mount:
+        path: /vsfs01/packages
+        src: truenas:/mnt/vsfs01/packages
         fstype: nfs
         opts: rw,async,_netdev,x-systemd.automount
         state: present
