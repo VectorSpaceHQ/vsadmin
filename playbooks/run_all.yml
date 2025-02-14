@@ -1,26 +1,26 @@
-# - name: Initialize client
-#   ansible.builtin.import_playbook: initialize_client.yml
+- name: Initialize client
+  ansible.builtin.import_playbook: initialize_client.yml
 
-# - name: Upgrade packages
-#   ansible.builtin.import_playbook: syu.yml
+- name: Upgrade packages
+  ansible.builtin.import_playbook: syu.yml
 
-# - name: Configure LDAP
-#   ansible.builtin.import_playbook: config_ldap.yml
+- name: Configure LDAP
+  ansible.builtin.import_playbook: config_ldap.yml
 
-# - name: mount vsfs01 directory
-#   ansible.builtin.import_playbook: mount_vsfs01.yml
+- name: mount vsfs01 directory
+  ansible.builtin.import_playbook: mount_vsfs01.yml
 
-# - name: Setup user accnts
-#   ansible.builtin.import_playbook: user_management.yml
+- name: Setup user accnts
+  ansible.builtin.import_playbook: user_management.yml
 
-# - name: system admin
-#   ansible.builtin.import_playbook: system_administration.yml
+- name: system admin
+  ansible.builtin.import_playbook: system_administration.yml
 
-# - name: install software
-#   ansible.builtin.import_playbook: software.yml
+- name: install software
+  ansible.builtin.import_playbook: software.yml
 
-# - name: install sheetcam
-#   ansible.builtin.import_playbook: sheetcam_install.yml
+- name: install sheetcam
+  ansible.builtin.import_playbook: sheetcam_install.yml
 
 - name: FRC configurations
   ansible.builtin.import_playbook: frc.yml

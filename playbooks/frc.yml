@@ -1,4 +1,4 @@
-- hosts: 10.0.0.[80:90]
+- hosts: computer-lab
   become: yes
   become_method: su
   tasks:
@@ -53,4 +53,14 @@
       src: ../config_files/pathplanner.desktop
       dest: /usr/share/applications/
       owner: root
-    #######################################################################
+
+  - name: "Install AdvantageScope"
+    apt:
+      deb: '/vsfs01/packages/AdvantageScope/advantagescope-linux-x64-v4.1.2.deb'
+
+  - name: "Create Fritzing Shortcut"
+    when: ansible_os_family == "Debian"
+    copy:
+      src: ../config_files/fritzing.desktop
+      dest: /usr/share/applications/
+      owner: root
