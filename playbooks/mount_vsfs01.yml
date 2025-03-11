@@ -1,5 +1,5 @@
 - name: mount_vsfs01
-  hosts: clients
+  hosts: all
   become: true
   become_method: su
   tasks:
@@ -42,6 +42,22 @@
         group: members
         #mode: 0755
 
+    - name: Create vsfs01 packages directory
+      file:
+        path: /vsfs01/packages
+        state: directory
+        owner: root
+        group: admins
+        mode: 0755
+
+    - name: Create vsfs01 configs directory
+      file:
+        path: /vsfs01/configs
+        state: directory
+        owner: root
+        group: admins
+        mode: 0755
+
     - name: Create vsfs01 share directory
       file:
         path: /vsfs01/share
@@ -80,6 +96,24 @@
       mount:
         path: /vsfs01/opt
         src: truenas:/mnt/vsfs01/opt
+        fstype: nfs
+        opts: rw,async,_netdev,x-systemd.automount
+        state: present
+
+    - name: Mount shared configs
+      when: ansible_os_family == "Debian"
+      mount:
+        path: /vsfs01/configs
+        src: truenas:/mnt/vsfs01/configs
+        fstype: nfs
+        opts: rw,async,_netdev,x-systemd.automount
+        state: present
+
+    - name: Mount shared packages
+      when: ansible_os_family == "Debian"
+      mount:
+        path: /vsfs01/packages
+        src: truenas:/mnt/vsfs01/packages
         fstype: nfs
         opts: rw,async,_netdev,x-systemd.automount
         state: present

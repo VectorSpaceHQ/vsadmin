@@ -1,14 +1,9 @@
 - name: system_administration
-  hosts: clients
+  hosts: all
   become: true
   become_method: su
   ignore_errors: yes
   tasks:
-
-# - name: fix for systemd 239
-#   copy:
-#     src: ../config_files/open_network_interface.conf
-#     dest: /etc/systemd/system/systemd-logind.service.d/open_network_interface.conf
 
   - name: enable NTP
     command: timedatectl set-ntp true
@@ -27,7 +22,7 @@
       create: yes
 
   - copy:
-      src: ../config_files/lightdm.conf
+      src: /vsfs01/configs/lightdm.conf
       dest: /etc/lightdm/lightdm.conf
       owner: root
       group: root
@@ -49,7 +44,6 @@
       group: root
       mode: 0744
 
-
   - name: install group modification script
     copy:
       src: ../scripts/groups.sh
@@ -60,7 +54,7 @@
 
   - name: install password change desktop script
     copy:
-      src: ../config_files/passwd.desktop
+      src: /vsfs01/configs/passwd.desktop
       dest: /usr/share/passwd.desktop
       owner: root
       group: root
@@ -72,7 +66,7 @@
 #     line: 'udiskie &'
 #     create: yes
 
-  - name: Add admins to sudoers
+  - name: Add LDAP admins to sudoers
     # when: ansible_distribution_major_version == 10
     when: ansible_os_family == "Debian"
     lineinfile:
@@ -86,6 +80,7 @@
     group:
       name: Debian-exim
       state: present
+
   - name: Create colord group
     when: ansible_os_family == "Debian"
     group:
@@ -105,10 +100,18 @@
 
   - name: Setup XFCE4 taskbar
     copy:
-      src: /vsfs01/home/aspontarelli/.config/xfce4/
+      src: /vsfs01/configs/xfce4/
       dest: /home/vectorspace/.config/xfce4/
       owner: vectorspace
       group: vectorspace
+      mode: 0744
+
+  - name: Install Agency FB font
+    copy:
+      src: /vsfs01/configs/AGENCYB.TTF
+      dest: /usr/share/fonts/truetype/
+      owner: root
+      group: admins
       mode: 0744
 
 # - name: Modify lightdm to load trim spaces library

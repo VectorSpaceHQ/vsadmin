@@ -169,6 +169,13 @@
       dest: /opt/
       #owner: root
 
+  - name: CHITUBOX Desktop file
+    when: ansible_os_family == "Debian"
+    copy:
+      src: /vsfs01/configs/chitubox.desktop
+      dest: /usr/share/applications/
+      owner: root
+
   - name: LightBurn Desktop file
     when: ansible_os_family == "Debian"
     copy:
@@ -187,6 +194,7 @@
       src: ../config_files/lightburn_config/
       dest: /home/vectorspace/.config/LightBurn/
       owner: vectorspace
+
 
   - name: Unlock Chromium desktop shortcut file
     when: ansible_os_family == "Debian"
