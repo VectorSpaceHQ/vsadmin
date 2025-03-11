@@ -1,5 +1,5 @@
 - name: Update package repositories
-  hosts: clients
+  hosts: computer-lab
   become: yes
   become_method: su
   tasks:

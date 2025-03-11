@@ -162,19 +162,19 @@
       dest: /usr/share/applications/
       owner: root
 
-  - name: LightBurn Application
-    when: ansible_os_family == "Debian"
-    ansible.posix.synchronize:
-      src: /vsfs01/home/aspontarelli/ansible/config_files/LightBurn
-      dest: /opt/
-      #owner: root
-
   - name: CHITUBOX Desktop file
     when: ansible_os_family == "Debian"
     copy:
       src: /vsfs01/configs/chitubox.desktop
       dest: /usr/share/applications/
       owner: root
+
+  - name: LightBurn Application
+    when: ansible_os_family == "Debian"
+    ansible.posix.synchronize:
+      src: /vsfs01/home/aspontarelli/ansible/config_files/LightBurn
+      dest: /opt/
+      #owner: root
 
   - name: LightBurn Desktop file
     when: ansible_os_family == "Debian"
@@ -199,7 +199,7 @@
   - name: Unlock Chromium desktop shortcut file
     when: ansible_os_family == "Debian"
     copy:
-      src: /vsfs01/home/aspontarelli/ansible/config_files/unlock-chromium.desktop
+      src: /vsfs01/configs/unlock-chromium.desktop
       dest: /usr/share/applications/
       owner: root
 
