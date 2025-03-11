@@ -3,7 +3,7 @@
 # create /etc/sudoers.d/admins file
 
 - name: config_ldap
-  hosts: clients
+  hosts: all
   become: true
   become_method: su
   tasks:
@@ -19,7 +19,6 @@
       - libpam-ldap
       - accountsservice
       state: latest
-
 
   - name: Configure sssd.conf
     copy:

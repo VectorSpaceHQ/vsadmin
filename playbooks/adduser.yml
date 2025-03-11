@@ -1,4 +1,4 @@
-- hosts: clients
+- hosts: all
   become: true
   tasks:
     - name: "Creating vectorspace user"
