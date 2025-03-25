@@ -105,14 +105,6 @@
       owner: vectorspace
       group: vectorspace
       mode: 0744
-      
-  - name: Setup Windows key for whisker menu
-    copy:
-      src: ../config_files/etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
-      dest: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/
-      owner: root
-      group: root
-      mode: 0644
 
   - name: Install Agency FB font
     copy:
