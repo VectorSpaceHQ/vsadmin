@@ -1,4 +1,4 @@
-- hosts: computer-lab
+- hosts: computer-lab, office
   become: yes
   become_method: su
   ignore_errors: true
