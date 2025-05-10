@@ -10,4 +10,7 @@ ssh-copy-id username@newip
 
 # Maintain existing machines
 From a host machine with Ansible installed,
-1. $ sudo host.sh
+1. `ssh-keygen` if you don't have an SSH keypair in Vector Space account
+1. `ssh-copy-id vectorspace@examplehostname` for every computer in the space
+1. `cd vsadmin/scripts/`
+1. `./host.sh`
