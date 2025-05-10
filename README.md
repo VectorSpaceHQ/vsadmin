@@ -2,24 +2,12 @@ The scripts in the package are used to add new machines to the Vector Space netw
 
 These scripts have been tested on Mint and Manjaro.
 
-* Adding a new machine
-
-** From Ansible Host Machine
+# Add new machine
+From Ansible Host Machine
 1. Manually copy ssh key to new client machine
 ssh-copy-id username@newip
-
 2. $ sudo host.sh
 
-* Maintaining existing machines
+# Maintain existing machines
 From a host machine with Ansible installed,
-
 1. $ sudo host.sh
-
-* Additional notes
-** Add new user
-
-$ sudo useradd username -g member -G lock,uucp,dialout
-$ cd /var/yp
-$ sudo make
-
-make a home directory for the new user
