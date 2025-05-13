@@ -2,6 +2,7 @@
 
 # ansible-playbook -i ../hosts -u vectorspace -K ../playbooks/initialize_client.yml --ask-pass
 
+export ANSIBLE_HOST_KEY_CHECKING=False
 ansible-playbook -i ../hosts -u vectorspace -K ../playbooks/run_all.yml -e 'ansible_python_interpreter=/usr/bin/python3'
 
 
