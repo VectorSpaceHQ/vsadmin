@@ -3,8 +3,8 @@
 Type=Application
 Name=FreeCAD
 Comment=2D and 3D CAD and CAM
-Path=/vsfs01/opt/
-Exec=/vsfss01/opt/freecad
+Path=/opt/
+Exec=/opt/freecad
 
 # The name of the icon that will be used to display this entry
 Icon=appimagekit-freecad
