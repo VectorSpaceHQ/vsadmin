@@ -1,5 +1,5 @@
 - name: system_administration
-  hosts: all
+  hosts: computer-lab, office
   become: true
   become_method: su
   ignore_errors: yes
@@ -98,7 +98,7 @@
       path: /home/vectorspace/.cache/sessions/
       state: absent
 
-  - name: Setup XFCE4 taskbar
+  - name: Setup XFCE4 taskbar for vectorspace user
     copy:
       src: /vsfs01/configs/xfce4/
       dest: /home/vectorspace/.config/xfce4/
@@ -122,13 +122,15 @@
       group: admins
       mode: 0744
 
-# - name: Modify lightdm to load trim spaces library
-#   when: ansible_os_family == "Debian"
-#   lineinfile:
-#     path: /etc/pam.d/lightdm
-#     line: 'auth      requisite pam_trimspaces.so'
-#     create: yes
-
-# - name: install trim_spaces.so shared library
-#   when: ansible_os_family == "Debian"
-#   shell: "dpkg -i ../config/files/libpam-trimspaces_1.0.1ocf1_amd64.deb || true && apt-get -f install -y"
+  - name: Modify lightdm to load trim spaces library
+    copy:
+      src: ../config_files/pam.d_lightdm
+      dest: /etc/pam.d/lightdm
+      owner: root  
+  
+  - name: install trim_spaces.so shared library
+    copy:
+      src: ../config_files/pam_trimspaces.so
+      dest: /usr/lib/x86_64-linux-gnu/security/
+      owner: root
+  
