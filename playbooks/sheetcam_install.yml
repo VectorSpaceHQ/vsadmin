@@ -4,7 +4,6 @@
   tasks:
 
   - name: SheetCAM copy deb file
-    when: ansible_os_family == "Debian"
     copy:
       src: /vsfs01/packages/SheetCamTNG_7.1.20-1_amd64.deb
       dest: /tmp
@@ -17,12 +16,8 @@
   #     deb: /tmp/SheetCamTNG_7.1.20-1_amd64.deb
 
 
-
-
 # Install sheetcam.desktop by copying it to /usr/share/applications
-# copy .SheetCamTNG-dev/SheetCamTNG-dev.ini if doesn't exist
   - name: SheetCAM Copy desktop file
-    when: ansible_os_family == "Debian"
     copy:
       src: /vsfs01/configs/sheetcam.desktop
       dest: /usr/share/applications
@@ -30,8 +25,13 @@
 
 
   - name: SheetCAM license for vectorspace user
-    when: ansible_os_family == "Debian"
     copy:
       src: ../config_files/VectorSpace.camlic
       dest: /home/vectorspace/.SheetCamTNG-dev/license.camlic
+      owner: vectorspace
+
+  - name: SheetCAM configure
+    copy:
+      src: ../config_files/SheetCamTNG-dev.ini
+      dest: /home/vectorspace/.SheetCamTNG-dev/
       owner: vectorspace
