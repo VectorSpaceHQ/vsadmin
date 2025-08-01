@@ -142,13 +142,13 @@
       dest: /usr/share/applications
       owner: root
 
-  # - name: Inkstitch plugin
-  #   when: ansible_os_family == "Debian"
-  #   copy:
-  #     src: ../config_files/inkstitch-v2.0.0
-  #     dest: /usr/share/inkscape/extensions/
-  #     owner: root
-
+  # don't know why environment PATH is needed but appears to be
+  - name: Inkstitch plugin
+    apt:
+      deb: /vsfs01/packages/inkstitch_0.0.1.rejbasket.numpy.import.fix_amd64.deb
+      force: yes
+    environment:
+      PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
   - name: Prusa-slicer profiles for vectorspace user
     when: ansible_os_family == "Debian"

@@ -133,4 +133,28 @@
       src: ../config_files/pam_trimspaces.so
       dest: /usr/lib/x86_64-linux-gnu/security/
       owner: root
-  
+
+# As of 7/31/25, Debian 12 does not support the integrated graphics in our new
+# Ryzen 8500g motherboards. These packages are required to solve this problem
+  - name: enable bookworm backports
+    lineinfile:
+      path: /etc/apt/sources.list
+      line: 'deb http://deb.debian.org/debian bookworm-backports main contrib non-free-firmware'
+      create: yes
+
+  - name: enable bookworm backports src
+    lineinfile:
+      path: /etc/apt/sources.list
+      line: 'deb-src http://deb.debian.org/debian bookworm-backports main contrib non-free-firmware'
+      create: yes
+
+  - name: 8500g graphics drivers
+    apt:
+      name: ['linux-image-amd64',
+           'firmware-amd-graphics',
+           'xserver-xorg-video-amdgpu',
+	   'libdrm-amdgpu1']
+      state: latest
+      default_release: bookworm-backports
+      update_cache: true
+

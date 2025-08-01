@@ -1,0 +1,95 @@
+# FreeCAD development is happening at a rapid pace, well beyond what Debian is keeping up with
+# and because our FRC team uses FreeCAD, it's important that we keep up to date.
+# The goal is to provide two applicatio shortcuts: -stable and -dev
+- hosts: computer-lab, office
+  become: yes
+  become_method: su
+  ignore_errors: false
+  tasks:
+
+  # - name: FreeCAD clean build
+  #   command: rm -rf /opt/freecad-source
+  
+  - name: Check if freecad executable exists
+    stat:
+      path: /opt/freecad-source/build/bin/FreeCAD
+    register: stat_result
+
+  - name: FreeCAD clone from github
+    when: not stat_result.stat.exists
+    command: git clone --recurse-submodules https://github.com/FreeCAD/FreeCAD.git /opt/freecad-source
+
+  - name: checkout specific stable commit
+    when: not stat_result.stat.exists
+    command: chdir=/opt/freecad-source/ git reset --hard 878f0b8
+
+  - name: clean untracked files
+    when: not stat_result.stat.exists
+    command: chdir=/opt/freecad-source/ git clean -df
+
+  - name: "make build directory"
+    when: not stat_result.stat.exists
+    ansible.builtin.file:
+      path: /opt/freecad-source/build
+      state: directory
+
+  - name: "Install FreeCAD dependencies"
+    apt:
+        name: ['freecad']
+        state: build-dep
+
+  - name: "Install more FreeCAD dependencies"
+    apt:
+        name: ['libtool',
+	'lsb-release',
+	'cmake',
+	'build-essential',
+	'libboost-dev',
+	'libboost-date-time-dev',
+	'libboost-filesystem-dev',
+	'libboost-graph-dev',
+	'libboost-iostreams-dev',
+	'libboost-program-options-dev',
+	'libboost-python-dev',
+	'libboost-regex-dev',
+	'libboost-serialization-dev',
+	'libboost-thread-dev',
+	'libeigen3-dev',
+	'libgts-bin',
+	'libgts-dev',
+	'libkdtree++-dev',
+	'libmedc-dev',
+	'libopencv-dev',
+	'libproj-dev',
+	'libvtk9-dev',
+	'libx11-dev',
+	'libxerces-c-dev',
+	'libyaml-cpp-dev',
+	'libzipios++-dev',
+	'libpcl-dev']
+
+  - name: "Go to build directory and cmake"
+    when: not stat_result.stat.exists
+    command: chdir=/opt/freecad-source/build cmake ../
+
+  - name: "make"
+    when: not stat_result.stat.exists
+    command: chdir=/opt/freecad-source/build make -j4
+
+  - name: link binary
+    file:
+      src: /opt/freecad-source/build/bin/FreeCAD
+      dest: /opt/freecad
+      state: link
+
+  - name: "Install FreeCAD desktop file"
+    copy:
+      src: ../config_files/freecad.desktop
+      dest: /usr/share/applications/
+      owner: root
+
+  - name: Install Techdraw Templates
+    copy:
+      src: ../config_files/VS_Letter_Landscape_BotRight.svg
+      dest: /opt/freecad-source/build/share/Mod/TechDraw/Templates/
+      owner: root
