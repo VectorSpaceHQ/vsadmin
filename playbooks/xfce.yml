@@ -1,0 +1,18 @@
+- hosts: computer-lab, office
+  become: yes
+  become_method: su
+  ignore_errors: true
+  tasks:
+
+  - name: "Disable shutdown, reboot, and suspend in org.xfce.power.policy"
+    when: ansible_os_family == "Debian"
+    community.general.xml:
+      path: /usr/share/polkit-1/actions/org.xfce.power.policy
+      xpath: /policyconfig/action[id="org.xfce.power.xfce-pm-helper"]/defaults/allow_active
+      value: no
+  - name: "Disable shutdown, reboot, and suspend in org.freedesktop.login1.policy"
+    when: ansible_os_family == "Debian"
+    community.general.xml:
+      path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
+      xpath: /policyconfig/action[id="org.freedesktop.login1.power-off"]/defaults/allow_active
+      value: no
