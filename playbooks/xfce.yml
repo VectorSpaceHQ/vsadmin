@@ -5,14 +5,97 @@
   tasks:
 
   - name: "Disable shutdown, reboot, and suspend in org.xfce.power.policy"
-    when: ansible_os_family == "Debian"
     community.general.xml:
       path: /usr/share/polkit-1/actions/org.xfce.power.policy
       xpath: /policyconfig/action[id="org.xfce.power.xfce-pm-helper"]/defaults/allow_active
-      value: no
-  - name: "Disable shutdown, reboot, and suspend in org.freedesktop.login1.policy"
-    when: ansible_os_family == "Debian"
-    community.general.xml:
-      path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
-      xpath: /policyconfig/action[id="org.freedesktop.login1.power-off"]/defaults/allow_active
-      value: no
+      value: auth_admin_keep
+
+  - name: Set org.freedesktop.login1.power-off so only admins can perform power actions
+	community.general.xml:
+	  path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
+	  xpath: //*[@id='org.freedesktop.login1.power-off']/defaults/allow_active
+	  value: auth_admin_keep
+
+  - name: Set org.freedesktop.login1.power-off-multiple-sessions so only admins can perform power actions
+	community.general.xml:
+	  path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
+	  xpath: //*[@id='org.freedesktop.login1.power-off-multiple-sessions']/defaults/allow_active
+	  value: auth_admin_keep
+
+  - name: Set org.freedesktop.login1.power-off-ignore-inhibit so only admins can perform power actions
+	community.general.xml:
+	  path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
+	  xpath: //*[@id='org.freedesktop.login1.power-off-ignore-inhibit']/defaults/allow_active
+	  value: auth_admin_keep
+
+  - name: Set org.freedesktop.login1.reboot so only admins can perform power actions
+	community.general.xml:
+	  path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
+	  xpath: //*[@id='org.freedesktop.login1.reboot']/defaults/allow_active
+	  value: auth_admin_keep
+
+  - name: Set org.freedesktop.login1.reboot-multiple-sessions so only admins can perform power actions
+	community.general.xml:
+	  path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
+	  xpath: //*[@id='org.freedesktop.login1.reboot-multiple-sessions']/defaults/allow_active
+	  value: auth_admin_keep
+
+  - name: Set org.freedesktop.login1.reboot-ignore-inhibit so only admins can perform power actions
+	community.general.xml:
+	  path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
+	  xpath: //*[@id='org.freedesktop.login1.reboot-ignore-inhibit']/defaults/allow_active
+	  value: auth_admin_keep
+
+  - name: Set org.freedesktop.login1.halt so only admins can perform power actions
+	community.general.xml:
+	  path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
+	  xpath: //*[@id='org.freedesktop.login1.halt']/defaults/allow_active
+	  value: auth_admin_keep
+
+  - name: Set org.freedesktop.login1.halt-multiple-sessions so only admins can perform power actions
+	community.general.xml:
+	  path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
+	  xpath: //*[@id='org.freedesktop.login1.halt-multiple-sessions']/defaults/allow_active
+	  value: auth_admin_keep
+
+  - name: Set org.freedesktop.login1.halt-ignore-inhibit so only admins can perform power actions
+	community.general.xml:
+	  path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
+	  xpath: //*[@id='org.freedesktop.login1.halt-ignore-inhibit']/defaults/allow_active
+	  value: auth_admin_keep
+
+  - name: Set org.freedesktop.login1.suspend so only admins can perform power actions
+	community.general.xml:
+	  path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
+	  xpath: //*[@id='org.freedesktop.login1.suspend']/defaults/allow_active
+	  value: auth_admin_keep
+
+  - name: Set org.freedesktop.login1.suspend-multiple-sessions so only admins can perform power actions
+	community.general.xml:
+	  path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
+	  xpath: //*[@id='org.freedesktop.login1.suspend-multiple-sessions']/defaults/allow_active
+	  value: auth_admin_keep
+
+  - name: Set org.freedesktop.login1.suspend-ignore-inhibit so only admins can perform power actions
+	community.general.xml:
+	  path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
+	  xpath: //*[@id='org.freedesktop.login1.suspend-ignore-inhibit']/defaults/allow_active
+	  value: auth_admin_keep
+
+  - name: Set org.freedesktop.login1.hibernate so only admins can perform power actions
+	community.general.xml:
+	  path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
+	  xpath: //*[@id='org.freedesktop.login1.hibernate']/defaults/allow_active
+	  value: auth_admin_keep
+
+  - name: Set org.freedesktop.login1.hibernate-multiple-sessions so only admins can perform power actions
+	community.general.xml:
+	  path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
+	  xpath: //*[@id='org.freedesktop.login1.hibernate-multiple-sessions']/defaults/allow_active
+	  value: auth_admin_keep
+
+  - name: Set org.freedesktop.login1.hibernate-ignore-inhibit so only admins can perform power actions
+	community.general.xml:
+	  path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
+	  xpath: //*[@id='org.freedesktop.login1.hibernate-ignore-inhibit']/defaults/allow_active
+	  value: auth_admin_keep
