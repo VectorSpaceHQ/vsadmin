@@ -189,7 +189,7 @@
   - name: Unlock Chromium desktop shortcut file
     when: ansible_os_family == "Debian"
     copy:
-      src: /vsfs01/configs/unlock-chromium.desktop
+      src: ../config_files/unlock-chromium.desktop
       dest: /usr/share/applications/
       owner: root
 
