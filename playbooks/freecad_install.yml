@@ -7,8 +7,8 @@
   ignore_errors: false
   tasks:
 
-  # - name: FreeCAD clean build
-  #   command: rm -rf /opt/freecad-source
+  - name: FreeCAD clean build
+    command: rm -rf /opt/freecad-source
   
   - name: Check if freecad executable exists
     stat:
@@ -79,12 +79,12 @@
   - name: link binary
     file:
       src: /opt/freecad-source/build/bin/FreeCAD
-      dest: /opt/freecad
+      dest: /opt/freecad-latest
       state: link
 
   - name: "Install FreeCAD desktop file"
     copy:
-      src: ../config_files/freecad.desktop
+      src: ../config_files/freecad-latest.desktop
       dest: /usr/share/applications/
       owner: root
 

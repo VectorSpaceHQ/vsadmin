@@ -4,7 +4,7 @@
   ignore_errors: true
   tasks:
 
-  - name: "Install Debian 12 packages"
+  - name: "Install Debian 13 packages"
     when: ansible_os_family == "Debian"
     apt:
       name: [
@@ -16,6 +16,7 @@
       'build-essential',
       'cups',
       'darktable',
+      'debconf-utils',
       'dnsutils',
       'emacs',
       'ffmpeg',
@@ -29,9 +30,7 @@
       'git',
       'gnome-calculator',
       'gthumb',
-      'idle3',
       'inkscape-tutorials',
-      'inkscape',
       'inkscape',
       'kdenlive',
       'kicad-footprints',
@@ -40,7 +39,6 @@
       'kicad-symbols',
       'kicad',
       'krita',
-      'libncurses5',
       'librecad',
       'libreoffice',
       'libwx-glcanvas-perl',
@@ -76,7 +74,6 @@
       'simplescreenrecorder',
       'spyder',
       'thunderbird',
-      'tldr',
       'tree',
       'vim',
       'vlc',
@@ -114,14 +111,6 @@
       state: latest
       force: yes
 
-
-      # Debian 11 arduino solution
-  # - command: ls /usr/bin/arduino
-  #   register: result
-  #   ignore_errors: True
-  # - name: Local Arduino not found, install from network
-  #   when: result is failed
-  #   shell: /vsfs01/opt/arduino-1.8.13/install.sh
 
   - name: fengrave desktop application file
     copy:
