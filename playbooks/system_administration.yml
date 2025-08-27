@@ -113,10 +113,10 @@
       owner: root
       group: root
       mode: 0644
-
+      
   - name: Install Agency FB font
     copy:
-      src: /vsfs01/configs/AGENCYB.TTF
+      src: ../configs/AGENCYB.TTF
       dest: /usr/share/fonts/truetype/
       owner: root
       group: admins
@@ -133,5 +133,4 @@
       src: ../config_files/pam_trimspaces.so
       dest: /usr/lib/x86_64-linux-gnu/security/
       owner: root
-
 

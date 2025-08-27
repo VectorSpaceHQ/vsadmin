@@ -111,7 +111,6 @@
       state: latest
       force: yes
 
-
   - name: fengrave desktop application file
     copy:
       src: ../config_files/f-engrave.desktop
