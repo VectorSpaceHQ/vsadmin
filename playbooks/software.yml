@@ -4,7 +4,7 @@
   ignore_errors: true
   tasks:
 
-  - name: "Install Debian 12 packages"
+  - name: "Install Debian 13 packages"
     when: ansible_os_family == "Debian"
     apt:
       name: [
@@ -16,6 +16,7 @@
       'build-essential',
       'cups',
       'darktable',
+      'debconf-utils',
       'dnsutils',
       'emacs',
       'ffmpeg',
@@ -29,9 +30,7 @@
       'git',
       'gnome-calculator',
       'gthumb',
-      'idle3',
       'inkscape-tutorials',
-      'inkscape',
       'inkscape',
       'kdenlive',
       'kicad-footprints',
@@ -40,7 +39,6 @@
       'kicad-symbols',
       'kicad',
       'krita',
-      'libncurses5',
       'librecad',
       'libreoffice',
       'libwx-glcanvas-perl',
@@ -76,7 +74,6 @@
       'simplescreenrecorder',
       'spyder',
       'thunderbird',
-      'tldr',
       'tree',
       'vim',
       'vlc',
@@ -114,15 +111,6 @@
       state: latest
       force: yes
 
-
-      # Debian 11 arduino solution
-  # - command: ls /usr/bin/arduino
-  #   register: result
-  #   ignore_errors: True
-  # - name: Local Arduino not found, install from network
-  #   when: result is failed
-  #   shell: /vsfs01/opt/arduino-1.8.13/install.sh
-
   - name: fengrave desktop application file
     copy:
       src: ../config_files/f-engrave.desktop
@@ -142,13 +130,13 @@
       dest: /usr/share/applications
       owner: root
 
-  # - name: Inkstitch plugin
-  #   when: ansible_os_family == "Debian"
-  #   copy:
-  #     src: ../config_files/inkstitch-v2.0.0
-  #     dest: /usr/share/inkscape/extensions/
-  #     owner: root
-
+  # don't know why environment PATH is needed but appears to be
+  - name: Inkstitch plugin
+    apt:
+      deb: /vsfs01/packages/inkstitch_0.0.1.rejbasket.numpy.import.fix_amd64.deb
+      force: yes
+    environment:
+      PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
   - name: Prusa-slicer profiles for vectorspace user
     when: ansible_os_family == "Debian"
@@ -167,21 +155,21 @@
   - name: CHITUBOX Desktop file
     when: ansible_os_family == "Debian"
     copy:
-      src: /vsfs01/configs/chitubox.desktop
+      src: ../config_files/chitubox.desktop
       dest: /usr/share/applications/
       owner: root
 
   - name: LightBurn Application
     when: ansible_os_family == "Debian"
-    ansible.posix.synchronize:
-      src: /vsfs01/home/aspontarelli/ansible/config_files/LightBurn
+    copy:
+      src: ../config_files/LightBurn
       dest: /opt/
-      #owner: root
+      owner: root
 
   - name: LightBurn Desktop file
     when: ansible_os_family == "Debian"
     copy:
-      src: /vsfs01/home/aspontarelli/ansible/config_files/LightBurn.desktop
+      src: ../config_files/LightBurn.desktop
       dest: /usr/share/applications/
       owner: root
 

@@ -1,0 +1,16 @@
+# install to /usr/share/applications
+[Desktop Entry]
+Type=Application
+Name=FreeCAD
+Comment=Version 1.0.1
+Path=/opt/
+Exec=/opt/freecad-latest
+
+# The name of the icon that will be used to display this entry
+Icon=appimagekit-freecad
+
+# Describes whether this application needs to be run in a terminal or not
+Terminal=false
+
+# Describes the categories in which this entry should be shown
+Categories=Graphics
