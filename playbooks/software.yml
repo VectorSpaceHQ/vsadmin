@@ -208,3 +208,10 @@
   #     dpkg_options: '-y' # answer yes to prompt
   # - name: VSCode2
   #   command: apt install /vsfs01/home/aspontarelli/ansible/config_files/code_1.93.1-1726079302_amd64.deb -y
+
+
+  - name: Spacemouse support for CAD
+    apt:
+      name: ['spacenavd', 'libspnav-dev']
+      state: latest
+      force: yes
