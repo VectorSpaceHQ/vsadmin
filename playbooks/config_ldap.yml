@@ -22,34 +22,34 @@
 
   - name: Configure sssd.conf
     copy:
-      src: ~/ansible/config_files/sssd.conf
+      src: ../config_files/sssd.conf
       dest: /etc/sssd/sssd.conf
       owner: root
       mode: 0600
 
   - name: Configure nscd.conf
     copy:
-      src: ~/ansible/config_files/nscd.conf
+      src: ../config_files/nscd.conf
       dest: /etc/nscd.conf
 
   - name: Configure nsswitch.conf
     copy:
-      src: ~/ansible/config_files/nsswitch.conf
+      src: ../config_files/nsswitch.conf
       dest: /etc/nsswitch.conf
 
   - name: Configure system-auth
     copy:
-      src: ~/ansible/config_files/system-auth
+      src: ../config_files/system-auth
       dest: /etc/pam.d/system-auth
 
   - name: Configure Sudo
     copy:
-      src: ~/ansible/config_files/sudo
+      src: ../config_files/sudo
       dest: /etc/pam.d/sudo
 
   - name: Configure passwd
     copy:
-      src: ~/ansible/config_files/passwd
+      src: ../config_files/passwd
       dest: /etc/pam.d/passwd
 
   - name: create directory for TLS cert on Debian
@@ -60,7 +60,7 @@
 
   - name: setup TLS
     copy:
-      src: ~/ansible/config_files/ca_server.pem
+      src: ../config_files/ca_server.pem
       dest: /etc/openldap/certs/ca_server.pem
 
   - name: Enable SSSD
