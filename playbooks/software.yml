@@ -193,6 +193,13 @@
       dest: /usr/share/applications/
       owner: root
 
+  - name: Unlock Firefox desktop shortcut file
+    when: ansible_os_family == "Debian"
+    copy:
+      src: ../config_files/unlock-firefox.desktop
+      dest: /usr/share/applications/
+      owner: root
+
   # - name: Freecad point to /vsfs01/opt version 0.19
   #   replace:
   #     path: /usr/share/applications/freecad.desktop
