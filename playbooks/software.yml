@@ -84,18 +84,8 @@
       'xfce4',
       'zsh'
       ]
-
       state: latest
       force: yes
-
-
-  # - name: "Install Debian libraries for Inkscape copy/paste bug"
-  #   when: ansible_os_family == "Debian"
-  #   apt:
-  #     name: ['liblcms2-dev', 'libmagickwand-dev', 'libpango1.0-dev', 'libcairo2-dev',  'python-dev', 'pstoedit', 'ruby', 'dia', 'libsvg-perl', 'libxml-xql-perl']
-  #     # 'python-cairo-dev',
-  #     state: latest
-  #     force: yes
 
   - name: "Ubuntu only packages"
     when: ansible_distribution == "Ubuntu" # find using, ansible -i "joshua," all -m setup
@@ -107,7 +97,7 @@
   - name: "Debian only packages"
     when: ansible_os_family == "Debian" and ansible_distribution != 'Ubuntu'
     apt:
-      name: ['chromium', 'firmware-amd-graphics', 'firmware-realtek', 'htop', 'gphoto2', 'gphotofs', 'gtkam', 'arduino-core', 'gvfs', 'gvfs-fuse', 'gvfs-backends']
+      name: ['chromium', 'firmware-realtek', 'htop', 'gphoto2', 'gphotofs', 'gtkam', 'arduino-core', 'gvfs', 'gvfs-fuse', 'gvfs-backends']
       state: latest
       force: yes
 
@@ -200,12 +190,6 @@
       dest: /usr/share/applications/
       owner: root
 
-  # - name: Freecad point to /vsfs01/opt version 0.19
-  #   replace:
-  #     path: /usr/share/applications/freecad.desktop
-  #     regexp: '\/usr\/bin\/freecad'
-  #     replace: '\/vsfs01\/opt\/freecad'
-
   # - name: Slack
   #   https://www.how2shout.com/linux/how-to-install-slack-on-debian-11-bullseye-linux/
 
@@ -222,3 +206,4 @@
       name: ['spacenavd', 'libspnav-dev']
       state: latest
       force: yes
+      
