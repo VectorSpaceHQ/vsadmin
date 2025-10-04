@@ -7,7 +7,7 @@
   - name: "Disable shutdown, reboot, and suspend in org.xfce.power.policy"
     community.general.xml:
       path: /usr/share/polkit-1/actions/org.xfce.power.policy
-      xpath: /policyconfig/action[id="org.xfce.power.xfce-pm-helper"]/defaults/allow_active
+      xpath: /policyconfig/action[@id='org.xfce4.power.xfce-pm-helper']/defaults/allow_active
       value: auth_admin_keep
 
   - name: "Set org.freedesktop.login1.power-off so only admins can perform power actions"
