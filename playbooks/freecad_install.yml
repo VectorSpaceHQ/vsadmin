@@ -19,9 +19,9 @@
     when: not stat_result.stat.exists
     command: git clone --recurse-submodules https://github.com/FreeCAD/FreeCAD.git /opt/freecad-source
 
-  - name: checkout specific stable commit
-    when: not stat_result.stat.exists
-    command: chdir=/opt/freecad-source/ git reset --hard 878f0b8
+  # - name: checkout specific stable commit
+  #   when: not stat_result.stat.exists
+  #   command: chdir=/opt/freecad-source/ git reset --hard 878f0b8
 
   - name: clean untracked files
     when: not stat_result.stat.exists

@@ -11,6 +11,7 @@
       mode: a+x
 
     # Not working in Deb 11 due to libreadline version issue
+    # Still problem in Deb 13 due to libreadline7 missing
   # - name: Install SheetCAM
   #   apt:
   #     deb: /tmp/SheetCamTNG_7.1.20-1_amd64.deb
