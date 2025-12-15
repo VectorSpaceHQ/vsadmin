@@ -17,7 +17,6 @@
       'cups',
       'darktable',
       'debconf-utils',
-      'dnsutils',
       'emacs',
       'ffmpeg',
       'filezilla',
@@ -149,12 +148,12 @@
       dest: /usr/share/applications/
       owner: root
 
-  - name: LightBurn Application
-    when: ansible_os_family == "Debian"
-    copy:
-      src: ../config_files/LightBurn
-      dest: /opt/
-      owner: root
+  # - name: LightBurn Application
+  #   when: ansible_os_family == "Debian"
+  #   copy:
+  #     src: ../config_files/LightBurn
+  #     dest: /opt/
+  #     owner: root
 
   - name: LightBurn Desktop file
     when: ansible_os_family == "Debian"
@@ -190,8 +189,18 @@
       dest: /usr/share/applications/
       owner: root
 
-  # - name: Slack
-  #   https://www.how2shout.com/linux/how-to-install-slack-on-debian-11-bullseye-linux/
+  - name: TheiaIDE desktop shortcut install
+    when: ansible_os_family == "Debian"
+    copy:
+      src: ../config_files/TheiaIDE.desktop
+      dest: /usr/share/applications/
+      owner: root
+
+  - name: Slack Install
+    ansible.builtin.apt:
+      deb: /vsfs01/packages/slack-desktop-4.47.69-amd64.deb
+    environment:
+      PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"      
 
   # - name: VSCode
   #   apt:
@@ -201,9 +210,5 @@
   #   command: apt install /vsfs01/home/aspontarelli/ansible/config_files/code_1.93.1-1726079302_amd64.deb -y
 
 
-  - name: Spacemouse support for CAD
-    apt:
-      name: ['spacenavd', 'libspnav-dev']
-      state: latest
-      force: yes
+
       

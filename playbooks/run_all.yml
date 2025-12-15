@@ -25,8 +25,9 @@
 - name: FRC configurations
   ansible.builtin.import_playbook: frc.yml
 
-- name: FreeCAD install
-  ansible.builtin.import_playbook: freecad_install.yml
+# - name: FreeCAD install
+#   ansible.builtin.import_playbook: freecad_install.yml
+
 
 # - name: Reboot
 #   ansible.builtin.import_playbook: reboot.yml

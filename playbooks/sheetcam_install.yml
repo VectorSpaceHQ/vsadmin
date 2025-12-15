@@ -5,25 +5,20 @@
 
   - name: SheetCAM copy deb file
     copy:
-      src: /vsfs01/packages/SheetCamTNG_7.1.20-1_amd64.deb
+      src: /vsfs01/packages/SheetCam_setupV7.1.35-64.bin
       dest: /tmp
       owner: root
       mode: a+x
 
-    # Not working in Deb 11 due to libreadline version issue
-    # Still problem in Deb 13 due to libreadline7 missing
-  # - name: Install SheetCAM
-  #   apt:
-  #     deb: /tmp/SheetCamTNG_7.1.20-1_amd64.deb
+  - name: Install SheetCAM
+    ansible.builtin.command:
+      cmd: /tmp/SheetCam_setupV7.1.35-64.bin
 
-
-# Install sheetcam.desktop by copying it to /usr/share/applications
   - name: SheetCAM Copy desktop file
     copy:
       src: /vsfs01/configs/sheetcam.desktop
       dest: /usr/share/applications
       owner: root
-
 
   - name: SheetCAM license for vectorspace user
     copy:

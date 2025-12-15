@@ -93,3 +93,9 @@
       src: ../config_files/VS_Letter_Landscape_BotRight.svg
       dest: /opt/freecad-source/build/share/Mod/TechDraw/Templates/
       owner: root
+
+  - name: Spacemouse support for CAD
+    apt:
+      name: ['spacenavd', 'libspnav-dev']
+      state: latest
+      force: yes

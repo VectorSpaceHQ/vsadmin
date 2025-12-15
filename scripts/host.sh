@@ -6,8 +6,6 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 
 ansible-playbook -i ../hosts -u vectorspace -K ../playbooks/run_all.yml -e 'ansible_python_interpreter=/usr/bin/python3'
 
-ansible-playbook -i ../hosts -u vectorspace -K ../playbooks/freecad_install.yml -e 'ansible_python_interpreter=/usr/bin/python3'
-
 # ansible-playbook -i ../hosts -u vectorspace -K ../playbooks/software.yml -e 'ansible_python_interpreter=/usr/bin/python3'
 #ansible-playbook -i ../hosts -u vectorspace -K ../playbooks/run_all.yml
 

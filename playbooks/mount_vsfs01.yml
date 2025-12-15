@@ -82,6 +82,14 @@
         group: root
         mode: 0755
 
+    - name: Create vsfs01 browser-profiles directory
+      file:
+        path: /vsfs01/browser-profiles
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
     - name: Mount member home space on Debian
       when: ansible_os_family == "Debian"
       mount:
