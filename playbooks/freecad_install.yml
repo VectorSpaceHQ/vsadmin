@@ -78,17 +78,6 @@
     when: not stat_result.stat.exists
     command: chdir=/opt/freecad-source/build make -j4
 
-  - name: Remove old symbolic link
-    ansible.builtin.file:
-      path: /opt/freecad-latest
-      state: absent
-
-  - name: link binary
-    file:
-      src: /opt/freecad-source/build/bin/FreeCAD
-      dest: /opt/freecad-latest
-      state: link
-
   - name: "Install FreeCAD desktop file"
     copy:
       src: ../config_files/freecad-latest.desktop
