@@ -27,3 +27,10 @@
 
 - name: Customize XFCE
   ansible.builtin.import_playbook: xfce.yml
+
+# - name: FreeCAD install
+#   ansible.builtin.import_playbook: freecad_install.yml
+
+# - name: Reboot
+#   ansible.builtin.import_playbook: reboot.yml
+

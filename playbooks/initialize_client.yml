@@ -37,3 +37,9 @@
       src: ../config_files/client.conf
       dest: /etc/cups/
       owner: root
+
+  - name: Ensure numlock on in KDE
+    copy:
+      src: ../config_files/sddm.conf
+      dest: /etc/sddm.conf
+      owner: root

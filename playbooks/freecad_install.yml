@@ -19,9 +19,9 @@
     when: not stat_result.stat.exists
     command: git clone --recurse-submodules https://github.com/FreeCAD/FreeCAD.git /opt/freecad-source
 
-  - name: checkout specific stable commit
-    when: not stat_result.stat.exists
-    command: chdir=/opt/freecad-source/ git reset --hard 878f0b8
+  # - name: checkout specific stable commit
+  #   when: not stat_result.stat.exists
+  #   command: chdir=/opt/freecad-source/ git reset --hard 878f0b8
 
   - name: clean untracked files
     when: not stat_result.stat.exists
@@ -93,3 +93,9 @@
       src: ../config_files/VS_Letter_Landscape_BotRight.svg
       dest: /opt/freecad-source/build/share/Mod/TechDraw/Templates/
       owner: root
+
+  - name: Spacemouse support for CAD
+    apt:
+      name: ['spacenavd', 'libspnav-dev']
+      state: latest
+      force: yes

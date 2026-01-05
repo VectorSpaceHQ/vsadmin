@@ -2,8 +2,8 @@
 [Desktop Entry]
 Type=Application
 Terminal=false
-Exec=/opt/CBD/CHITUBOX_Basic/CHITUBOX_Basic.sh
+Exec=/vsfs01/opt/CBD/CHITUBOX_Basic/CHITUBOX_Basic.sh
 Name=CHITUBOX
 Comment=Resin 3D Printing
-Icon=/vsfs01/config_files/CHITUBOX/CHITUBOX.png
+Icon=/vsfs01/packages/CHITUBOX/chitubox_icon.png
 Categories=Graphics

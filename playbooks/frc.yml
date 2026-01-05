@@ -1,6 +1,8 @@
-- hosts: computer-lab
+- hosts: computer-lab, projectors
   become: yes
   become_method: su
+  environment:
+    PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"  
   tasks:
 
     #######################################################################
@@ -64,3 +66,20 @@
       src: ../config_files/fritzing.desktop
       dest: /usr/share/applications/
       owner: root
+
+
+  - name: "Install RabbitVCS SVN tools"
+    apt:
+      name: ['rabbitvcs-core', 'rabbitvcs-cli']
+
+  - name: "Copy RabbitVCS .desktop files"
+    copy:
+      src: ../config_files/rabbitvcs_svn_submenu_directory.desktop
+      dest: /usr/share/kio/servicemenus/
+      owner: root
+      
+  - name: "Copy RabbitVCS .desktop files"
+    copy:
+      src: ../config_files/rabbitvcs_svn_submenu_file.desktop
+      dest: /usr/share/kio/servicemenus/
+      owner: root      

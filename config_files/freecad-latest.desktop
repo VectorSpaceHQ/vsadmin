@@ -2,7 +2,7 @@
 [Desktop Entry]
 Type=Application
 Name=FreeCAD
-Comment=Version 1.0.1
+Comment=VS Version
 Path=/opt/
 Exec=/opt/freecad-latest
 

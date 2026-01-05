@@ -1,4 +1,4 @@
-- hosts: computer-lab, office
+- hosts: computer-lab, office, projectors
   become: yes
   become_method: su
   ignore_errors: true
@@ -17,7 +17,6 @@
       'cups',
       'darktable',
       'debconf-utils',
-      'dnsutils',
       'emacs',
       'ffmpeg',
       'filezilla',
@@ -78,24 +77,13 @@
       'vim',
       'vlc',
       'webext-ublock-origin-firefox',
-      'webext-ublock-origin-chromium',
       'xfburn',
       'xfce4-screenshooter',
       'xfce4',
       'zsh'
       ]
-
       state: latest
       force: yes
-
-
-  # - name: "Install Debian libraries for Inkscape copy/paste bug"
-  #   when: ansible_os_family == "Debian"
-  #   apt:
-  #     name: ['liblcms2-dev', 'libmagickwand-dev', 'libpango1.0-dev', 'libcairo2-dev',  'python-dev', 'pstoedit', 'ruby', 'dia', 'libsvg-perl', 'libxml-xql-perl']
-  #     # 'python-cairo-dev',
-  #     state: latest
-  #     force: yes
 
   - name: "Ubuntu only packages"
     when: ansible_distribution == "Ubuntu" # find using, ansible -i "joshua," all -m setup
@@ -107,7 +95,7 @@
   - name: "Debian only packages"
     when: ansible_os_family == "Debian" and ansible_distribution != 'Ubuntu'
     apt:
-      name: ['chromium', 'firmware-amd-graphics', 'firmware-realtek', 'htop', 'gphoto2', 'gphotofs', 'gtkam', 'arduino-core', 'gvfs', 'gvfs-fuse', 'gvfs-backends']
+      name: ['chromium', 'firmware-realtek', 'htop', 'gphoto2', 'gphotofs', 'gtkam', 'arduino-core', 'gvfs', 'gvfs-fuse', 'gvfs-backends']
       state: latest
       force: yes
 
@@ -159,12 +147,12 @@
       dest: /usr/share/applications/
       owner: root
 
-  - name: LightBurn Application
-    when: ansible_os_family == "Debian"
-    copy:
-      src: ../config_files/LightBurn
-      dest: /opt/
-      owner: root
+  # - name: LightBurn Application
+  #   when: ansible_os_family == "Debian"
+  #   copy:
+  #     src: ../config_files/LightBurn
+  #     dest: /opt/
+  #     owner: root
 
   - name: LightBurn Desktop file
     when: ansible_os_family == "Debian"
@@ -189,18 +177,29 @@
   - name: Unlock Chromium desktop shortcut file
     when: ansible_os_family == "Debian"
     copy:
-      src: /vsfs01/configs/unlock-chromium.desktop
+      src: ../config_files/unlock-chromium.desktop
       dest: /usr/share/applications/
       owner: root
 
-  # - name: Freecad point to /vsfs01/opt version 0.19
-  #   replace:
-  #     path: /usr/share/applications/freecad.desktop
-  #     regexp: '\/usr\/bin\/freecad'
-  #     replace: '\/vsfs01\/opt\/freecad'
+  - name: Unlock Firefox desktop shortcut file
+    when: ansible_os_family == "Debian"
+    copy:
+      src: ../config_files/unlock-firefox.desktop
+      dest: /usr/share/applications/
+      owner: root
 
-  # - name: Slack
-  #   https://www.how2shout.com/linux/how-to-install-slack-on-debian-11-bullseye-linux/
+  - name: TheiaIDE desktop shortcut install
+    when: ansible_os_family == "Debian"
+    copy:
+      src: ../config_files/TheiaIDE.desktop
+      dest: /usr/share/applications/
+      owner: root
+
+  - name: Slack Install
+    ansible.builtin.apt:
+      deb: /vsfs01/packages/slack-desktop-4.47.69-amd64.deb
+    environment:
+      PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"      
 
   # - name: VSCode
   #   apt:
@@ -208,3 +207,7 @@
   #     dpkg_options: '-y' # answer yes to prompt
   # - name: VSCode2
   #   command: apt install /vsfs01/home/aspontarelli/ansible/config_files/code_1.93.1-1726079302_amd64.deb -y
+
+
+
+      
