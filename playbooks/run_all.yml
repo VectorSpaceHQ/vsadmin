@@ -28,6 +28,9 @@
 - name: Customize XFCE
   ansible.builtin.import_playbook: xfce.yml
 
+- name: Auto logout idle users
+  ansible.builtin.import_playbook: idle_logout.yml
+
 # - name: FreeCAD install
 #   ansible.builtin.import_playbook: freecad_install.yml
 

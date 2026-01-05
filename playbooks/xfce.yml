@@ -99,3 +99,15 @@
       path: /usr/share/polkit-1/actions/org.freedesktop.login1.policy
       xpath: //*[@id='org.freedesktop.login1.hibernate-ignore-inhibit']/defaults/allow_active
       value: no
+
+  - name: Disable xfdisplay popup. Create global displays.xml.
+    ansible.builtin.copy:
+      dest: "/etc/xdg/xfce4/xfconf/xfce-perchannel-xml/displays.xml"
+      owner: root
+      group: root
+      mode: '0644'
+      content: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <channel name="displays" version="1.0">
+          <property name="Notify" type="int" value="0"/>
+        </channel>

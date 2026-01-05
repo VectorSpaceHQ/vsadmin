@@ -199,7 +199,13 @@
     ansible.builtin.apt:
       deb: /vsfs01/packages/slack-desktop-4.47.69-amd64.deb
     environment:
-      PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"      
+      PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+  - name: Clean up Slack's crap
+    ansible.builtin.file:
+      path: /etc/apt/sources.list.d/slack.list
+      state: absent
+    register: slack_repo_file_deletion
 
   # - name: VSCode
   #   apt:

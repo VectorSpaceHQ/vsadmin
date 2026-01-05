@@ -4,7 +4,7 @@ Type=Application
 Name=FreeCAD
 Comment=VS Version
 Path=/opt/
-Exec=/opt/freecad-latest
+Exec=/opt/freecad-source/build/bin/FreeCAD
 
 # The name of the icon that will be used to display this entry
 Icon=appimagekit-freecad
