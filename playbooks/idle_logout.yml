@@ -1,0 +1,45 @@
+- name: Configure System-Wide XFCE Idle Logout
+  hosts: all
+  become: yes
+  become_method: su
+  ignore_errors: false
+  tasks:
+  
+    - name: Install xprintidle dependency
+      ansible.builtin.apt:
+        name: xprintidle
+        state: present
+
+    - name: Create global logout script
+      ansible.builtin.copy:
+        dest: /usr/local/bin/global_idle_logout.sh
+        mode: '0755'
+        owner: root
+        group: root
+        content: |
+          #!/bin/bash
+          # 3 hours in milliseconds (10,800,000)
+          IDLE_LIMIT=10800000 
+          
+          while true; do
+              IDLE_TIME=$(xprintidle)
+              if [ "$IDLE_TIME" -gt "$IDLE_LIMIT" ]; then
+                  xfce4-session-logout --logout --fast
+              fi
+              sleep 600
+          done
+
+    - name: Create system-wide XDG autostart entry
+      ansible.builtin.copy:
+        dest: /etc/xdg/autostart/idle-logout.desktop
+        mode: '0644'
+        owner: root
+        group: root
+        content: |
+          [Desktop Entry]
+          Type=Application
+          Name=Global Idle Logout
+          Comment=Logs out user after 10 minutes of inactivity
+          Exec=/usr/local/bin/global_idle_logout.sh
+          OnlyShowIn=XFCE;
+          Terminal=false
