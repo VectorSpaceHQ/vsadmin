@@ -30,7 +30,7 @@
         <property name="startup-notify" type="bool" value="true"/>
       </property>
       <property name="&lt;Alt&gt;&lt;Super&gt;s" type="string" value="orca"/>
-      <property name="&lt;Super&gt;" type="string" value="xfce4-popup-whiskermenu"/>
+      <property name="&lt;Super_L&gt;" type="string" value="xfce4-popup-whiskermenu"/>
     </property>
   </property>
   <property name="xfwm4" type="empty">

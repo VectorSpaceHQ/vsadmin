@@ -1,4 +1,4 @@
-- hosts: computer-lab
+- hosts: 10.0.0.98
   become: yes
   become_method: su
   ignore_errors: true
@@ -31,14 +31,115 @@
             }
         });
   
-  - name: Disable xfdisplay popup. Create global displays.xml.
+
+#  The keyboard shortcut mods were surprisingly difficult to implement.
+#  It's important to understand:
+#  1.) The system level keyboard-shortcuts.xml is only used to create a user level config
+#   the first time a new user logs in. After that, it is completely ignored. It is not as I
+#   had assumed, read first, then appended to by the user level config.
+#  2.) It's therefore necessary to modify the user level configs and almost pointless
+#   to mess with the system level configs.
+# 
+  # - name: Bind Ctrl-Alt-T to XFCE terminal
+  #   community.general.xml:
+  #     path: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
+  #     xpath: /channel/property[@name='commands']/property[@name='custom']/property[@name='<Primary><Alt>t']
+  #     value: xfce4-terminal
+  #     attribute: value
+  #     state: present
+
+  # - name: Bind Ctrl-Alt-L to xflock4
+  #   community.general.xml:
+  #     path: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
+  #     xpath: /channel/property[@name='commands']/property[@name='custom']/property[@name='<Primary><Alt>l']
+  #     value: xflock4
+  #     attribute: value
+  #     state: present
+    
+  # - name: Bind Print Screen to xfce4-screenshooter
+  #   community.general.xml:
+  #     path: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
+  #     xpath: /channel/property[@name='commands']/property[@name='custom']/property[@name='<Print>']
+  #     value: xfce4-screenshooter
+  #     attribute: value
+  #     state: present
+
+  # - name: Add Super+Left to tile window left
+  #   community.general.xml:
+  #     path: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
+  #     xpath: /channel/property[@name='commands']
+  #     add_children:
+  #       - property:
+  #           name: "<Super>Left"
+  #           type: string
+  #           value: "xfwm4 --tile left"
+
+  # - name: Add Super+Right to tile window right
+  #   community.general.xml:
+  #     path: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
+  #     xpath: /channel/property[@name='commands']
+  #     add_children:
+  #       - property:
+  #           name: "<Super>Right"
+  #           type: string
+  #           value: "xfwm4 --tile right"
+  # - name: Bind Super key to whiskermenu
+  #   community.general.xml:
+  #     path: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
+  #     xpath: /channel/property[@name='commands']/property[@name='custom']/property[@name='<Alt><Shift><Control>w']
+  #     value: xfce4-popup-whiskermenu
+  #     attribute: value
+  #     state: present
+      
+  - name: Install xcape and xmlstarlet
+    ansible.builtin.apt:
+      name: [xcape]
+      state: present
+
+
+  - name: Create system-wide xcape autostart entry
     ansible.builtin.copy:
-      dest: "/etc/xdg/xfce4/xfconf/xfce-perchannel-xml/displays.xml"
+      dest: "/etc/xdg/autostart/xcape-super-key.desktop"
+      content: |
+        [Desktop Entry]
+        Type=Application
+        Name=Xcape Super Key
+        Comment=Map Left Super to Whisker Menu (via Alt+shift+ctrl+w)
+        Exec=xcape -e 'Super_L=Control_L|Alt_L|Shift_L|w'
+        Terminal=false
+        StartupNotify=false
+        OnlyShowIn=XFCE;
+      mode: '0644'
+
+  - name: Install XFCE shortcut script
+    copy:
+      src: ../config_files/set-xfce-shortcuts.sh
+      dest: /usr/local/bin/set-xfce-shortcuts.sh
       owner: root
       group: root
+      mode: '0755'
+      
+  - name: Create the global autostart desktop entry
+    ansible.builtin.copy:
+      dest: /etc/xdg/autostart/set-xfce-whisker-shortcut.desktop
       mode: '0644'
       content: |
-        <?xml version="1.0" encoding="UTF-8"?>
-        <channel name="displays" version="1.0">
-          <property name="Notify" type="int" value="0"/>
-        </channel>
+        [Desktop Entry]
+        Type=Application
+        Name=Set Whisker Menu Shortcut
+        Exec=/usr/local/bin/set-xfce-shortcuts.sh
+        OnlyShowIn=XFCE;
+        NoDisplay=true
+        X-GNOME-Autostart-enabled=true
+
+# END KEYBOARD MODS
+
+  - name: Configure system idle suspend
+    lineinfile:
+      path: /etc/systemd/logind.conf
+      regexp: "^#?{{ item.key }}="
+      line: "{{ item.key }}={{ item.value }}"
+    loop:
+      - { key: "IdleAction",    value: "suspend" }
+      - { key: "IdleActionSec", value: "120min" }
+
