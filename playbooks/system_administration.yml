@@ -149,3 +149,15 @@
             "OverridePostUpdatePage": ""
           }
         }
+
+  - name: Set XFCE Web Browser property via xfconf-query
+    ansible.builtin.command:
+      cmd: xfconf-query -c xsettings -p /Net/WebBrowser -n -t string -s "firefox-esr"
+    register: xfconf_result
+    changed_when: xfconf_result.rc == 0
+
+  - name: Set XDG default web browser via xdg-settings
+    ansible.builtin.command:
+      cmd: xdg-settings set default-web-browser firefox-esr.desktop
+    register: xdg_result
+    changed_when: xdg_result.rc == 0
