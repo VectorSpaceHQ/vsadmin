@@ -1,5 +1,6 @@
 - name: system_administration
-  hosts: computer-lab, office, projectors
+#  hosts: computer-lab, office, projectors
+  hosts: 10.0.0.91
   become: true
   become_method: su
   ignore_errors: yes
@@ -41,10 +42,21 @@
   - name: install password change desktop script
     copy:
       src: /vsfs01/configs/passwd.desktop
-      dest: /usr/share/passwd.desktop
+      dest: /usr/share/applications/passwd.desktop
       owner: root
       group: root
       mode: 0755
+
+  - name: Remove existing passwd change script
+    ansible.builtin.file:
+      path: "/vsfs01/home/mball/Desktop/passwd.desktop"
+      state: absent
+      
+  - name: Create symlink for password change script
+    ansible.builtin.file:
+      src: "/usr/share/applications/passwd.desktop"
+      dest: "/vsfs01/home/mball/Desktop/passwd.desktop"
+      state: link
 
   - name: Add LDAP admins to sudoers
     # when: ansible_distribution_major_version == 10
@@ -150,11 +162,11 @@
           }
         }
 
-  - name: Set XFCE Web Browser property via xfconf-query
-    ansible.builtin.command:
-      cmd: xfconf-query -c xsettings -p /Net/WebBrowser -n -t string -s "firefox-esr"
-    register: xfconf_result
-    changed_when: xfconf_result.rc == 0
+  # - name: Set XFCE Web Browser property via xfconf-query
+  #   ansible.builtin.command:
+  #     cmd: xfconf-query -c xsettings -p /Net/WebBrowser -n -t string -s "firefox-esr"
+  #   register: xfconf_result
+  #   changed_when: xfconf_result.rc == 0
 
   - name: Set XDG default web browser via xdg-settings
     ansible.builtin.command:

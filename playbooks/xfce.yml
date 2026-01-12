@@ -40,58 +40,8 @@
 #  2.) It's therefore necessary to modify the user level configs and almost pointless
 #   to mess with the system level configs.
 # 
-  # - name: Bind Ctrl-Alt-T to XFCE terminal
-  #   community.general.xml:
-  #     path: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
-  #     xpath: /channel/property[@name='commands']/property[@name='custom']/property[@name='<Primary><Alt>t']
-  #     value: xfce4-terminal
-  #     attribute: value
-  #     state: present
-
-  # - name: Bind Ctrl-Alt-L to xflock4
-  #   community.general.xml:
-  #     path: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
-  #     xpath: /channel/property[@name='commands']/property[@name='custom']/property[@name='<Primary><Alt>l']
-  #     value: xflock4
-  #     attribute: value
-  #     state: present
-    
-  # - name: Bind Print Screen to xfce4-screenshooter
-  #   community.general.xml:
-  #     path: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
-  #     xpath: /channel/property[@name='commands']/property[@name='custom']/property[@name='<Print>']
-  #     value: xfce4-screenshooter
-  #     attribute: value
-  #     state: present
-
-  # - name: Add Super+Left to tile window left
-  #   community.general.xml:
-  #     path: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
-  #     xpath: /channel/property[@name='commands']
-  #     add_children:
-  #       - property:
-  #           name: "<Super>Left"
-  #           type: string
-  #           value: "xfwm4 --tile left"
-
-  # - name: Add Super+Right to tile window right
-  #   community.general.xml:
-  #     path: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
-  #     xpath: /channel/property[@name='commands']
-  #     add_children:
-  #       - property:
-  #           name: "<Super>Right"
-  #           type: string
-  #           value: "xfwm4 --tile right"
-  # - name: Bind Super key to whiskermenu
-  #   community.general.xml:
-  #     path: /etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
-  #     xpath: /channel/property[@name='commands']/property[@name='custom']/property[@name='<Alt><Shift><Control>w']
-  #     value: xfce4-popup-whiskermenu
-  #     attribute: value
-  #     state: present
       
-  - name: Install xcape and xmlstarlet
+  - name: Install xcape
     ansible.builtin.apt:
       name: [xcape]
       state: present
@@ -113,21 +63,21 @@
 
   - name: Install XFCE shortcut script
     copy:
-      src: ../config_files/set-xfce-shortcuts.sh
-      dest: /usr/local/bin/set-xfce-shortcuts.sh
+      src: ../config_files/xfce-per-user-configs.sh
+      dest: /usr/local/bin/xfce-per-user-configs.sh
       owner: root
       group: root
       mode: '0755'
       
   - name: Create the global autostart desktop entry
     ansible.builtin.copy:
-      dest: /etc/xdg/autostart/set-xfce-whisker-shortcut.desktop
+      dest: /etc/xdg/autostart/xfce-settings-runner.desktop
       mode: '0644'
       content: |
         [Desktop Entry]
         Type=Application
         Name=Set Whisker Menu Shortcut
-        Exec=/usr/local/bin/set-xfce-shortcuts.sh
+        Exec=/usr/local/bin/xfce-per-user-config.sh
         OnlyShowIn=XFCE;
         NoDisplay=true
         X-GNOME-Autostart-enabled=true
@@ -142,4 +92,6 @@
     loop:
       - { key: "IdleAction",    value: "suspend" }
       - { key: "IdleActionSec", value: "120min" }
+
+
 
