@@ -1,5 +1,5 @@
 - name: system_administration
-  hosts: computer-lab, office
+  hosts: computer-lab, office, projectors
   become: true
   become_method: su
   ignore_errors: yes
@@ -8,41 +8,27 @@
   - name: enable NTP
     command: timedatectl set-ntp true
 
-# - copy:
-#     src: ../scripts/sleep_settings.sh
-#     dest: /etc/profile.d
-#     owner: root
-#     group: root
-#     mode: 0744
-
   - name: add truenas to hosts
     lineinfile:
       path: /etc/hosts
       line: "10.0.0.252      truenas"
       create: yes
 
-  - copy:
+  - name: "copy default lightdm.conf"
+    copy:
       src: /vsfs01/configs/lightdm.conf
       dest: /etc/lightdm/lightdm.conf
       owner: root
       group: root
       mode: 0644
 
-# - name: install user logout script
-#   copy:
-#     src: ../scripts/logout_users.sh
-#     dest: /etc/cron.hourly/logout_users
-#     owner: root
-#     group: root
-#     mode: 0744
-
-  - name: Reboot every Sunday
-    copy:
-      src: ../scripts/reboot.sh
-      dest: /etc/cron.weekly/reboot
-      owner: root
-      group: root
-      mode: 0744
+#   - name: Reboot every Sunday
+#     copy:
+#       src: ../scripts/reboot.sh
+#       dest: /etc/cron.weekly/reboot
+#       owner: root
+#       group: root
+#       mode: 0744
 
   - name: install group modification script
     copy:
@@ -59,12 +45,6 @@
       owner: root
       group: root
       mode: 0755
-
-# - name: run udiskie at vectorspace login
-#   lineinfile:
-#     path: /home/vectorspace/.profile
-#     line: 'udiskie &'
-#     create: yes
 
   - name: Add LDAP admins to sudoers
     # when: ansible_distribution_major_version == 10
@@ -98,17 +78,17 @@
       path: /home/vectorspace/.cache/sessions/
       state: absent
 
-  - name: Setup XFCE4 taskbar for vectorspace user
-    copy:
-      src: /vsfs01/configs/xfce4/
-      dest: /home/vectorspace/.config/xfce4/
-      owner: vectorspace
-      group: vectorspace
-      mode: 0744
+  # - name: Setup XFCE4 taskbar for vectorspace user
+  #   copy:
+  #     src: /vsfs01/configs/xfce4/
+  #     dest: /home/vectorspace/.config/xfce4/
+  #     owner: vectorspace
+  #     group: vectorspace
+  #     mode: 0744
       
   - name: Install Agency FB font
     copy:
-      src: ../configs/AGENCYB.TTF
+      src: ../config_files/AGENCYB.TTF
       dest: /usr/share/fonts/truetype/
       owner: root
       group: admins
@@ -126,3 +106,46 @@
       dest: /usr/lib/x86_64-linux-gnu/security/
       owner: root
 
+
+  - name: Ensure Firefox policy directory exists
+    file:
+      path: /etc/firefox/policies
+      state: directory
+      owner: root
+      group: root
+      mode: '0755'
+
+
+  - name: Deploy Firefox policies.json
+    ansible.builtin.copy:
+      dest: "/etc/firefox/policies/policies.json"
+      owner: root
+      group: root
+      mode: '0644'
+      content: |
+        {
+          "policies": {
+            "DontCheckDefaultBrowser": true,
+            "NoDefaultBookmarks": true,
+            "Homepage": {
+              "URL": "https://vector-space.org",
+              "Locked": true,
+              "StartPage": "previous-session"
+            },
+            "SearchEngines": {
+                "Default": "Google"
+            },
+            "Preferences": {
+              "browser.startup.page": {
+                "Value": 3,
+                "Status": "locked"
+              },
+              "browser.newtabpage.enabled": {
+                "Value": false,
+                "Status": "locked"
+              }
+            },
+            "OverrideFirstRunPage": "",
+            "OverridePostUpdatePage": ""
+          }
+        }
