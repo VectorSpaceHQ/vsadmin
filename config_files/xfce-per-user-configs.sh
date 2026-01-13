@@ -64,10 +64,13 @@ xfconf-query -c xfce4-desktop -p /desktop-icons/style -n -t int -s 2
 # ----------------------------#
 # Remove some options from panel
 # ----------------------------#
-# Ensure plugin-2 is of type "actions"
-xfconf-query -c xfce4-panel -p /plugins/plugin-2 -n -t string -s "actions"
-xfconf-query -c xfce4-panel -p /plugins/plugin-2/items -r -R || true
-xfconf-query -c xfce4-panel -p /plugins/plugin-2/items -n \
+
+# Find the plugin number that stores the actions
+plugin=$(xfconf-query -c xfce4-panel -p /plugins -lv | grep 'actions' | awk -F'/' '{print $3}' | awk '{print $1}')
+echo $plugin
+xfconf-query -c xfce4-panel -p /plugins/$plugin -n -t string -s "actions"
+xfconf-query -c xfce4-panel -p /plugins/$plugin/items -r -R || true
+xfconf-query -c xfce4-panel -p /plugins/$plugin/items -n \
 	     -t string -s "+lock-screen" \
 	     -t string -s "-switch-user" \
 	     -t string -s "+separator" \
@@ -82,6 +85,16 @@ xfconf-query -c xfce4-panel -p /plugins/plugin-2/items -n \
 	     -t string -s "-logout-dialog"
 # ----------------------------
 
+
+
+# ----------------------------#
+# Remove annoying security warning from passwd.desktop shortcut
+# ----------------------------#
+FILE="$HOME/Desktop/passwd.desktop"
+USER_NAME=$(basename "$HOME")
+dbus-run-session gio set -t string "$FILE" \
+     metadata::xfce-exe-checksum "$(sha256sum $(readlink -f "$FILE") | awk '{print $1}')"
+# ----------------------------#
 
 echo "All XFCE settings applied."
 echo "You may need to log out and log back in, or restart the panel (xfce4-panel -r) for all changes to fully take effect."

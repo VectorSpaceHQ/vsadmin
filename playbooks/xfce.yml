@@ -77,7 +77,7 @@
         [Desktop Entry]
         Type=Application
         Name=Set Whisker Menu Shortcut
-        Exec=/usr/local/bin/xfce-per-user-config.sh
+        Exec=/usr/local/bin/xfce-per-user-configs.sh
         OnlyShowIn=XFCE;
         NoDisplay=true
         X-GNOME-Autostart-enabled=true
