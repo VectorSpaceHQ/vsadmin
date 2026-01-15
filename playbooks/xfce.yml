@@ -1,4 +1,4 @@
-- hosts: 10.0.0.98
+- hosts: computer-lab, office, projectors
   become: yes
   become_method: su
   ignore_errors: true

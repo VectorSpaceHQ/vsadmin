@@ -22,7 +22,10 @@ xfconf-query -c $CHANNEL_SHORTCUTS \
   -p "/commands/custom/<Control><Alt>l" -n -t string -s "xflock4"
 
 xfconf-query -c $CHANNEL_SHORTCUTS \
-  -p "/commands/custom/<Print>" -n -t string -s "xfce4-screenshooter"
+	     -p "/commands/custom/<Print>" -n -t string -s "xfce4-screenshooter"
+
+# xfconf-query -c $CHANNEL_SHORTCUTS \
+#   -p "/commands/custom/<Alt>Tab" -n -t string -s "cycle_windows_key"
 
 # ----------------------------
 # WINDOW TILING (XFWM4)
@@ -95,6 +98,33 @@ USER_NAME=$(basename "$HOME")
 dbus-run-session gio set -t string "$FILE" \
      metadata::xfce-exe-checksum "$(sha256sum $(readlink -f "$FILE") | awk '{print $1}')"
 # ----------------------------#
+
+
+#---------------------------------------------------#
+# Change Whiskermenu to show Icon and Title
+#---------------------------------------------------#
+CHANNEL="xfce4-panel"
+PLUGIN_VALUE="whiskermenu"
+
+# Find the Whisker Menu plugin that has a button-icon property
+PLUGIN_ID=$(
+  xfconf-query -c "$CHANNEL" -l 2>/dev/null |
+  awk '
+    /\/plugins\/plugin-[0-9]+\/button-icon$/ {
+        sub(/\/button-icon$/, "", $0)
+        print
+    }
+  ' |
+  while read -r BASE; do
+    TYPE=$(xfconf-query -c "$CHANNEL" -p "$BASE" 2>/dev/null)
+    [ "$TYPE" = "whiskermenu" ] && echo "$BASE"
+  done |
+  sed 's|/plugins/||' |
+  head -n 1
+)
+
+xfconf-query -c "$CHANNEL" -p /plugins/$PLUGIN_ID/show-button-title -s true
+#---------------------------------------------------#
 
 echo "All XFCE settings applied."
 echo "You may need to log out and log back in, or restart the panel (xfce4-panel -r) for all changes to fully take effect."

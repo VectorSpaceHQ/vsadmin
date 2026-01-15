@@ -79,10 +79,10 @@
       name: colord
       state: present
 
-  - name: Remove Chromium keyring
+  - name: Remove Chromium keyring (annoying popup)
     replace:
       path: /usr/share/applications/chromium.desktop
-      regexp: '^Exec=/usr/bin/chromium %U'
+      regexp: '^Exec=.*'
       replace: 'Exec=/usr/bin/chromium %U --password-store=basic'
 
   - name: Clear XFCE cache
