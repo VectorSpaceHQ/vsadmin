@@ -59,10 +59,13 @@ xfconf-query -c xfce4-session -p /general/PromptOnLogout -n -t bool -s false
 #rm -rf ~/.config/xfce4/desktop/
 # Is this destroying the desktop shortcuts?
 #rm -f ~/.config/xfce4/desktop/icons*yaml
-xfconf-query -c displays -p /Notify -n -t int -s 0
-xfconf-query -c displays -p /AutoApply -n -t bool -s true
-xfconf-query -c xfce4-desktop -p /desktop-icons/style -n -t int -s 2
-#xfconf-query -c xfce4-desktop -p /desktop-icons/last-monitor-layout -n -t int -s 0
+xfconf-query -c displays -p /Notify -r || true
+xfconf-query -c displays -p /Notify -n -t bool -s false
+xfconf-query -c displays -p /ShowDialog -n -t bool -s false
+xfconf-query -c displays -p /Detect -n -t bool -s false
+xfconf-query -c displays -p /AutoApply -s true
+xfconf-query -c displays -p /AutoEnableProfiles -s 3
+xfconf-query -c displays -p /PromptOnNewDisplay -s false
 
 # ----------------------------#
 # Remove some options from panel

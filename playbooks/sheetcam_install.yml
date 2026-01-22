@@ -10,6 +10,7 @@
       owner: root
       mode: a+x
 
+# Does this install to user's directory????
   - name: Install SheetCAM
     ansible.builtin.command:
       cmd: /tmp/SheetCam_setupV7.1.35-64.bin
@@ -31,3 +32,19 @@
       src: ../config_files/SheetCamTNG-dev.ini
       dest: /home/vectorspace/.SheetCamTNG-dev/
       owner: vectorspace
+
+    # - name: Find all .scpost files
+    #   find:
+    #     paths: "{{ post_dir }}"
+    #     patterns: "*.scpost"
+    #     file_type: file
+    #   register: scpost_files
+
+    # - name: Delete unwanted scpost files
+    #   file:
+    #     path: "{{ item.path }}"
+    #     state: absent
+    #   loop: "{{ scpost_files.files }}"
+    #   when:
+    #     - item.path | basename is not match("^LinuxCNC")
+    #     - item.path | basename is not match("^Dynatorch")

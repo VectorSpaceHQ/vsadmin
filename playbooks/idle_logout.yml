@@ -1,5 +1,5 @@
 - name: Configure System-Wide XFCE Idle Logout
-  hosts: all
+  hosts: computer-lab, projectors
   become: yes
   become_method: su
   ignore_errors: false

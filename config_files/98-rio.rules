@@ -1,2 +1,2 @@
-SUBSYSTEM=="net", ACTION=="add", ENV{ID_BUS}=="usb", ENV{ID_VENDOR_ID}=="3923", RUN="ip a", ENV{SYSTEMD_WANTS}="isc-dhcp-server.service"
-ACTION=="remove", ENV{ID_BUS}=="usb", ENV{ID_MODEL}=="NI_roboRIO*", RUN="/usr/bin/systemctl stop isc-dhcp-server.service"
+SUBSYSTEM=="net", ACTION=="add|move", ENV{ID_VENDOR_ID}=="3923", RUN+="/usr/bin/sh -c '/usr/bin/sleep 1; /sbin/ip addr add 172.22.11.1/24 dev %k; /sbin/ip link set %k up'", ENV{SYSTEMD_WANTS}="isc-dhcp-server.service"
+ACTION=="remove", ENV{ID_MODEL}=="NI_roboRIO*", RUN="/usr/bin/systemctl stop isc-dhcp-server.service"

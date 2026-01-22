@@ -1,8 +1,14 @@
 - name: Update package repositories
-  hosts: computer-lab
+  hosts: all
   become: yes
   become_method: su
   tasks:
+
+    - name: Remove old Slack apt repository
+      file:
+        path: /etc/apt/sources.list.d/slack.list
+        state: absent
+      become: yes
 
     - name: Remove DVD repos from sources (Debian)
       when: ansible_os_family == "Debian"
@@ -32,4 +38,11 @@
         regexp: 'contrib$'
         replace: 'contrib non-free'
 
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
 
+    - name: Upgrade all packages
+      apt:
+        upgrade: dist

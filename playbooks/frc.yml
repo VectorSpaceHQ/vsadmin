@@ -67,37 +67,12 @@
       dest: /usr/share/applications/
       owner: root
 
-
-  # - name: "Install RabbitVCS SVN tools"
-  #   apt:
-  #     name: ['rabbitvcs-core', 'rabbitvcs-cli']
-
-  # - name: "Copy RabbitVCS .desktop files"
-  #   copy:
-  #     src: ../config_files/rabbitvcs_svn_submenu_directory.desktop
-  #     dest: /usr/share/kio/servicemenus/
-  #     owner: root
-      
-  # - name: "Copy RabbitVCS .desktop files"
-  #   copy:
-  #     src: ../config_files/rabbitvcs_svn_submenu_file.desktop
-  #     dest: /usr/share/kio/servicemenus/
-  #     owner: root
-
-  # - name: Ensure hg is hidden in [HideItem]
-  #   ini_file:
-  #     path: "~/.config/rabbitvcs/settings.conf"
-  #     section: "HideItem"
-  #     option: "hg"
-  #     value: "True"
-  #     backup: yes
-
-  # - name: Ensure git is hidden in [HideItem]
-  #   ini_file:
-  #     path: "~/.config/rabbitvcs/settings.conf"
-  #     section: "HideItem"
-  #     option: "git"
-  #     value: "True"
+  # - name: Set TemplateFile value
+  #   community.general.xml:
+  #     path: /path/to/your/file.xml
+  #     xpath: /FCText[@Name='TemplateFile']
+  #     value: /vsfs01/configs/VS_FRC_USLetter_Landscape1_V2.svg
+  #     state: present
   #     backup: yes
 
   - name: "Install thunar-vcs-plugin for SVN tools"
