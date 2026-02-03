@@ -1,0 +1,5 @@
+[Match]
+Property=ID_VENDOR_ID=3923
+
+[Link]
+Name=usb0

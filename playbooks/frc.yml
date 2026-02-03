@@ -1,4 +1,4 @@
-- hosts: computer-lab, projectors
+- hosts: computer-lab, projectors, office
   become: yes
   become_method: su
   environment:
@@ -49,6 +49,12 @@
       dest: /etc/udev/rules.d/
       owner: root
 
+  - name: "link the usb0 name to the interface"
+    copy:
+      src: ../config_files/10-roborio.link
+      dest: /etc/systemd/network/
+      owner: root
+
   - name: "Create PathPlanner Shortcut"
     when: ansible_os_family == "Debian"
     copy:
@@ -78,3 +84,9 @@
   - name: "Install thunar-vcs-plugin for SVN tools"
     apt:
       name: ['thunar-vcs-plugin']
+
+  - name: Install openDS desktop shortcut
+    copy:
+      src: ../config_files/opends.desktop
+      dest: /usr/share/applications
+      owner: root
