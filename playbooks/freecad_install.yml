@@ -8,8 +8,8 @@
   ignore_errors: false
   tasks:
 
-  - name: FreeCAD clean build
-    command: rm -rf /opt/freecad-source/build
+  # - name: FreeCAD clean build
+  #   command: rm -rf /opt/freecad-source/build
   
   - name: Check if freecad executable exists
     stat:
@@ -100,9 +100,13 @@
 	'python3-pyside6.qtwebenginewidgets',
 	'python3-pyside6.qtwidgets']
 
+  # - name: "Install Thumbnail viewer for Thunar"
+  #   apt:
+  #       name: ['tumbler', 'tumbler-plugins-extra']
+  
   - name: "Go to build directory and cmake"
     when: not build_result.stat.exists
-    command: chdir=/opt/freecad-source/build cmake -DFREECAD_QT_VERSION=6 ../
+    command: chdir=/opt/freecad-source/build cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-O3 -march=native -DNDEBUG" -DFREECAD_USE_PCH=ON -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF ../
 
   - name: "make"
     when: not build_result.stat.exists
@@ -131,3 +135,6 @@
       name: ['spacenavd', 'libspnav-dev']
       state: latest
       force: yes
+
+  - name: Set latest freecad as default
+    command: xdg-mime default freecad-latest.desktop application/x-extension-fcstd
