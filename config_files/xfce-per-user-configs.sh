@@ -1,10 +1,11 @@
 #!/bin/bash
 
-set -e
+set +e
 
 CHANNEL_SHORTCUTS="xfce4-keyboard-shortcuts"
 SESSION_CHANNEL="xfce4-session"
-PANEL_XML="$HOME/.config/xfce4/xfce-perchannel-xml/xfce4-panel.xml"
+GLOBAL_PANEL_XML="/etc/xdg/xfce4/panel/default.xml"
+LOCAL_PANEL_XML="$HOME/.config/xfce4/xfce-perchannel-xml/xfce4-panel.xml"
 
 echo "Applying XFCE shortcuts, tiling, power settings, and user menu options..."
 
@@ -65,7 +66,6 @@ xfconf-query -c displays -p /ShowDialog -n -t bool -s false
 xfconf-query -c displays -p /Detect -n -t bool -s false
 xfconf-query -c displays -p /AutoApply -s true
 xfconf-query -c displays -p /AutoEnableProfiles -s 3
-xfconf-query -c displays -p /PromptOnNewDisplay -s false
 
 # ----------------------------#
 # Remove some options from panel
@@ -103,31 +103,27 @@ dbus-run-session gio set -t string "$FILE" \
 # ----------------------------#
 
 
-#---------------------------------------------------#
-# Change Whiskermenu to show Icon and Title
-#---------------------------------------------------#
-CHANNEL="xfce4-panel"
-PLUGIN_VALUE="whiskermenu"
 
-# Find the Whisker Menu plugin that has a button-icon property
-PLUGIN_ID=$(
-  xfconf-query -c "$CHANNEL" -l 2>/dev/null |
-  awk '
-    /\/plugins\/plugin-[0-9]+\/button-icon$/ {
-        sub(/\/button-icon$/, "", $0)
-        print
-    }
-  ' |
-  while read -r BASE; do
-    TYPE=$(xfconf-query -c "$CHANNEL" -p "$BASE" 2>/dev/null)
-    [ "$TYPE" = "whiskermenu" ] && echo "$BASE"
-  done |
-  sed 's|/plugins/||' |
-  head -n 1
-)
 
-xfconf-query -c "$CHANNEL" -p /plugins/$PLUGIN_ID/show-button-title -s true
-#---------------------------------------------------#
+# 1. Detect and store the current position of panel-1
+CURRENT_POS=$(xfconf-query -c xfce4-panel -p /panels/panel-1/position)
+echo "Current panel-1 position: $CURRENT_POS"
+
+# 3. Replace the existing XML file
+# Replace '/path/to/your/new-panel.xml' with your actual source file
+XML_PATH="$HOME/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml"
+cp "/etc/xdg/xfce4/panel/default.xml" "$XML_PATH"
+
+# 5. Restore the original position value into the new configuration
+xfconf-query -c xfce4-panel -p /panels/panel-1/position -s "$CURRENT_POS"
+
+# 6. Restart the panel
+xfce4-panel -r
+echo "Restoration complete."
+
+
+
+
 
 echo "All XFCE settings applied."
 echo "You may need to log out and log back in, or restart the panel (xfce4-panel -r) for all changes to fully take effect."

@@ -6,6 +6,14 @@
   become: yes
   become_method: su
   ignore_errors: false
+  vars:
+    mime_defaults:
+      application/x-extension-fcstd: freecad-latest.desktop
+      model/step: freecad-latest.desktop
+      model/obj: freecad-latest.desktop
+      model/iges: freecad-latest.desktop
+
+
   tasks:
 
   # - name: FreeCAD clean build
@@ -138,3 +146,23 @@
 
   - name: Set latest freecad as default
     command: xdg-mime default freecad-latest.desktop application/x-extension-fcstd
+
+
+
+  - name: Ensure /etc/xdg exists
+    ansible.builtin.file:
+      path: /etc/xdg
+      state: directory
+      mode: '0755'
+
+  - name: Configure system MIME defaults
+    ansible.builtin.copy:
+      dest: /etc/xdg/mimeapps.list
+      owner: root
+      group: root
+      mode: '0644'
+      content: |
+        [Default Applications]
+        {% for mime, app in mime_defaults.items() %}
+        {{ mime }}={{ app }};
+        {% endfor %}

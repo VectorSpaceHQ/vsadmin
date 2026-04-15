@@ -1,4 +1,4 @@
-- hosts: computer-lab, office, projectors
+- hosts: all, lasers
   become: yes
   become_method: su
   ignore_errors: true
@@ -41,10 +41,11 @@
 #   to mess with the system level configs.
 # 
       
-  - name: Install xcape
+  - name: Install requirements
     ansible.builtin.apt:
-      name: [xcape]
+      name: [xcape, libglib2.0-bin]
       state: present
+  
 
 
   - name: Create system-wide xcape autostart entry
@@ -60,6 +61,15 @@
         StartupNotify=false
         OnlyShowIn=XFCE;
       mode: '0644'
+
+
+  - name: Copy XFCE4 panel to computer default location
+    copy:
+      src: ../config_files/xfce4-panel.xml
+      dest: /etc/xdg/xfce4/panel/default.xml
+      owner: root
+      group: root
+      mode: '0755'      
 
   - name: Install XFCE shortcut script
     copy:
@@ -81,6 +91,7 @@
         OnlyShowIn=XFCE;
         NoDisplay=true
         X-GNOME-Autostart-enabled=true
+
 
 # END KEYBOARD MODS
 
