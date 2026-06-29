@@ -1,6 +1,16 @@
 #!/bin/bash
-
 set +e
+
+
+LOGFILE=/tmp/xfce-login-script.log
+{
+    printf '%s - /usr/local/bin/xfce-per-user-configs.sh started (PID=%d USER=%s)\n' \
+        "$(date '+%Y-%m-%d %H:%M:%S %Z')" \
+        "$$" \
+        "${USER:-unknown}"
+} >> "$LOGFILE"
+
+
 
 CHANNEL_SHORTCUTS="xfce4-keyboard-shortcuts"
 SESSION_CHANNEL="xfce4-session"
@@ -67,6 +77,10 @@ xfconf-query -c displays -p /Detect -n -t bool -s false
 xfconf-query -c displays -p /AutoApply -s true
 xfconf-query -c displays -p /AutoEnableProfiles -s 3
 
+#xfconf-query -c xfce4-desktop -p /desktop-icons/style -s 2
+#Remove "write" permissions from the folder for your own user:
+#chmod -w ~/.config/xfce4/desktop/
+
 # ----------------------------#
 # Remove some options from panel
 # ----------------------------#
@@ -103,8 +117,6 @@ dbus-run-session gio set -t string "$FILE" \
 # ----------------------------#
 
 
-
-
 # 1. Detect and store the current position of panel-1
 CURRENT_POS=$(xfconf-query -c xfce4-panel -p /panels/panel-1/position)
 echo "Current panel-1 position: $CURRENT_POS"
@@ -118,12 +130,18 @@ cp "/etc/xdg/xfce4/panel/default.xml" "$XML_PATH"
 xfconf-query -c xfce4-panel -p /panels/panel-1/position -s "$CURRENT_POS"
 
 # 6. Restart the panel
+xfce4-panel&
 xfce4-panel -r
 echo "Restoration complete."
 
 
-
-
-
 echo "All XFCE settings applied."
 echo "You may need to log out and log back in, or restart the panel (xfce4-panel -r) for all changes to fully take effect."
+
+LOGFILE=/tmp/xfce-login-script.log
+{
+    printf '%s - /usr/local/bin/xfce-per-user-configs.sh finished (PID=%d USER=%s)\n' \
+        "$(date '+%Y-%m-%d %H:%M:%S %Z')" \
+        "$$" \
+        "${USER:-unknown}"
+} >> "$LOGFILE"

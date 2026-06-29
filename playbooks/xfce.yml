@@ -1,4 +1,4 @@
-- hosts: all, lasers
+- hosts: all, lasers, projectors
   become: yes
   become_method: su
   ignore_errors: true

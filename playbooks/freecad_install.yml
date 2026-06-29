@@ -106,7 +106,13 @@
 	'python3-pyside6.qtwebenginecore',
 	'python3-pyside6.qtwebenginequick',
 	'python3-pyside6.qtwebenginewidgets',
-	'python3-pyside6.qtwidgets']
+	'python3-pyside6.qtwidgets',
+	'python3-pyside6.qtsvgwidgets',
+	'libharfbuzz-dev',
+	'libxkbcommon-dev',
+	'libcups2-dev']
+        state: present
+        update_cache: yes
 
   # - name: "Install Thumbnail viewer for Thunar"
   #   apt:
@@ -114,7 +120,8 @@
   
   - name: "Go to build directory and cmake"
     when: not build_result.stat.exists
-    command: chdir=/opt/freecad-source/build cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-O3 -march=native -DNDEBUG" -DFREECAD_USE_PCH=ON -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF ../
+    # command: chdir=/opt/freecad-source/build cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-O3 -march=native -DNDEBUG" -DFREECAD_USE_PCH=ON -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF ../
+    command: chdir=/opt/freecad-source/build cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-O2 -march=native -DNDEBUG" -DFREECAD_USE_PCH=ON -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF ../
 
   - name: "make"
     when: not build_result.stat.exists
@@ -122,7 +129,31 @@
 
   - name: "Install FreeCAD desktop file"
     copy:
-      src: ../config_files/freecad-latest.desktop
+      src: ../config_files/freecad-VS.desktop
+      dest: /usr/share/applications/
+      owner: root
+
+
+  - name: "Copy FreeCAD official appimage locally"
+    copy:
+      src: /vsfs01/packages/FreeCAD_1.1.1-Linux-x86_64-py311.AppImage
+      dest: /opt/
+      owner: root
+
+  - name: Add execute permission for everyone using symbolic mode
+    ansible.builtin.file:
+      path: /opt/FreeCAD_1.1.1-Linux-x86_64-py311.AppImage
+      mode: "a+x"
+      
+  - name: Create symbolic link
+    ansible.builtin.file:
+      src: /opt/FreeCAD_1.1.1-Linux-x86_64-py311.AppImage
+      dest: /opt/freecad-official
+      state: link
+
+  - name: "Install FreeCAD latest stable official desktop file"
+    copy:
+      src: ../config_files/freecad-official.desktop
       dest: /usr/share/applications/
       owner: root
 
