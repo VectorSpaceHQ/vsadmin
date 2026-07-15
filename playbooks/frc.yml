@@ -83,7 +83,19 @@
 
   - name: "Install thunar-vcs-plugin for SVN tools"
     apt:
-      name: ['thunar-vcs-plugin']
+      name: ['thunar-vcs-plugin', 'rabbitvcs-core', 'rabbitvcs-cli', 'rabbitvcs-nautilus']
+
+  - name: "Copy SVN Dolphin integration file 1"
+    copy:
+      src: ../config_files/rabbitvcs_svn_submenu_directory.desktop
+      dest: /usr/share/kio/servicemenus/
+      owner: root
+
+  - name: "Copy SVN Dolphin integration file 2"
+    copy:
+      src: ../config_files/rabbitvcs_svn_submenu_file.desktop
+      dest: /usr/share/kio/servicemenus/
+      owner: root
 
   - name: Install openDS desktop shortcut
     copy:

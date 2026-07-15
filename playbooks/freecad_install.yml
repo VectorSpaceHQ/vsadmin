@@ -16,8 +16,8 @@
 
   tasks:
 
-  # - name: FreeCAD clean build
-  #   command: rm -rf /opt/freecad-source/build
+  - name: FreeCAD clean build
+    command: rm -rf /opt/freecad-source/build
   
   - name: Check if freecad executable exists
     stat:
@@ -136,18 +136,18 @@
 
   - name: "Copy FreeCAD official appimage locally"
     copy:
-      src: /vsfs01/packages/FreeCAD_1.1.1-Linux-x86_64-py311.AppImage
+      src: /vsfs01/packages/FreeCAD_weekly-2026.06.24-Linux-x86_64.AppImage
       dest: /opt/
       owner: root
 
   - name: Add execute permission for everyone using symbolic mode
     ansible.builtin.file:
-      path: /opt/FreeCAD_1.1.1-Linux-x86_64-py311.AppImage
+      path: /opt/FreeCAD_weekly-2026.06.24-Linux-x86_64.AppImage
       mode: "a+x"
       
   - name: Create symbolic link
     ansible.builtin.file:
-      src: /opt/FreeCAD_1.1.1-Linux-x86_64-py311.AppImage
+      src: /opt/FreeCAD_weekly-2026.06.24-Linux-x86_64.AppImage
       dest: /opt/freecad-official
       state: link
 

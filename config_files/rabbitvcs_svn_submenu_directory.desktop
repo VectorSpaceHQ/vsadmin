@@ -12,7 +12,6 @@ X-KDE-Submenu=RabbitVCS SVN
 Name=Update
 Name[de]=Aktualisieren
 Name[fr]=Mettre à jour
-Name[ru]=Обновить
 
 Icon=/usr/share/icons/hicolor/scalable/actions/rabbitvcs-update.svg
 Exec=rabbitvcs update %U
