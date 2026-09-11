@@ -1,4 +1,4 @@
-- hosts: computer-lab, office, projectors
+- hosts: computer-lab, office, projectors, lasers
   become: yes
   become_method: su
   ignore_errors: true
@@ -17,6 +17,7 @@
       'cups',
       'darktable',
       'debconf-utils',
+      'dolphin-nextcloud',
       'emacs',
       'ffmpeg',
       'filezilla',

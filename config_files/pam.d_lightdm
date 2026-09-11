@@ -12,7 +12,7 @@ session      required pam_env.so readenv=1 envfile=/etc/default/locale
 
 @include common-auth
 
--auth  optional pam_gnome_keyring.so
+-auth  optional pam_kwallet5.so
 
 @include common-account
 
@@ -34,6 +34,6 @@ session [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinux
 # When the module is present, "required" would be sufficient (When SELinux
 # is disabled, this returns success.)
 
--session optional        pam_gnome_keyring.so auto_start
+-session optional        pam_kwallet5.so auto_start kwalletd=/usr/bin/kwalletd6
 
 @include common-password

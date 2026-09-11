@@ -1,5 +1,5 @@
 - name: Initialize Client machines
-  hosts: clients
+  hosts: office, computer-lab, projectors
   become: true
   become_method: su
   gather_facts: true
@@ -37,9 +37,26 @@
       src: ../config_files/client.conf
       dest: /etc/cups/
       owner: root
-
-  - name: Ensure numlock on in KDE
-    copy:
-      src: ../config_files/sddm.conf
-      dest: /etc/sddm.conf
+      
+  - name: Create Chromium managed policy directory
+    ansible.builtin.file:
+      path: /etc/chromium/policies/managed
+      state: directory
       owner: root
+      group: root
+      mode: '0755'
+  
+  - name: Set Chromium default search engine to Google
+    ansible.builtin.copy:
+      dest: /etc/chromium/policies/managed/default-search.json
+      owner: root
+      group: root
+      mode: '0644'
+      content: |
+        {
+          "DefaultSearchProviderEnabled": true,
+          "DefaultSearchProviderName": "Google",
+          "DefaultSearchProviderKeyword": "google.com",
+          "DefaultSearchProviderSearchURL": "https://www.google.com/search?q={searchTerms}",
+          "DefaultSearchProviderSuggestURL": "https://www.google.com/complete/search?output=chrome&q={searchTerms}"
+        }

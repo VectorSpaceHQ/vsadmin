@@ -2,11 +2,12 @@
 # and because our FRC team uses FreeCAD, it's important that we keep up to date.
 # The goal is to provide two applicatio shortcuts: -stable and -dev
 - name: Install latest FreeCAD
-  hosts: computer-lab, office
+  hosts: computer-lab, office, projectors
   become: yes
   become_method: su
   ignore_errors: false
   vars:
+    freecad_appimage: "FreeCAD_weekly-2026.09.02-Linux-x86_64.AppImage"
     mime_defaults:
       application/x-extension-fcstd: freecad-latest.desktop
       model/step: freecad-latest.desktop
@@ -14,12 +15,12 @@
       model/iges: freecad-latest.desktop
 
 
-  tasks:
 
-  - name: FreeCAD clean build
-    command: rm -rf /opt/freecad-source/build
+  tasks:
+  # - name: FreeCAD clean build
+  #   command: rm -rf /opt/freecad-source/build
   
-  - name: Check if freecad executable exists
+  - name: Check if freecad source dir exists
     stat:
       path: /opt/freecad-source
     register: stat_result
@@ -114,13 +115,8 @@
         state: present
         update_cache: yes
 
-  # - name: "Install Thumbnail viewer for Thunar"
-  #   apt:
-  #       name: ['tumbler', 'tumbler-plugins-extra']
-  
   - name: "Go to build directory and cmake"
     when: not build_result.stat.exists
-    # command: chdir=/opt/freecad-source/build cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-O3 -march=native -DNDEBUG" -DFREECAD_USE_PCH=ON -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF ../
     command: chdir=/opt/freecad-source/build cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-O2 -march=native -DNDEBUG" -DFREECAD_USE_PCH=ON -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF ../
 
   - name: "make"
@@ -136,18 +132,18 @@
 
   - name: "Copy FreeCAD official appimage locally"
     copy:
-      src: /vsfs01/packages/FreeCAD_weekly-2026.06.24-Linux-x86_64.AppImage
+      src: /vsfs01/packages/{{ freecad_appimage }}
       dest: /opt/
       owner: root
 
   - name: Add execute permission for everyone using symbolic mode
     ansible.builtin.file:
-      path: /opt/FreeCAD_weekly-2026.06.24-Linux-x86_64.AppImage
+      path: /opt/{{ freecad_appimage }}
       mode: "a+x"
       
   - name: Create symbolic link
     ansible.builtin.file:
-      src: /opt/FreeCAD_weekly-2026.06.24-Linux-x86_64.AppImage
+      src: /opt/{{ freecad_appimage }}
       dest: /opt/freecad-official
       state: link
 
@@ -175,25 +171,23 @@
       state: latest
       force: yes
 
-  - name: Set latest freecad as default
-    command: xdg-mime default freecad-latest.desktop application/x-extension-fcstd
+  # - name: Set latest freecad as default
+  #   command: xdg-mime default freecad-latest.desktop application/x-extension-fcstd
 
+  # - name: Ensure /etc/xdg exists
+  #   ansible.builtin.file:
+  #     path: /etc/xdg
+  #     state: directory
+  #     mode: '0755'
 
-
-  - name: Ensure /etc/xdg exists
-    ansible.builtin.file:
-      path: /etc/xdg
-      state: directory
-      mode: '0755'
-
-  - name: Configure system MIME defaults
-    ansible.builtin.copy:
-      dest: /etc/xdg/mimeapps.list
-      owner: root
-      group: root
-      mode: '0644'
-      content: |
-        [Default Applications]
-        {% for mime, app in mime_defaults.items() %}
-        {{ mime }}={{ app }};
-        {% endfor %}
+  # - name: Configure system MIME defaults
+  #   ansible.builtin.copy:
+  #     dest: /etc/xdg/mimeapps.list
+  #     owner: root
+  #     group: root
+  #     mode: '0644'
+  #     content: |
+  #       [Default Applications]
+  #       {% for mime, app in mime_defaults.items() %}
+  #       {{ mime }}={{ app }};
+  #       {% endfor %}
