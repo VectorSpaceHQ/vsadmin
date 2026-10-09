@@ -1,25 +1,26 @@
 # FreeCAD development is happening at a rapid pace, well beyond what Debian is keeping up with
 # and because our FRC team uses FreeCAD, it's important that we keep up to date.
-# The goal is to provide two applicatio shortcuts: -stable and -dev
+# The goal is to provide two application shortcuts: -stable and -dev
 - name: Install latest FreeCAD
   hosts: computer-lab, office, projectors
   become: yes
   become_method: su
   ignore_errors: false
   vars:
-    freecad_appimage: "FreeCAD_weekly-2026.09.02-Linux-x86_64.AppImage"
+    # Which GitHub releases to consider (tag names) and which asset to grab.
+    # For stable releases instead of weeklies, use: freecad_tag_pattern: "^[0-9]"
+    freecad_tag_pattern: "^weekly-"
+    freecad_asset_pattern: ".*Linux-x86_64.*\\.AppImage$"
     mime_defaults:
       application/x-extension-fcstd: freecad-latest.desktop
       model/step: freecad-latest.desktop
       model/obj: freecad-latest.desktop
       model/iges: freecad-latest.desktop
 
-
-
   tasks:
   # - name: FreeCAD clean build
   #   command: rm -rf /opt/freecad-source/build
-  
+
   - name: Check if freecad source dir exists
     stat:
       path: /opt/freecad-source
@@ -34,11 +35,11 @@
   - name: FreeCAD clone from github
     when: not stat_result.stat.exists
     command: git clone --recurse-submodules https://github.com/FreeCAD/FreeCAD.git /opt/freecad-source
-    
+
 # if no build directory
   - name: FreeCAD pull latest
     when: not build_result.stat.exists
-    command: git -C /opt/freecad-source pull --recurse-submodules 
+    command: git -C /opt/freecad-source pull --recurse-submodules
 
   - name: clean untracked files
     when: not build_result.stat.exists
@@ -52,68 +53,69 @@
 
   - name: "Install FreeCAD dependencies"
     apt:
-        name: ['freecad']
-        state: build-dep
+      name: ['freecad']
+      state: build-dep
 
   - name: "Install more FreeCAD dependencies"
     apt:
-        name: ['libtool',
-	'lsb-release',
-	'cmake',
-	'build-essential',
-	'libboost-dev',
-	'libboost-date-time-dev',
-	'libboost-filesystem-dev',
-	'libboost-graph-dev',
-	'libboost-iostreams-dev',
-	'libboost-program-options-dev',
-	'libboost-python-dev',
-	'libboost-regex-dev',
-	'libboost-serialization-dev',
-	'libboost-thread-dev',
-	'libeigen3-dev',
-	'libgts-bin',
-	'libgts-dev',
-	'libkdtree++-dev',
-	'libmedc-dev',
-	'libopencv-dev',
-	'libproj-dev',
-	'libvtk9-dev',
-	'libx11-dev',
-	'libxerces-c-dev',
-	'libyaml-cpp-dev',
-	'libzipios++-dev',
-	'libpcl-dev',
-	'pybind11-dev',
-	'qt6-base-dev',
-	'qt6-svg-dev',
-	'qt6-tools-dev',
-	'qt6-webengine-dev',
-	'libpyside6-dev',
-	'libshiboken6-dev',
-	'pyside6-tools',
-	'pyqt6-dev-tools',
-	'python3-dev',
-	'python3-lark',
-	'python3-matplotlib',
-	'python3-packaging',
-	'python3-pivy',
-	'python3-ply',
-	'python3-pyside6.qtcore',
-	'python3-pyside6.qtgui',
-	'python3-pyside6.qtnetwork',
-	'python3-pyside6.qtsvg',
-	'python3-pyside6.qtwebchannel',
-	'python3-pyside6.qtwebenginecore',
-	'python3-pyside6.qtwebenginequick',
-	'python3-pyside6.qtwebenginewidgets',
-	'python3-pyside6.qtwidgets',
-	'python3-pyside6.qtsvgwidgets',
-	'libharfbuzz-dev',
-	'libxkbcommon-dev',
-	'libcups2-dev']
-        state: present
-        update_cache: yes
+      name:
+        - libtool
+        - lsb-release
+        - cmake
+        - build-essential
+        - libboost-dev
+        - libboost-date-time-dev
+        - libboost-filesystem-dev
+        - libboost-graph-dev
+        - libboost-iostreams-dev
+        - libboost-program-options-dev
+        - libboost-python-dev
+        - libboost-regex-dev
+        - libboost-serialization-dev
+        - libboost-thread-dev
+        - libeigen3-dev
+        - libgts-bin
+        - libgts-dev
+        - libkdtree++-dev
+        - libmedc-dev
+        - libopencv-dev
+        - libproj-dev
+        - libvtk9-dev
+        - libx11-dev
+        - libxerces-c-dev
+        - libyaml-cpp-dev
+        - libzipios++-dev
+        - libpcl-dev
+        - pybind11-dev
+        - qt6-base-dev
+        - qt6-svg-dev
+        - qt6-tools-dev
+        - qt6-webengine-dev
+        - libpyside6-dev
+        - libshiboken6-dev
+        - pyside6-tools
+        - pyqt6-dev-tools
+        - python3-dev
+        - python3-lark
+        - python3-matplotlib
+        - python3-packaging
+        - python3-pivy
+        - python3-ply
+        - python3-pyside6.qtcore
+        - python3-pyside6.qtgui
+        - python3-pyside6.qtnetwork
+        - python3-pyside6.qtsvg
+        - python3-pyside6.qtwebchannel
+        - python3-pyside6.qtwebenginecore
+        - python3-pyside6.qtwebenginequick
+        - python3-pyside6.qtwebenginewidgets
+        - python3-pyside6.qtwidgets
+        - python3-pyside6.qtsvgwidgets
+        - libharfbuzz-dev
+        - libxkbcommon-dev
+        - libcups2-dev
+      state: present
+      update_cache: yes
 
   - name: "Go to build directory and cmake"
     when: not build_result.stat.exists
@@ -129,6 +131,54 @@
       dest: /usr/share/applications/
       owner: root
 
+  # ---- Find and download the latest official AppImage ----
+
+  - name: "Query GitHub for recent FreeCAD releases"
+    ansible.builtin.uri:
+      url: "https://api.github.com/repos/FreeCAD/FreeCAD/releases?per_page=30"
+      headers:
+        Accept: "application/vnd.github+json"
+      return_content: yes
+      timeout: 60
+    register: freecad_releases
+    run_once: true
+
+  - name: "Pick the newest matching Linux x86_64 AppImage"
+    ansible.builtin.set_fact:
+      freecad_asset: >-
+        {{ freecad_releases.json
+           | selectattr('tag_name', 'match', freecad_tag_pattern)
+           | map(attribute='assets') | flatten
+           | selectattr('name', 'match', freecad_asset_pattern)
+           | list | first | default({}) }}
+    run_once: true
+
+  - name: "Show the selected asset"
+    ansible.builtin.debug:
+      var: freecad_asset.name
+    run_once: true
+
+  - name: "Fail if no matching AppImage was found"
+    ansible.builtin.assert:
+      that: freecad_asset.name is defined
+      fail_msg: "No matching AppImage found in the latest 30 FreeCAD releases"
+    run_once: true
+
+  - name: "Set appimage name and URL from the release asset"
+    ansible.builtin.set_fact:
+      freecad_appimage: "{{ freecad_asset.name }}"
+      freecad_appimage_url: "{{ freecad_asset.browser_download_url }}"
+
+  - name: "Download FreeCAD official appimage to shared packages dir (once)"
+    ansible.builtin.get_url:
+      url: "{{ freecad_appimage_url }}"
+      dest: "/vsfs01/packages/{{ freecad_appimage }}"
+      mode: "0644"
+      force: no        # skip if the file already exists
+      timeout: 300
+    run_once: true
+
+  # ---- Install the AppImage on each machine ----
 
   - name: "Copy FreeCAD official appimage locally"
     copy:
@@ -140,7 +190,7 @@
     ansible.builtin.file:
       path: /opt/{{ freecad_appimage }}
       mode: "a+x"
-      
+
   - name: Create symbolic link
     ansible.builtin.file:
       src: /opt/{{ freecad_appimage }}
@@ -191,3 +241,28 @@
   #       {% for mime, app in mime_defaults.items() %}
   #       {{ mime }}={{ app }};
   #       {% endfor %}
+
+
+  - name: Remove stale environment.d TMPDIR config, if present
+    ansible.builtin.file:
+      path: /etc/environment.d/tmpdir.conf
+      state: absent
+
+  - name: Ensure /etc/X11/Xsession.d exists
+    ansible.builtin.file:
+      path: /etc/X11/Xsession.d
+      state: directory
+      owner: root
+      group: root
+      mode: "0755"
+
+  - name: Push TMPDIR setup script to Xsession.d
+    ansible.builtin.copy:
+      dest: /etc/X11/Xsession.d/50-tmpdir
+      owner: root
+      group: root
+      mode: "0644"
+      content: |
+        mkdir -p "/tmp/$USER"
+        chmod 700 "/tmp/$USER"
+        systemctl --user set-environment TMPDIR="/tmp/$USER"

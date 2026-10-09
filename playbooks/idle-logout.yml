@@ -1,0 +1,80 @@
+---
+# Deploys the loginctl-State-based idle-session auto-logout tooling.
+#
+# Expects to live at ~/ansible/playbooks/idle-logout.yml, with its
+# associated files in ~/ansible/config_files/idle-logout/ (sibling of
+# playbooks/, per the existing tree layout).
+#
+# Usage (single test machine), from anywhere in ~/ansible:
+#   ansible-playbook -i hosts playbooks/idle-logout.yml --limit renzo
+#
+# Override the idle threshold at run time, e.g. for a fast dry-run test:
+#   ansible-playbook -i hosts playbooks/idle-logout.yml --limit renzo -e idle_logout_hours=0
+
+- name: Deploy idle-session auto-logout
+  hosts: computer-lab
+  become: true
+  become_method: su
+
+  vars:
+    idle_logout_hours: 12
+    idle_logout_state_dir: /var/lib/idle-logout
+    idle_logout_bin_dir: /usr/local/sbin
+    idle_logout_config_dir: "{{ playbook_dir }}/../config_files/idle-logout"
+
+  tasks:
+    - name: Install idle-logout.sh (tracker/terminator)
+      ansible.builtin.copy:
+        src: "{{ idle_logout_config_dir }}/idle-logout.sh"
+        dest: "{{ idle_logout_bin_dir }}/idle-logout.sh"
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Install idle-status.sh (read-only status check)
+      ansible.builtin.copy:
+        src: "{{ idle_logout_config_dir }}/idle-status.sh"
+        dest: "{{ idle_logout_bin_dir }}/idle-status.sh"
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Ensure state directory exists
+      ansible.builtin.file:
+        path: "{{ idle_logout_state_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Install idle-logout.service
+      ansible.builtin.template:
+        src: "{{ idle_logout_config_dir }}/idle-logout.service.j2"
+        dest: /etc/systemd/system/idle-logout.service
+        owner: root
+        group: root
+        mode: '0644'
+      notify: reload systemd
+
+    - name: Install idle-logout.timer
+      ansible.builtin.copy:
+        src: "{{ idle_logout_config_dir }}/idle-logout.timer"
+        dest: /etc/systemd/system/idle-logout.timer
+        owner: root
+        group: root
+        mode: '0644'
+      notify: reload systemd
+
+    - name: Flush handlers so daemon-reload runs before the timer is enabled
+      ansible.builtin.meta: flush_handlers
+
+    - name: Enable and start idle-logout.timer
+      ansible.builtin.systemd:
+        name: idle-logout.timer
+        enabled: true
+        state: started
+
+  handlers:
+    - name: reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: true

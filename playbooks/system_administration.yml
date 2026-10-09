@@ -1,6 +1,5 @@
 - name: system_administration
-#  hosts: computer-lab, office, projectors
-  hosts: 10.0.0.91
+  hosts: computer-lab, office, projectors, lasers
   become: true
   become_method: su
   ignore_errors: yes

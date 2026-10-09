@@ -2,40 +2,52 @@
   become: yes
   become_method: su
   vars:
-    post_dir: "{{ ansible_env.HOME }}/sheetcamtng/posts"
+    sc_user: vectorspace
+    sc_home: "/home/{{ sc_user }}"
+    sc_conf_dir: "{{ sc_home }}/.SheetCamTNG-dev"
+    post_dir: "{{ sc_home }}/sheetcamtng/posts"
   tasks:
 
-  - name: SheetCAM copy deb file
+
+  - name: SheetCAM copy installer
     copy:
       src: /vsfs01/packages/SheetCam_setupV7.1.35-64.bin
-      dest: /tmp
+      dest: /tmp/SheetCam_setupV7.1.35-64.bin
       owner: root
-      mode: a+x
+      mode: "0755"
 
-# # Does this install to user's directory????
-#   - name: Install SheetCAM
-#     ansible.builtin.command:
-#       cmd: /tmp/SheetCam_setupV7.1.35-64.bin
+  - name: Install SheetCAM
+    ansible.builtin.shell:
+      cmd: >-
+        script -qec '/tmp/SheetCam_setupV7.1.35-64.bin
+        --ui=stdio --noprompt --i-agree-to-all-licenses
+        --destination /opt/sheetcam' /dev/null < /dev/null
+      creates: /opt/sheetcam
 
-  - name: SheetCAM Copy desktop file
-    copy:
-      src: /vsfs01/configs/sheetcam.desktop
-      dest: /usr/share/applications
-      owner: root
+  - name: SheetCAM ensure config directory exists
+    file:
+      path: "{{ sc_conf_dir }}"
+      state: directory
+      owner: "{{ sc_user }}"
+      group: "{{ sc_user }}"
+      mode: "0755"
 
   - name: SheetCAM license for vectorspace user
     copy:
       src: ../config_files/VectorSpace.camlic
-      dest: /home/vectorspace/.SheetCamTNG-dev/license.camlic
-      owner: vectorspace
+      dest: "{{ sc_conf_dir }}/license.camlic"
+      owner: "{{ sc_user }}"
+      group: "{{ sc_user }}"
+      mode: "0644"
 
   - name: SheetCAM configure
     copy:
       src: ../config_files/SheetCamTNG-dev.ini
-      dest: /home/vectorspace/.SheetCamTNG-dev/
-      owner: vectorspace
+      dest: "{{ sc_conf_dir }}/SheetCamTNG-dev.ini"
+      owner: "{{ sc_user }}"
+      group: "{{ sc_user }}"
+      mode: "0644"
 
-  # # /vsfs01/home/aspontarelli/sheetcamtng/posts/*.scpost
   # # This has to happen per user directory
   # - name: Find all .scpost files
   #   find:
