@@ -221,28 +221,6 @@
       state: latest
       force: yes
 
-  # - name: Set latest freecad as default
-  #   command: xdg-mime default freecad-latest.desktop application/x-extension-fcstd
-
-  # - name: Ensure /etc/xdg exists
-  #   ansible.builtin.file:
-  #     path: /etc/xdg
-  #     state: directory
-  #     mode: '0755'
-
-  # - name: Configure system MIME defaults
-  #   ansible.builtin.copy:
-  #     dest: /etc/xdg/mimeapps.list
-  #     owner: root
-  #     group: root
-  #     mode: '0644'
-  #     content: |
-  #       [Default Applications]
-  #       {% for mime, app in mime_defaults.items() %}
-  #       {{ mime }}={{ app }};
-  #       {% endfor %}
-
-
   - name: Remove stale environment.d TMPDIR config, if present
     ansible.builtin.file:
       path: /etc/environment.d/tmpdir.conf
@@ -266,3 +244,54 @@
         mkdir -p "/tmp/$USER"
         chmod 700 "/tmp/$USER"
         systemctl --user set-environment TMPDIR="/tmp/$USER"
+
+
+#############################################################################################
+# Make the official AppImage the system-wide default for FreeCAD documents
+- name: Set freecad-official as default handler for .FCStd files
+  hosts: computer-lab, office, projectors
+  become: yes
+  become_method: su
+  vars:
+    fcstd_mime: application/x-extension-fcstd
+    fcstd_desktop: freecad-official.desktop
+
+  tasks:
+  # The source build and AppImage don't register the MIME type themselves,
+  # so define it so *.FCStd files resolve to application/x-extension-fcstd
+  - name: Register the FCStd MIME type
+    ansible.builtin.copy:
+      dest: /usr/share/mime/packages/freecad-fcstd.xml
+      owner: root
+      group: root
+      mode: "0644"
+      content: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+          <mime-type type="{{ fcstd_mime }}">
+            <comment>FreeCAD document</comment>
+            <sub-class-of type="application/zip"/>
+            <glob pattern="*.fcstd"/>
+          </mime-type>
+        </mime-info>
+    notify: Update MIME database
+
+  - name: Set freecad-official as the system default for FCStd
+    community.general.ini_file:
+      path: /etc/xdg/mimeapps.list
+      section: Default Applications
+      option: "{{ fcstd_mime }}"
+      value: "{{ fcstd_desktop }}"
+      no_extra_spaces: true
+      owner: root
+      group: root
+      mode: "0644"
+    notify: Update desktop database
+
+  handlers:
+  - name: Update MIME database
+    ansible.builtin.command: update-mime-database /usr/share/mime
+
+  - name: Update desktop database
+    ansible.builtin.command: update-desktop-database /usr/share/applications
+#############################################################################################
